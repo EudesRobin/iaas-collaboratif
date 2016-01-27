@@ -17,6 +17,7 @@ Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO
 Links
 -------
 [Documentation](http://air.imag.fr/index.php/Projets-2015-2016-IaaS_Docker)
+[Kanban - Waffle](https://waffle.io/EudesRobin/iaas-collaboratif)
 
 
 
