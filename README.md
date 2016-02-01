@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/EudesRobin/iaas-collaboratif.png?label=ready&title=Ready)](https://waffle.io/EudesRobin/iaas-collaboratif)
 Collaborative IaaS with Docker
 ==============================
 
