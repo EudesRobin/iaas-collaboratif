@@ -1,0 +1,18 @@
+#!/bin/bash
+ 
+if [[ (! -z "${2}") && (${2}>0) ]];then
+	containerNb=${2}
+else
+	containerNb=1
+fi
+
+
+for ((i=1; i<=$containerNb; i++));
+do
+	imgType="${1}$i"
+	docker run -ti -d --name $imgType ${1}
+done
+
+docker exec -ti $imgType bin/bash
+
+exit 0
