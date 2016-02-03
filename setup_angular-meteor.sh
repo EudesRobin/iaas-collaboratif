@@ -23,10 +23,8 @@ meteor remove ecmascript
 # add angular
 meteor add angular
 
-
-
-
-
-
-
-
+# node.js setup
+sudo apt-get install nodejs npm
+# install bower , gulp
+sudo npm install -g bower
+sudo npm install -g gulp-cli
