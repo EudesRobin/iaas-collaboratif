@@ -6,7 +6,7 @@
 
 # download & install meteor 
 # /!\ password asked for now
-cd ~
+
 curl https://install.meteor.com/ | sh
 
 # create project
@@ -14,7 +14,7 @@ meteor create frontend
 cd frontend
 
 # clean default files
-rm ./*
+# rm ./frontend.*
 
 # remove Meteor's default packages
 meteor remove blaze-html-templates
@@ -28,3 +28,4 @@ sudo apt-get install nodejs npm
 # install bower , gulp
 sudo npm install -g bower
 sudo npm install -g gulp-cli
+
