@@ -1,8 +1,19 @@
 #!/bin/bash
 
-isShinkenBuilt=$(docker images | grep shinken | wc -l)
-isVmBuilt=$(docker images | grep shinken | wc -l)
+#==============================================
+# Remove old containers
+docker ps -a | grep 'Exited' | awk '{print $1}'| xargs --no-run-if-empty docker rm
+docker ps -a | grep 'Created' | awk '{print $1}'| xargs --no-run-if-empty docker rm
+#==============================================
 
+#==============================================
+# Check existing images
+isShinkenBuilt=$(docker images | grep shinken | wc -l)
+isVmBuilt=$(docker images | grep vm | wc -l)
+#==============================================
+
+#==============================================
+# Build all necessary images
 if [[ (! $isVmBuilt == 1) ]];then
 	echo "Building coordinator"
 	docker build -t vm ./vm/
@@ -16,11 +27,14 @@ if [[ (! $isShinkenBuilt == 1) ]];then
 else
 	echo "Using already built shinken's image"
 fi
+#==============================================
 
+#==============================================
+# Run containers
 echo "Running containers"
 docker run -ti --name vm -d vm
 docker run -d -v "$(pwd)/custom_configs:/etc/shinken/custom_configs" -p 8080:80 --name shinken --link vm:vmShinken shinken
+#==============================================
 
 exit 0
 
-#docker run -ti -d --name nagios --link vm:vmNagios -h nagios -p 8080:80 nagios

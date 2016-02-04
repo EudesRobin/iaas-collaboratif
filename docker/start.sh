@@ -17,6 +17,13 @@ fi
 
 
 #========================================================
+# Remove old containers
+docker ps -a | grep 'Exited' | awk '{print $1}'| xargs --no-run-if-empty docker rm
+docker ps -a | grep 'Created' | awk '{print $1}'| xargs --no-run-if-empty docker rm
+#========================================================
+
+
+#========================================================
 # Checking the number of container to launch
 if [[ (! -z "${2}") ]];then
 	containerNb=${2}
@@ -62,7 +69,7 @@ do
 			#============================================
 			# Running docker containers
 			imgType="${3}$i"
-			echo "Running ${imgType} with "$allocatedMemory" of memory" 
+			echo "Running ${imgType} with "$memorySoftLimit" of memory" 
 			docker run -ti -d -m $memoryHardLimit --memory-reservation $memorySoftLimit --cpuset-cpus="$cpuset" --name $imgType --link vm:vm$imgType ${1}
 			for ((l=0; l<${5}; l++));
 			do
