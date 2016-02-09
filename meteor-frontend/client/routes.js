@@ -22,7 +22,7 @@ angular.module('socially')
         }
       });
 
-    $urlRouterProvider.otherwise("/parties");
+    $urlRouterProvider.otherwise("/");
   })
   .run(function ($rootScope, $state) {
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
