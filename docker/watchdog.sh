@@ -27,6 +27,11 @@ else
 fi
 #========================================================
 
+existingWatchDogFile=$(ls|grep watchdog.data|wc -l)
+
+if [[ (! $existingWatchDogFile == 1) ]];then
+	touch watchdog.data
+fi
 
 #=====================================================
 while [ 1 ];do

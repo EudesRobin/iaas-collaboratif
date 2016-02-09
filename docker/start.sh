@@ -70,7 +70,7 @@ do
 			# Running docker containers
 			imgType="${3}$i"
 			echo "Running ${imgType} with "$memorySoftLimit" of memory" 
-			docker run -ti -d -m $memoryHardLimit --memory-reservation $memorySoftLimit --cpuset-cpus="$cpuset" --name $imgType --link vm:vm$imgType ${1}
+			docker run -ti -d -P --expose 22 -m $memoryHardLimit --memory-reservation $memorySoftLimit --cpuset-cpus="$cpuset" --name $imgType --link vm:vm$imgType ${1}
 			for ((l=0; l<${5}; l++));
 			do
 				#========================================

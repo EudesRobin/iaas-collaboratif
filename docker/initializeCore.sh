@@ -1,6 +1,10 @@
 #!/bin/bash
 
-rm coreFile.data
+existingCoreFile=$(ls|grep coreFile.data|wc -l)
+
+if [[ $existingCoreFile == 1 ]];then
+	rm coreFile.data
+fi
 
 coreNumber=$(cat /proc/cpuinfo | grep 'core id' | uniq | wc -l)
 
