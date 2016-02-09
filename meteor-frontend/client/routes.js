@@ -7,8 +7,8 @@ angular.module('iaas-collaboratif')
         url: '/collab',
         template: '<collab></collab>'
       });
-
     $urlRouterProvider.otherwise("/collab");
+
   })
   .run(function ($rootScope, $state) {
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
