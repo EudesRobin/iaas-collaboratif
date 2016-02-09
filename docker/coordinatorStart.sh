@@ -20,12 +20,16 @@ docker ps -a | grep 'Created' | awk '{print $1}'| xargs --no-run-if-empty docker
 ./coordinatorBuild.sh
 #==============================================
 
+existingNetwork=$(docker network ls|grep iaasnetwork|wc -l)
+if [[ (! $existingNetwork == 1) ]];then
+	docker network create iaasnetwork
+fi
 
 #==============================================
 # Run containers
 echo "Running containers"
-docker run -ti --name vm -d vm
-docker run -d -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken --link vm:vmShinken shinken
+docker run -ti --expose 22 --net=iaasnetwork --name coordinator -d coordinator
+docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
 #==============================================
 
 exit 0

@@ -4,15 +4,15 @@
 #==============================================
 # Check existing images
 isShinkenBuilt=$(docker images | grep shinken | wc -l)
-isVmBuilt=$(docker images | grep vm | wc -l)
+isCoordinatorBuilt=$(docker images | grep coordinator | wc -l)
 #==============================================
 
 
 #==============================================
 # Build all necessary images
-if [[ (! $isVmBuilt == 1) ]];then
+if [[ (! $isCoordinatorBuilt == 1) ]];then
 	echo "Building coordinator"
-	docker build -t vm ./vm/
+	docker build -t coordinator ./vm/
 else
 	echo "Using already built coordinator's image"
 fi
