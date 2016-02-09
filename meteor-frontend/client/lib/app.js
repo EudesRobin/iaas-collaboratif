@@ -1,4 +1,4 @@
-angular.module('socially', [
+angular.module('iaas-collaboratif', [
   'angular-meteor',
   'ui.router',
   'accounts.ui',
@@ -8,7 +8,7 @@ angular.module('socially', [
 ]);
 
 function onReady() {
-  angular.bootstrap(document, ['socially'], {
+  angular.bootstrap(document, ['iaas-collaboratif'], {
     strictDi: true
   });
 }

@@ -1,4 +1,4 @@
-angular.module('socially').directive('partyDetails', function () {
+angular.module('iaas-collaboratif').directive('partyDetails', function () {
   return {
     restrict: 'E',
     templateUrl: 'client/parties/party-details/party-details.html',
