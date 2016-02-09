@@ -1,3 +1,64 @@
-<body ng-app="meteor-frontend">
-  <div ng-include src="'main.html'"></div>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/">
+  <link href='http://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+  <!-- Custom CSS -->
+	<link href="css/simple-sidebar.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Iaas collaboratif</a>
+    </div>
+    <div class="navbar-right-container">
+      <login-buttons></login-buttons>
+    </div>
+  </div>
+</nav>
+
+<div id="wrapper">
+              <!-- Sidebar -->
+	        		<div id="sidebar-wrapper">
+	            <ul class="sidebar-nav">
+	                <li class="sidebar-brand">
+	                    <a href="#">
+	                        Start Bootstrap
+	                    </a>
+	                </li>
+	                <li>
+	                    <a href="#">Dashboard</a>
+	                </li>
+	                <li>
+	                    <a href="#">Shortcuts</a>
+	                </li>
+	                <li>
+	                    <a href="#">Overview</a>
+	                </li>
+	                <li>
+	                    <a href="#">Events</a>
+	                </li>
+	                <li>
+	                    <a href="#">About</a>
+	                </li>
+	                <li>
+	                    <a href="#">Services</a>
+	                </li>
+	                <li>
+	                    <a href="#">End</a>
+	                </li>
+	            </ul>
+	            </div>
+
+                <!-- Page Content -->
+				        <div id="page-content-wrapper" class="h100">
+				            <div ui-view class="ma-main-container container-fluid h100"></div>
+				            <button type="button" class="btn btn-primary" onclick="bashpwd()">test button</button>
+				        </div>
+        				<!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#sidebar-wrapper -->
+
 </body>
