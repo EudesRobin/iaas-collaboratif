@@ -1,4 +1,4 @@
-angular.module('socially').directive('addNewPartyModal', function () {
+angular.module('iaas-collaboratif').directive('addNewPartyModal', function () {
   return {
     restrict: 'E',
     templateUrl: 'client/parties/add-new-party-modal/add-new-party-modal.html',
