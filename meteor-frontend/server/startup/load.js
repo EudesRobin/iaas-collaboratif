@@ -9,13 +9,25 @@ Meteor.startup(function () {
  
   // Server methods
   Meteor.methods({
-    bashpwd: function () {
+    exec_cmd: function (cmd) {
       // This method call won't return immediately, it will wait for the
       // asynchronous code to finish, so we call unblock to allow this client
       // to queue other method calls (see Meteor docs)
       this.unblock();
       var future=new Future();
-      var command="pwd";
+
+      var command;
+     switch (cmd) {
+        case "test":
+         command="pwd";
+          break;
+        case "create":
+         command="echo CREATE TEST";
+          break;
+        default:
+          return;
+      }
+
       exec(command,function(error,stdout,stderr){
         if(error){
           console.log(error);

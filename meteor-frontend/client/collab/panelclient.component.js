@@ -21,9 +21,13 @@ angular.module('iaas-collaboratif').directive('collab', function () {
           }
       });
 
-	    this.bashpwd = function () {
-  			Meteor.call('bashpwd', function (err, response) {
+	    this.exec_cmd = function (param) {
+  			Meteor.call('exec_cmd',param, function (err, response) {
+          if(err){
+            console.log(err);
+          }else{
   	  			console.log(response);
+          }
   			});
 		  };
     }
