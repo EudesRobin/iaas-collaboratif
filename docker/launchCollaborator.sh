@@ -10,4 +10,12 @@
 ./coordinatorStart.sh
 #====================================
 
+cp ./frontend.pub ./images/centos/frontend.pub
+cp ./frontend.pub ./images/ubuntu/frontend.pub
+cp ./frontend.pub ./images/debian/frontend.pub
+
+docker build -t ubuntussh ./images/ubuntu/
+docker build -t centosssh ./images/centos/
+docker build -t debianssh ./images/debian/
+
 exit 0
