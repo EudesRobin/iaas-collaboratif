@@ -1,6 +1,3 @@
-
-
-
 angular.module('iaas-collaboratif').directive('collab', function () {
   return {
     restrict: 'E',
