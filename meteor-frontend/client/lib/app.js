@@ -22,6 +22,12 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             return Meteor.userId();
           }
       });
+
+  $scope.bashpwd = function () {
+    Meteor.call('bashpwd', function (err, response) {
+        console.log(response);
+    });
+  };
 }]);
 
 function onReady() {
