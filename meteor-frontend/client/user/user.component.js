@@ -4,8 +4,22 @@ angular.module('iaas-collaboratif').directive('user', function () {
     templateUrl: 'client/user/user.html',
     controllerAs: 'user',
     controller: function ($scope, $reactive, $modal) {
-      $reactive(this).attach($scope);
+        $reactive(this).attach($scope);
 
+	    this.helpers({
+	        users: () => {
+	          return Meteor.users.find({});
+	        },
+	        partiesCount: () => {
+	          return Counts.get('numberOfParties');
+	        },
+	        isLoggedIn: () => {
+	          return Meteor.userId() !== null;
+	        },
+	        currentUserId: () => {
+	          return Meteor.userId();
+	        }
+	    });
     }
   }
 });
