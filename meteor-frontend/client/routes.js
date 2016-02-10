@@ -9,11 +9,31 @@ angular.module('iaas-collaboratif')
       })
       .state('user', {
         url: '/user',
-        template: '<user></user>'
+        template: '<user></user>',
+        resolve: {
+          currentUser: ($q) => {
+            if (Meteor.userId() == null) {
+              return $q.reject('AUTH_REQUIRED');
+            }
+            else {
+              return $q.resolve();
+            }
+          }
+        }
       })
       .state('collab', {
         url: '/collab',
-        template: '<collab></collab>'
+        template: '<collab></collab>',
+        resolve: {
+          currentUser: ($q) => {
+            if (Meteor.userId() == null) {
+              return $q.reject('AUTH_REQUIRED');
+            }
+            else {
+              return $q.resolve();
+            }
+          }
+        }
       });
     $urlRouterProvider.otherwise("/");
 
@@ -21,7 +41,7 @@ angular.module('iaas-collaboratif')
   .run(function ($rootScope, $state) {
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
       if (error === 'AUTH_REQUIRED') {
-        $state.go('');
+        $state.go('/');
       }
     });
   });
