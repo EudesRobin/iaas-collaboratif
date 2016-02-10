@@ -7,6 +7,22 @@ angular.module('iaas-collaboratif', [
   'ui.bootstrap'
 ]);
 
+angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($scope){
+  $scope.greeting = 'Hola!';
+  $scope.users = function () {
+    return Meteor.users.find({});
+  },
+  $scope.partiesCount = function () {
+    return Counts.get('numberOfParties');
+  },
+  $scope.isLoggedIn = function () {
+    return Meteor.userId() !== null;
+  },
+  $scope.currentUserId = function () {
+    return Meteor.userId();
+  }
+}]);
+
 function onReady() {
   angular.bootstrap(document, ['iaas-collaboratif'], {
     strictDi: true

@@ -4,12 +4,11 @@
   <link href='http://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
   <!-- Custom CSS -->
 	<link href="css/simple-sidebar.css" rel="stylesheet">
-
 	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 </head>
-<body>
+<body ng-controller="rootCtrl">
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -22,19 +21,21 @@
   </div>
 </nav>
 
-<div id="wrapper">
+<div id="wrapper" >
     <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
+    <div id="sidebar-wrapper" >
+        <ul class="sidebar-nav" >
             <li>
-                <a href="/">Homepage</a>
+                <a href="/">Homepage {{greeting}}</a>
             </li>
-            <li>
-                <a href="/user">Client</a>
-            </li>
-            <li>
-                <a href="collab">Collaborator</a>
-            </li>
+            <div ng-if="isLoggedIn()">
+	            <li>
+	                <a href="/user" >Client</a>
+	            </li>
+	            <li>
+	                <a href="collab">Collaborator</a>
+	            </li>
+            </div>
             <li>
                 <a target="_blank" href="http://air.imag.fr/index.php/Projets-2015-2016-IaaS_Docker">Wiki/Help</a>
             </li>
