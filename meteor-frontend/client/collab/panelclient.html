@@ -1,11 +1,13 @@
-<div class="container-fluid">
-	<div class="row h100">
+<div class="row h100">
+
+	<div ng-hide="isLoggedIn">
+		<br>Please connect to go further.
+	</div>
+
+	<div ng-if="isLoggedIn">
 		<p>
-			panel usr client<br>
-			<button type="button" class="btn btn-primary" ng-click="collab.exec_cmd('create')">test button</button>
-			<div ng-if="collab.isLoggedIn">
-				<br>Utilisateur connecté
-			</div>
+			Collaborator space<br>
+			<button type="button" class="btn btn-primary" ng-click="exec_cmd('create')">test button</button>
 		</p>
 	</div>
 </div>

@@ -8,19 +8,30 @@ angular.module('iaas-collaboratif', [
 ]);
 
 angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($scope){
-  $scope.greeting = 'Hola!';
-  $scope.users = function () {
-    return Meteor.users.find({});
-  },
-  $scope.partiesCount = function () {
-    return Counts.get('numberOfParties');
-  },
-  $scope.isLoggedIn = function () {
-    return Meteor.userId() !== null;
-  },
-  $scope.currentUserId = function () {
-    return Meteor.userId();
-  }
+  $scope.helpers({
+          users: () => {
+            return Meteor.users.find({});
+          },
+          partiesCount: () => {
+            return Counts.get('numberOfParties');
+          },
+          isLoggedIn: () => {
+            return Meteor.userId() !== null;
+          },
+          currentUserId: () => {
+            return Meteor.userId();
+          }
+      });
+
+      $scope.exec_cmd = function (param) {
+        Meteor.call('exec_cmd',param, function (err, response) {
+          if(err){
+            console.log(err);
+          }else{
+            console.log(response);
+          }
+        });
+      };
 }]);
 
 function onReady() {

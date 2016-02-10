@@ -9,31 +9,11 @@ angular.module('iaas-collaboratif')
       })
       .state('user', {
         url: '/user',
-        template: '<user></user>',
-        resolve: {
-          currentUser: ($q) => {
-            if (Meteor.userId() == null) {
-              return $q.reject('AUTH_REQUIRED');
-            }
-            else {
-              return $q.resolve();
-            }
-          }
-        }
+        template: '<user></user>'
       })
       .state('collab', {
         url: '/collab',
-        template: '<collab></collab>',
-        resolve: {
-          currentUser: ($q) => {
-            if (Meteor.userId() == null) {
-              return $q.reject('AUTH_REQUIRED');
-            }
-            else {
-              return $q.resolve();
-            }
-          }
-        }
+        template: '<collab></collab>'
       });
     $urlRouterProvider.otherwise("/");
 
