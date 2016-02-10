@@ -7,3 +7,6 @@ services:
   - mongodb
 env: 
   - LAIKA_OPTIONS="-t 5000"
+branches:
+  only:
+    - frontendWebui
