@@ -1,12 +1,16 @@
+sudo: required
 language: node_js
-node_js:
-  - "0.10"
+node_js: 
+  - "0.12"
 before_install:
-  - "cd meteor-frontend && curl -L http://git.io/3l-rRA | /bin/sh"
-services:
-  - mongodb
-env: 
-  - LAIKA_OPTIONS="-t 5000"
+  - "cd meteor-frontend"
+install: 
+  - "curl https://install.meteor.com | /bin/sh"
+  - "meteor update"
+script: 
+  - "meteor --test --once"
+env:
+  - "SELENIUM_BROWSER=phantomjs"
 branches:
   only:
     - frontendWebui
