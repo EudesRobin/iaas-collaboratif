@@ -1,9 +1,10 @@
+[![Stories in Ready](https://badge.waffle.io/EudesRobin/iaas-collaboratif.png?label=ready&title=Ready)](https://waffle.io/EudesRobin/iaas-collaboratif)
 Collaborative IaaS with Docker
 ==============================
 
 
 **Authors :** 
-Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO
+Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Loïc, CAPERAN Théo
 
 ----------
 
@@ -20,6 +21,6 @@ Links
 
 [Kanban - Waffle](https://waffle.io/EudesRobin/iaas-collaboratif)
 
-
-
-
+Licence
+-------
+[GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.fr.html)
