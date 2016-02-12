@@ -4,7 +4,6 @@
 
 # Use : start Meteor , for our app 
 
-cd ${HOME}/iaas-collaboratif/meteor-frontend/
-meteor run -p 3000 --production &
+${HOME}/iaas-collaboratif/scripts/check_running.sh;
 
 echo "Meteor is running - Frontend is up :)"
