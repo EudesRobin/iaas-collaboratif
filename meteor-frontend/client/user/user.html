@@ -6,8 +6,7 @@
 
 	<div ng-if="isLoggedIn">
 		Please paste your public ssh key :<br>
-        <textarea ng-model="sshKey">Public SSH key</textarea>
+        <textarea ng-model="sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)">Public SSH key</textarea>
         <br>
-        {{sshKey}}
 	</div>
 </div>
