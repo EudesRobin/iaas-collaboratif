@@ -24,6 +24,9 @@ Meteor.startup(function () {
         case "create":
         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
         break;
+        case "test":
+        command="echo "+params;
+        break;
         default:
         return;
       }
@@ -33,6 +36,7 @@ Meteor.startup(function () {
           console.log(error);
           throw new Meteor.Error(500,command+" failed");
         }
+        
         future.return(stdout.toString());
       });
       return future.wait();
