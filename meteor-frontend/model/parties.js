@@ -14,7 +14,7 @@ Parties.allow({
 
 Meteor.users.allow({
   update: function (userId, fields, modifier) {
-    return userId;
+    return userId == Meteor.userId();
   }
 });
 

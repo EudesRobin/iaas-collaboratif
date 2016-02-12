@@ -18,7 +18,7 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 
 				Meteor.users.update({_id: Meteor.userId()}, {
 					$set: {
-						emails: [{address: this.newMail, verified: false}]
+						emails: [{address: this.currentUser.emails[0].address, verified: false}]
 					}
 				}, (error) => {
 					if (error) {
