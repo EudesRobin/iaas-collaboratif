@@ -6,31 +6,29 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 		controller: function ($scope, $reactive, $modal) {
 			$reactive(this).attach($scope);
 
+			this.subscribe('users');
 
-			// this.save = () => {
+			this.helpers({
+				currentUser: () => {
+					return Meteor.users.findOne(Meteor.userId());
+				}
+			});
 
-			// 	if (user.emails) {
-			// 		user.emails[0].address = this.newMail;
-			// 	}
-			// 	else {
-			// 		console.log('Oops, unable to access the mail...');
-			// 	}
-			// 	Users.update({_id: $stateParams.partyId}, {
-			// 		$set: {
-			// 			name: this.party.name,
-			// 			description: this.party.description,
-			// 			'public': this.party.public,
-			// 			location: this.party.location
-			// 		}
-			// 	}, (error) => {
-			// 		if (error) {
-			// 			console.log('Oops, unable to update the party...');
-			// 		}
-			// 		else {
-			// 			console.log('Done!');
-			// 		}
-			// 	});
-			// };
+			this.save = () => {
+
+				Meteor.users.update({_id: Meteor.userId()}, {
+					$set: {
+						emails: [{address: this.newMail, verified: false}]
+					}
+				}, (error) => {
+					if (error) {
+						console.log('Oops, unable to update the user...');
+					}
+					else {
+						console.log('Done!');
+					}
+				});
+			};
 		}
 	}
 });
