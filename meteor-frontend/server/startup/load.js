@@ -18,8 +18,8 @@ Meteor.startup(function () {
 
       var command;
      switch (cmd) {
-        case "test":
-         command="pwd";
+        case "stop":
+         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 stop.sh "+params+"'";
           break;
         case "create":
          command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 start.sh "+params+"'";
