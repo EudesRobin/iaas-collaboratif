@@ -22,7 +22,7 @@ Meteor.startup(function () {
          command="pwd";
           break;
         case "create":
-         command="ssh nodetest@nodetest 'docker exec  coordinator /root/run.sh'";
+         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 pwd'";
           break;
         default:
           return;
