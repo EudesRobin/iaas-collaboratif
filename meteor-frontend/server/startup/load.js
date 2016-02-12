@@ -9,7 +9,7 @@ Meteor.startup(function () {
  
   // Server methods
   Meteor.methods({
-    exec_cmd: function (cmd,params) {
+    exec_cmd: function (cmd, params) {
       // This method call won't return immediately, it will wait for the
       // asynchronous code to finish, so we call unblock to allow this client
       // to queue other method calls (see Meteor docs)

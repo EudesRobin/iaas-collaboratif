@@ -23,8 +23,8 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
           }
       });
 
-      $scope.exec_cmd = function (param) {
-        Meteor.call('exec_cmd',param, function (err, response) {
+      $scope.exec_cmd = function (cmd,param) {
+        Meteor.call('exec_cmd',cmd,param, function (err, response) {
           if(err){
             console.log(err);
           }else{
