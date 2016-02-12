@@ -9,7 +9,7 @@ Meteor.startup(function () {
  
   // Server methods
   Meteor.methods({
-    exec_cmd: function (cmd) {
+    exec_cmd: function (cmd,params) {
       // This method call won't return immediately, it will wait for the
       // asynchronous code to finish, so we call unblock to allow this client
       // to queue other method calls (see Meteor docs)
@@ -22,7 +22,7 @@ Meteor.startup(function () {
          command="pwd";
           break;
         case "create":
-         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 pwd'";
+         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 start.sh "+params+"'";
           break;
         default:
           return;
