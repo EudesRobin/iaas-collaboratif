@@ -7,13 +7,17 @@ angular.module('iaas-collaboratif')
         url: '/',
         template: '<homepage></homepage>'
       })
+      .state('profile', {
+        url: '/profile',
+        template: '<profile></profile>'
+      })
       .state('user', {
         url: '/user',
         template: '<user></user>'
       })
-      .state('collab', {
-        url: '/collab',
-        template: '<collab></collab>'
+      .state('provider', {
+        url: '/provider',
+        template: '<provider></provider>'
       });
     $urlRouterProvider.otherwise("/");
 

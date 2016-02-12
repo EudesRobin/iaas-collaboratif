@@ -1,8 +1,8 @@
-angular.module('iaas-collaboratif').directive('collab', function () {
+angular.module('iaas-collaboratif').directive('provider', function () {
   return {
     restrict: 'E',
-    templateUrl: 'client/collab/panelclient.html',
-    controllerAs: 'collab',
+    templateUrl: 'client/provider/panelclient.html',
+    controllerAs: 'provider',
     controller: function ($scope, $reactive, $modal) {
       $reactive(this).attach($scope);
       this.helpers({
