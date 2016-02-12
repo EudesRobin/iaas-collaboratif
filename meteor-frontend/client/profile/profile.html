@@ -8,7 +8,7 @@
 		<p>
 			Do you want to change your mail?<br>
 			<form name="mailForm">
-			<input type="email" name="email" ng-model="profile.newMail" required/>
+			<input type="email" name="email" ng-model="profile.currentUser.emails[0].address" required/>
         	<span style="color:red" ng-show="mailForm.email.$dirty && mailForm.email.$invalid">
         	</span>
 			<button ng-click="profile.save()" class="btn btn-primary" ng-disabled="mailForm.$invalid">Save</button>
