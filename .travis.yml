@@ -1,0 +1,16 @@
+sudo: required
+language: node_js
+node_js: 
+  - "0.12"
+before_install:
+  - "cd meteor-frontend"
+install: 
+  - "curl https://install.meteor.com | /bin/sh"
+  - "meteor update"
+script: 
+  - "meteor --test --once"
+env:
+  - "SELENIUM_BROWSER=phantomjs"
+branches:
+  only:
+    - frontendWebui
