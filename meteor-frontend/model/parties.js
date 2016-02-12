@@ -12,6 +12,12 @@ Parties.allow({
   }
 });
 
+Meteor.users.allow({
+  update: function (userId, fields, modifier) {
+    return userId == Meteor.userId();
+  }
+});
+
 let getContactEmail = function (user) {
   if (user.emails && user.emails.length)
     return user.emails[0].address;

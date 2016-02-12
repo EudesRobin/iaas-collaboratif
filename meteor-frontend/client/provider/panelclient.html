@@ -6,7 +6,13 @@
 
 	<div ng-if="isLoggedIn">
 		<p>
-			Collaborator space<br>
+			Please provide the name associated to your public IP (DNS):<br>
+			<form name="dnsForm">
+				<input type="text" name="dns" ng-model="provider.currentUser.dns" required/>
+				<span style="color:red" ng-show="dnsForm.dns.$dirty && dnsForm.dns.$invalid">
+				</span>
+				<button ng-click="provider.save(provider.currentUser.dns)" class="btn btn-primary" ng-disabled="dnsForm.$invalid">Save</button>
+			</form>
 
 			<button type="button" class="btn btn-primary" ng-click="exec_cmd('create','ubuntussh 1 test 512M 1 1G')">Create test</button>
 			<button type="button" class="btn btn-danger" ng-click="exec_cmd('stop','test0')">Stop test</button>
