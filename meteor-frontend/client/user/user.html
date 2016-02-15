@@ -6,7 +6,11 @@
 
 	<div ng-if="isLoggedIn">
 		Please paste your public ssh key :<br>
-        <textarea ng-model="sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)">Public SSH key</textarea>
-        <br>
+		<form name="keyForm">
+			<textarea name="key" ng-model="user.currentUser.subscriber.sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)" cols="70" rows="6" required>Public SSH key</textarea>
+			<span style="color:red" ng-show="keyForm.key.$dirty && keyForm.key.$invalid">
+			</span>
+			<br><button ng-click="user.save()" class="btn btn-primary" ng-disabled="keyForm.$invalid">Save</button>
+		</form>
 	</div>
 </div>

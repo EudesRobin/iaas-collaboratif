@@ -9,16 +9,9 @@ Schemas.Subscribers = new SimpleSchema({
 		type: Meteor.Collection.ObjectID,
 	 	index: 1,
 	},
-	cpu : {
-		type: Number, // in GHz
-	},
-	ram : {
-		type: Number, // in Gb
-	},
-	elapse_time : {   // in seconds
-		type: Number, 
-		optional: true	
-	},
+	sshKey : {
+		type: String,
+	}
 });
 
 Subscribers.attachSchema(Schemas.Subscribers,  {transform: true, replace:true});

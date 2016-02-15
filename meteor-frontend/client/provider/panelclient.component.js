@@ -26,11 +26,12 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				}
 			});
 
-			this.save = (newDns) => {
+			this.save = () => {
 
-				Meteor.users.update({_id: Meteor.userId()}, {
+				//Providers.update({user_id: Meteor.userId()}, {
+				Meteor.users.update({user_id: Meteor.userId()}, {
 					$set: {
-						provider : {dns: newDns}
+						provider: {dns : this.currentUser.provider.dns}
 					}
 				}, (error) => {
 					if (error) {
