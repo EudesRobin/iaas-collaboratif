@@ -1,6 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y openssh-server
+RUN apt-get install -y sshpass
 RUN mkdir /var/run/sshd
 
 #RUN echo 'root:iaas' | chpasswd
@@ -10,23 +11,24 @@ RUN mkdir /var/run/sshd
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
 
 #RUN ssh-keygen -y -P "" -t dsa -f /etc/ssh/ssh_coordinator_dsa_key
-RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
+
+RUN ssh-keygen -q -N "" -t rsa -f ~/.ssh/id_rsa
 
 ADD ./frontend.pub ./
 
-RUN mkdir ~/.ssh/
-RUN touch ~/.ssh/autorized_keys
+RUN touch ~/.ssh/authorized_keys
 RUN chmod 600 ~/.ssh/authorized_keys
 RUN cp ./frontend.pub ~/.ssh/authorized_keys
 
 ADD ./copyKey.sh ./
 
-#RUN ./copyKey.sh
+RUN ./copyKey.sh
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 
 EXPOSE 22
+
 CMD ["/usr/sbin/sshd", "-D"]
 
 

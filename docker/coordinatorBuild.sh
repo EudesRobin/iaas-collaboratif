@@ -10,6 +10,8 @@ isCoordinatorBuilt=$(docker images | grep coordinator | wc -l)
 #========================================================
 if [[ "${1}" == "update" ]];then
 	if [[ "${2}" == "coordinator" ]];then
+		#Remove previous coordinator public key
+		sudo rm /home/iaas/.ssh/authorized_keys
 		docker build -t coordinator ./vm/
 	fi
 	if [[ "${2}" == "shinken" ]];then
@@ -24,6 +26,8 @@ else
 #==============================================
 	# Build all necessary images
 	if [[ (! $isCoordinatorBuilt == 1) ]];then
+		#Remove previous coordinator public key
+		sudo rm /home/iaas/.ssh/authorized_keys
 		echo "Building coordinator"
 		docker build -t coordinator ./vm/
 	else
