@@ -4,21 +4,7 @@ Subscribers = new Mongo.Collection("Subscribers", {
 });
 
 Schemas.Subscribers = new SimpleSchema({
-	// for ensuring that a Subscriber is associated to a provider
-	provider_id : {
-		type: Meteor.Collection.ObjectID,
-	 	index: 1,
-	},
-	cpu : {
-		type: Number, // in GHz
-	},
-	ram : {
-		type: Number, // in Gb
-	},
-	elapse_time : {   // in seconds
-		type: Number, 
-		optional: true	
-	},
+
 });
 
 Subscribers.attachSchema(Schemas.Subscribers,  {transform: true, replace:true});

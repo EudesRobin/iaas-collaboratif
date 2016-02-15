@@ -1,13 +1,18 @@
 // Define a Collection
-Ressources = new Mongo.Collection("Ressources", {
+Machines = new Mongo.Collection("Machines", {
   transform: function (doc) { return new Ressource(doc); }
 });
 
-Schemas.Ressources = new SimpleSchema({
+Schemas.Machines = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
-	user_id : {
+	ressource_id : {
 		type: Meteor.Collection.ObjectID,
 	 	index: 1,
+	},
+	subscriber_id : {
+		type: Meteor.Collection.ObjectID,
+	 	index: 1,
+	 	unique: true
 	},
 	cpu : {
 		type: Number, // in GHz
@@ -21,9 +26,9 @@ Schemas.Ressources = new SimpleSchema({
 	},
 });
 
-Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
+Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
 
-Ressources.allow({
+Machines.allow({
     insert: function(userId,doc) {return Meteor.userId() === userId;},
     update: function(userId,doc) {return Meteor.userId() === userId;},
     remove: function(userId,doc) {return Meteor.userId() === userId;},
@@ -36,11 +41,11 @@ Ressource = function (opts) {
 // Publishing to move to independants files
 if (Meteor.isServer) {
   // Only publish infos that are public or belong to the current user
-  Meteor.publish("ressources", function () {
-    return Ressources.find({ user_id: this.userId });
+  Meteor.publish("machines", function () {
+    return Machines.find({ user_id: this.userId });
   });
 }
 
 if (Meteor.isClient) {
-	Meteor.subscribe("ressources");
+	Meteor.subscribe("machines");
 }
