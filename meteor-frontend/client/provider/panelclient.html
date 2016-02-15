@@ -18,5 +18,49 @@
 			<button type="button" class="btn btn-danger" ng-click="exec_cmd('stop','test0')">Stop test</button>
 			<button type="button" class="btn btn-primary" ng-click="exec_cmd('test','Helloword')">test notif with ng</button>
 		</p>
+        <tr align="right">
+            <button type="button" class="btn btn-primary" ng-click="provider.SaveProviderRessources" >Save</button>
+        </tr>
+        <pre >
+            <table align="center" border="2" title="Provider ressources">
+                <tr>
+                    <td>CPU </td><td><input type="text" name="CPU" ng-model="provider.currentUser.Ressources.CPU" required/> Ghz</td>
+                </tr>
+                <tr>
+                    <td>Memory </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Memory" required/> Gb</td>
+                </tr>
+                <tr>
+                    <td>Storage </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Storage" required/> Gb</td>
+                </tr>
+                <tr>
+                    <td>Bandwidth </td><td><input type="text" name="Bandwidth" ng-model="provider.currentUser.Ressources.Bandwidth" required/> Mbps</td>
+                </tr>
+                <!--<tr>-->
+                    <!--<td>Elapse_time </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Elapse_time" required/></td>-->
+                <!--</tr>-->
+            </table>
+        </pre>
+
+
+        <!--<pre>Provider cpu="{{provider.currentUser.Ressources.cpu}}"</pre>-->
+        <!--<tr>-->
+            <!--<th>Memory</th>-->
+            <!--<td><input type="text" id="editItemMemory" value="{{collab_Memory}}"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th>Hard Storage</th>-->
+            <!--<td><input type="text" id="editItemStorage" value="{{collab_Storage}}"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th>Network</th>-->
+            <!--<td><input type="text" id="editItemNetwork" value="{{collab_Network}}"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<th>Last modified</th>-->
+            <!--<td><input type="text" id="editItemModifDate" value="{{collab_ModifDate}}"></td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td><button class="saveItem">save</button><button class="cancelItem">Cancel</button>{{#each errors}}<div>{{message}}</div>{{/each}}</td>-->
+        <!--</tr>-->
 	</div>
 </div>

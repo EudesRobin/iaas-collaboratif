@@ -1,3 +1,4 @@
+
 angular.module('iaas-collaboratif').directive('provider', function () {
 	return {
 		restrict: 'E',
@@ -31,7 +32,7 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				//Providers.update({user_id: Meteor.userId()}, {
 				Meteor.users.update({user_id: Meteor.userId()}, {
 					$set: {
-						provider: {dns : this.currentUser.provider.dns}
+						provider : {dns: this.currentUser.provider.dns}
 					}
 				}, (error) => {
 					if (error) {
@@ -42,6 +43,9 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 					}
 				});
 			};
+			this.SaveProviderRessources=()=>{
+				Meteor.users
+			}
 		}
 	}
 });
