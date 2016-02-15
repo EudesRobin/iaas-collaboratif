@@ -58,9 +58,10 @@ Schemas.Users = new SimpleSchema({
 
 Users.attachSchema(Schemas.Users,  {transform: true, replace:true});
 Users.allow({
-  insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
-  update: function(userId,doc) {return userId && Meteor.userId() === userId;},
-  remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
+    remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    fetch: []
 })
 
 if (Meteor.isClient) {

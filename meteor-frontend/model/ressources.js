@@ -33,9 +33,10 @@ Schemas.Ressources = new SimpleSchema({
 Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
 
 Ressources.allow({
-    insert: function(userId,doc) {return Meteor.userId() === userId;},
-    update: function(userId,doc) {return Meteor.userId() === userId;},
-    remove: function(userId,doc) {return Meteor.userId() === userId;},
+	insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
+    remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    fetch: []
 })
 
 Ressource = function (opts) {
