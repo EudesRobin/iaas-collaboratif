@@ -9,13 +9,24 @@ Schemas.Ressources = new SimpleSchema({
 		type: Meteor.Collection.ObjectID,
 	 	index: 1,
 	},
-	cpu : {
+	CPU : {
 		type: Number, // in GHz
 	},
-	ram : {
+	Memory : {
 		type: Number, // in Gb
 	},
-	elapse_time : {   // in seconds
+	Storage :{
+		type: Number
+	},
+	Bandwidth:{
+		type: Number,
+		label:"Bandwidth"
+	},
+	DNS:{
+		type:String,
+		label:"DNS"
+	},
+	Elapse_time : {   // in seconds
 		type: Number, 
 		optional: true	
 	},
