@@ -28,8 +28,9 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 			});
 
 			this.save = () => {
-				this.currentUser.getProvider().setFields({dns:this.currentUser.provider.dns})
+				this.currentUser.getProvider().setFields(this.currentUser.provider)
 			};
+
 			this.SaveProviderRessources=()=>{
 				Meteor.users
 			}
