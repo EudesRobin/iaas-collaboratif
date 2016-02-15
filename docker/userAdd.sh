@@ -20,7 +20,12 @@ else
 	echo "Iaas user already exists, skipping this step"
 fi
 
+#===================================
+#Add iaas user to Docker group
 sudo gpasswd -a iaas docker
+#Remove previous coordinator public key
+sudo rm /home/iaas/.ssh/authorized_keys
+#===================================
 
 #===================================
 #Copying necessary files to iaas home

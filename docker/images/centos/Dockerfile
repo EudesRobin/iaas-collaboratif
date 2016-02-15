@@ -8,10 +8,10 @@ RUN yum -y install openssh-server epel-release && \
     sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && \
     sed -i "s/UsePAM.*/UsePAM yes/g" /etc/ssh/sshd_config
 
-RUN mkdir ~/.ssh/
-RUN touch ~/.ssh/autorized_keys
-RUN chmod 600 ~/.ssh/autorized_keys
-RUN cat ./frontend.pub >> ~/.ssh/autorized_keys
+#RUN mkdir ~/.ssh/
+#RUN touch ~/.ssh/autorized_keys
+#RUN chmod 600 ~/.ssh/autorized_keys
+#RUN cat ./frontend.pub >> ~/.ssh/autorized_keys
 
 ENV AUTHORIZED_KEYS **None**
 

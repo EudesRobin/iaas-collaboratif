@@ -33,13 +33,23 @@ if [[ (! $existingWatchDogFile == 1) ]];then
 	touch watchdog.data
 fi
 
-#=====================================================
+existingJSON=$(ls|grep instances.data|wc -l)
+
+if [[ (! $existingJSON == 1) ]];then
+	touch instances.data
+fi
+
+#========================================================
 while [ 1 ];do
 	k=0
 	rm watchdog.data
+	rm instances.data
+	echo "[" >> instances.data
 	docker ps -s | awk '{print $(NF-5),$(NF-4),$(NF-3)}' > watchdog.data
 	while IFS=' '  read container size unit;do
 		if [[ !($k == 0) ]];then
+			docker inspect --type=container --size --format='{{json .}}' $container >> instances.data
+			echo "," >> instances.data
 			size=${size%.*}
 			if [[ "$unit" == "GB" ]];then
 				size=$(( $size * 1024 * 1024 * 1024 ))
@@ -57,5 +67,6 @@ while [ 1 ];do
 		fi
 		k=$(( $k + 1 ))
 	done < watchdog.data
+	echo "]" >> instances.data
 	sleep 30s
 done
