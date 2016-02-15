@@ -11,9 +11,11 @@ Schemas.Machines = new SimpleSchema({
 	},
 	cpu : {
 		type: Number, // in GHz
+		defaultValue: 1.2
 	},
 	ram : {
 		type: Number, // in Gb
+		defaultValue: 0.512
 	},
 	elapse_time : {   // in seconds
 		type: Number, 

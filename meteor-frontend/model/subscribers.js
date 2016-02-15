@@ -20,6 +20,13 @@ Subscriber = function (opts) {
 
 Subscriber.prototype.allocate = function(opts) {
 	if (! opts) return null;
-	check(opts, Schemas.machine);
+	check(opts, Schemas.Machines);
+	var r = Ressource.findOne({
+		cpu: 		{$gte: opts.cpu}, 
+		memory: 	{$gte: opts.memory}, 
+		storage: 	{$gte: opts.storage}, 
+		bandwidth: 	{$gte: opts.bandwidth}
+	});
+	if (! r) return null;
 	
 };
