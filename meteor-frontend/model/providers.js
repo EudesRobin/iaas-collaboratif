@@ -24,7 +24,14 @@ Provider.prototype.setFields = function(p) {
   // updating the current object
   this.provider = p;
   // updating database
-  Users.update({_id: this._id}, {$set:{provider:p}});
+  Users.update({_id: this._id}, {$set:{provider:p}}, (error) => {
+					if (error) {
+						console.log('Oops, unable to update the user...');
+					}
+					else {
+						console.log('Done!');
+					}
+				});
 };
 
 

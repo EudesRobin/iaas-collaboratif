@@ -4,11 +4,6 @@ Subscribers = new Mongo.Collection("Subscribers", {
 });
 
 Schemas.Subscribers = new SimpleSchema({
-	// for ensuring that a Subscriber is associated to a provider
-	provider_id : {
-		type: Meteor.Collection.ObjectID,
-	 	index: 1,
-	},
 	sshKey : {
 		type: String,
 	}
@@ -24,3 +19,20 @@ Subscribers.allow({
 Subscriber = function (opts) {
 	_.extend(this, opts);
 }
+
+Subscriber.prototype.setFields = function(s) {
+  if (! s) return null;
+  s = _.extend(this.subscriber || {}, s);
+  check(s, Schemas.Subscribers);
+  // updating the current object
+  this.subscriber = s;
+  // updating database
+  Users.update({_id: this._id}, {$set:{subscriber:s}}, (error) => {
+					if (error) {
+						console.log('Oops, unable to update the user...');
+					}
+					else {
+						console.log('Done!');
+					}
+				});
+};
