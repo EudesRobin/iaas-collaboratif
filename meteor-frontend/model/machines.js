@@ -1,8 +1,3 @@
-// Define a Collection
-Machines = new Mongo.Collection("Machines", {
-  transform: function (doc) { return new Ressource(doc); }
-});
-
 Schemas.Machines = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	ressource_id : {
@@ -26,15 +21,7 @@ Schemas.Machines = new SimpleSchema({
 	},
 });
 
-Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
-
-Machines.allow({
-    insert: function(userId,doc) {return Meteor.userId() === userId;},
-    update: function(userId,doc) {return Meteor.userId() === userId;},
-    remove: function(userId,doc) {return Meteor.userId() === userId;},
-})
-
-Ressource = function (opts) {
+Machine = function (opts) {
 	_.extend(this, opts);
 }
 

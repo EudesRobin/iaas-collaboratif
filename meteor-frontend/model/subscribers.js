@@ -1,20 +1,13 @@
-// Define a Collection
-Subscribers = new Mongo.Collection("Subscribers", {
-  transform: function (doc) { return new Subscriber(doc); }
-});
-
 Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
+	},
+	machines : {
+		type: [Schemas.Machines],
+		optional: true,
+		defaultValue: []
 	}
 });
-
-Subscribers.attachSchema(Schemas.Subscribers,  {transform: true, replace:true});
-Subscribers.allow({
-    insert: function(userId,doc) {return Meteor.userId() === userId;},
-    update: function(userId,doc) {return Meteor.userId() === userId;},
-    remove: function(userId,doc) {return Meteor.userId() === userId;},
-})
 
 Subscriber = function (opts) {
 	_.extend(this, opts);
@@ -35,4 +28,9 @@ Subscriber.prototype.setFields = function(s) {
 						console.log('Done!');
 					}
 				});
+};
+
+Subscriber.prototype.allocate = function(opts) {
+	if (! opts) return null;
+	check(opts, Schemas.machine);
 };
