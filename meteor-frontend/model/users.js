@@ -45,16 +45,14 @@ Schemas.Users = new SimpleSchema({
     blackbox: true
   },
   provider : {
-    type: String,
+    type: Schemas.Providers,
     defaultValue: null,
     optional: true,
-    regEx: SimpleSchema.RegEx.Id
   },
   subscriber : {
-    type: String,
+    type: Schemas.Subscribers,
     defaultValue: null,
     optional: true,
-    regEx: SimpleSchema.RegEx.Id
   }
 });
 
@@ -96,26 +94,18 @@ User = function (opts) {
   _.extend(this, opts);
 }
 
+User.prototype.getProvider = function() {
+  return new Provider(this);
+};
+
+User.prototype.getSubscriber = function() {
+  return new Subscriber(this);
+};
+
 User.prototype.isSubscriber = function() {
   return this.subscriber != null;
 };
 
 User.prototype.isProvider = function() {
   return this.provider != null;
-};
-
-User.prototype.getProvider = function() {
-  var self = this;
-  return Providers.findOne({user_id:self._id}) || null;
-};
-
-User.prototype.setProvider = function(p) {
-  if (! p) return null;
-  var self = this;
-  p.user_id = this._id;
-  check(p, Providers.simpleSchema());
-  var id = Providers.insert(p, {});
-  this.provider = id;
-  Users.update({_id: this._id}, {$set:{provider:id}});
-  return id;
 };
