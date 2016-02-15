@@ -1,0 +1,2 @@
+Schemas = {};
+SimpleSchema.debug = true
