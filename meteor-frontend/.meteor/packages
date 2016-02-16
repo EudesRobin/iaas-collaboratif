@@ -22,11 +22,9 @@ angularutils:pagination
 tmeasday:publish-counts
 check
 email
-angularui:angular-google-maps
 twbs:bootstrap
 less
 angularui:angular-ui-bootstrap
 mouse0270:bootstrap-notify
-accounts-google
 service-configuration
 aldeed:collection2

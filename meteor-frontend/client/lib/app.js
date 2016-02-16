@@ -3,7 +3,6 @@ angular.module('iaas-collaboratif', [
 	'ui.router',
 	'accounts.ui',
 	'angularUtils.directives.dirPagination',
-	'uiGmapgoogle-maps',
 	'ui.bootstrap'
 	]);
 
@@ -11,9 +10,6 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
 	$scope.helpers({
 		users: () => {
 			return Meteor.users.find({});
-		},
-		partiesCount: () => {
-			return Counts.get('numberOfParties');
 		},
 		isLoggedIn: () => {
 			return Meteor.userId() !== null;
