@@ -29,6 +29,10 @@ Meteor.startup(function () {
 
       switch (cmd) {
         case "stop":
+        var r_split = params.split(" ");
+        if(r_split.length!=1){
+          throw new Meteor.Error(500,r_split.length,"Invalid parameter length");
+        }
         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
         break;
         case "create":
