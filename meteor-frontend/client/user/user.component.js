@@ -27,19 +27,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			});
 
 			this.save = () => {
-
-				Meteor.users.update({user_id: Meteor.userId()}, {
-					$set: {
-						subscriber : {sshKey : this.currentUser.subscriber.sshKey}
-					}
-				}, (error) => {
-					if (error) {
-						console.log('Oops, unable to update the user...');
-					}
-					else {
-						console.log('Done!');
-					}
-				});
+				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber)
 			};
 		}
 	}

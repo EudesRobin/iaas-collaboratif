@@ -28,21 +28,9 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 			});
 
 			this.save = () => {
-
-				//Providers.update({user_id: Meteor.userId()}, {
-				Meteor.users.update({user_id: Meteor.userId()}, {
-					$set: {
-						provider : {dns: this.currentUser.provider.dns}
-					}
-				}, (error) => {
-					if (error) {
-						console.log('Oops, unable to update the user...');
-					}
-					else {
-						console.log('Done!');
-					}
-				});
+				this.currentUser.getProvider().setFields(this.currentUser.provider)
 			};
+
 			this.SaveProviderRessources=()=>{
 				Meteor.users
 			}

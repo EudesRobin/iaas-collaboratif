@@ -9,24 +9,22 @@ Schemas.Ressources = new SimpleSchema({
 		type: Meteor.Collection.ObjectID,
 	 	index: 1,
 	},
-	CPU : {
+	cpu : {
 		type: Number, // in GHz
 	},
-	Memory : {
+	memory : {
 		type: Number, // in Gb
 	},
-	Storage :{
+	storage :{
 		type: Number
 	},
-	Bandwidth:{
+	bandwidth:{
 		type: Number,
-		label:"Bandwidth"
 	},
-	DNS:{
+	dns:{
 		type:String,
-		label:"DNS"
 	},
-	Elapse_time : {   // in seconds
+	elapse_time : {   // in seconds
 		type: Number, 
 		optional: true	
 	},
@@ -35,9 +33,10 @@ Schemas.Ressources = new SimpleSchema({
 Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
 
 Ressources.allow({
-    insert: function(userId,doc) {return Meteor.userId() === userId;},
-    update: function(userId,doc) {return Meteor.userId() === userId;},
-    remove: function(userId,doc) {return Meteor.userId() === userId;},
+	insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
+    remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    fetch: []
 })
 
 Ressource = function (opts) {

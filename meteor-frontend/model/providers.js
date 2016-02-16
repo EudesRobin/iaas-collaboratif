@@ -18,13 +18,16 @@ Provider = function (opts) {
 }
 
 Provider.prototype.setFields = function(p) {
-  if (! p) return null;
-  p = _.extend(this.provider || {}, p);
-  check(p, Schemas.Providers);
-  // updating the current object
-  this.provider = p;
-  // updating database
-  Users.update({_id: this._id}, {$set:{provider:p}});
+  	if (! p) return null;
+  	p = _.extend(this.provider || {}, p);
+  	check(p, Schemas.Providers);
+  	// updating the current object
+  	this.provider = p;
+  	// updating database
+  	Users.update({_id: this._id}, {$set:{provider:p}}, (error) => {
+  		if (error) console.error('Oops, unable to update the user...');
+  		else console.log('Done!');
+	});
 };
 
 
