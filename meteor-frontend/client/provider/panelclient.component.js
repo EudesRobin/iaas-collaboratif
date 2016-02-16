@@ -29,6 +29,10 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 			});
 
 
+			this.ressourcesIsEmpty = () => {
+				return Ressources.find({user_id: Meteor.userId()}).fetch().length == 0;
+			}
+
 			this.insertRessource = () => {
 				this.newRessource.cpu.available = this.newRessource.cpu.total;
 				this.newRessource.ram.available = this.newRessource.ram.total;
