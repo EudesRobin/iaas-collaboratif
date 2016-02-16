@@ -30,8 +30,11 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
                 case "stop":
                 title = "Kill instance"
                 break;
-                case "test":
-                title = "Test command"
+                case "test_valid":
+                title = "Test notification"
+                break;
+                case "test_error":
+                title = "Test error notification"
                 break;
                 default:
                 title = "Unknown command"
@@ -40,12 +43,18 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             // options
             icon: 'glyphicon glyphicon-remove-sign',
             title: title+"<br>",
-            message: "error :"+err.error+" - invalid parameter : "+err.reason+"<br>"+err.details,
+            message: "Error :"+err.error+" Invalid parameter : ("+err.reason+")<br>"+err.details,
             },{
             //settings
             type: 'danger',
             newest_on_top: true,
             allow_dismiss: true,
+            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                      '</div>' ,
             });
         }
 
@@ -59,8 +68,11 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
                 case "stop":
                 title = "Kill instance"
                 break;
-                case "test":
-                title = "Test command"
+                case "test_valid":
+                title = "Test valid notification"
+                break;
+                case "test_error":
+                title = "Test error notification"
                 break;
                 default:
                 title = "Unknown command"
@@ -75,6 +87,12 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             type: 'success',
             newest_on_top: true,
             allow_dismiss: true,
+            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                        '<span data-notify="icon"></span> ' +
+                        '<span data-notify="title">{1}</span> ' +
+                        '<span data-notify="message">{2}</span>' +
+                      '</div>' ,
             });
         }
     });
