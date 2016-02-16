@@ -5,14 +5,15 @@
 	</div>
 
 	<div ng-if="isLoggedIn">
-		<p>
+		<div class="container">
 			You can change your email here:<br>
 			<form name="mailForm">
-				<input type="email" name="email" ng-model="profile.currentUser.emails[0].address" required/>
-				<span style="color:red" ng-show="mailForm.email.$dirty && mailForm.email.$invalid">
-				</span>
-				<button ng-click="profile.save()" class="btn btn-primary" ng-disabled="mailForm.$invalid">Save</button>
+				<div class="row">
+						<input type="email" name="email"  class="col-xs-3" ng-model="profile.currentUser.emails[0].address" required />
+						<span style="color:red" ng-show="mailForm.email.$dirty && mailForm.email.$invalid"></span>
+						<button ng-click="profile.save()" class="btn btn-primary btn-xs" style="margin-left:10px;" ng-disabled="mailForm.$invalid">Save</button>
+				</div>
 			</form>
-		</p>
+		</div>
 	</div>
 </div>
