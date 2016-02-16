@@ -16,13 +16,15 @@ Schemas.Ressources = new SimpleSchema({
 		type: Number, // in Gb
 	},
 	storage :{
-		type: Number
+		type: Number, // in Gb
 	},
 	bandwidth:{
-		type: Number,
+		type: Number, // in Gbit/s
 	},
-	dns:{
-		type:String,
+	dns : { 
+		type: String,
+		optional: true,
+		regEx: SimpleSchema.RegEx.Domain
 	},
 	elapse_time : {   // in seconds
 		type: Number, 
