@@ -6,8 +6,8 @@ Ressources = new Mongo.Collection("Ressources", {
 Schemas.Ressources = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	user_id : {
-		type: Meteor.Collection.ObjectID,
-	 	index: 1,
+		type: String,
+		regEx : SimpleSchema.RegEx.Id
 	},
 	cpu : {
 		type: Number, // in GHz
@@ -28,6 +28,10 @@ Schemas.Ressources = new SimpleSchema({
 	},
 	elapse_time : {   // in seconds
 		type: Number, 
+		optional: true	
+	},
+	usable : {
+		type: Boolean,
 		optional: true	
 	},
 });

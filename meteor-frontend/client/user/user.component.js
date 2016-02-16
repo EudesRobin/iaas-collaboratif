@@ -12,9 +12,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				users: () => {
 					return Meteor.users.find({});
 				},
-				partiesCount: () => {
-					return Counts.get('numberOfParties');
-				},
 				isLoggedIn: () => {
 					return Meteor.userId() !== null;
 				},
@@ -27,7 +24,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			});
 
 			this.save = () => {
-				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber)
+				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
 			};
 		}
 	}

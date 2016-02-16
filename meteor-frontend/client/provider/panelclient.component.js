@@ -13,9 +13,6 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				users: () => {
 					return Meteor.users.find({});
 				},
-				partiesCount: () => {
-					return Counts.get('numberOfParties');
-				},
 				isLoggedIn: () => {
 					return Meteor.userId() !== null;
 				},
@@ -24,15 +21,24 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				},
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
+				},
+				ressources: () => {
+					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
+					return Ressources.find({user_id: Meteor.userId()})
 				}
 			});
 
-			this.save = () => {
-				this.currentUser.getProvider().setFields(this.currentUser.provider)
+
+			this.insertRessource = () => {
+				this.currentUser.getProvider().addRessource(this.newRessource);
 			};
 
-			this.getRowClass = () => {
-				return "success";
+			this.save = () => {
+				this.currentUser.getProvider().setFields(this.currentUser.provider);
+			};
+
+			this.getRowClass = (usable) => {
+				return usable ? "success" : "danger";
 			}
 
 			this.SaveProviderRessources=()=>{
