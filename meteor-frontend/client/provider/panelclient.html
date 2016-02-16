@@ -7,34 +7,17 @@
 	<div ng-if="isLoggedIn">
 		<p>
 			Please provide the name associated to your public IP (DNS):<br>
+			<div class="container">
 			<form name="dnsForm">
-				<input type="text" name="dns" ng-model="provider.currentUser.provider.dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
+				<div class="row">
+				<input type="text" class="col-xs-3" name="dns" ng-model="provider.currentUser.provider.dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
 				<span style="color:red" ng-show="dnsForm.dns.$dirty && dnsForm.dns.$invalid">
 				</span>
-				<button ng-click="provider.save()" class="btn btn-primary" ng-disabled="dnsForm.$invalid">Save</button>
+				<button ng-click="provider.save()" class="btn btn-primary btn-xs" style="margin-left:10px;" ng-disabled="dnsForm.$invalid">Save</button>
+				</div>
 			</form>
-
+			</div>
 		</p>
-		<tr align="right">
-			<button type="button" class="btn btn-primary" ng-click="provider.SaveProviderRessources" >Save</button>
-		</tr>
-		<table align="center" border="2" title="Provider ressources">
-			<tr>
-				<td>CPU </td><td><input type="text" name="CPU" ng-model="provider.currentUser.Ressources.CPU" required/> Ghz</td>
-			</tr>
-			<tr>
-				<td>Memory </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Memory" required/> Gb</td>
-			</tr>
-			<tr>
-				<td>Storage </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Storage" required/> Gb</td>
-			</tr>
-			<tr>
-				<td>Bandwidth </td><td><input type="text" name="Bandwidth" ng-model="provider.currentUser.Ressources.Bandwidth" required/> Mbps</td>
-			</tr>
-			<!--<tr>-->
-			<!--<td>Elapse_time </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Elapse_time" required/></td>-->
-			<!--</tr>-->
-		</table>
 
 		<table class="table">
 			<thead>
@@ -81,7 +64,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">RAM:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.memory" name="ram" required/> Gb
+					<input type="number" ng-model="provider.newRessource.memory" name="ram" required/> GB
 					<span style="color:red" ng-show="newMachineForm.ram.$dirty && newMachineForm.ram.$invalid">
 					</span>
 				</div>
@@ -89,7 +72,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">Storage:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.storage" name="storage" required/> Gb
+					<input type="number" ng-model="provider.newRessource.storage" name="storage" required/> GB
 					<span style="color:red" ng-show="newMachineForm.storage.$dirty && newMachineForm.storage.$invalid">
 					</span>
 				</div>
@@ -97,7 +80,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">Bandwidth:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.bandwidth" name="bandwidth" required/> Mbps
+					<input type="number" ng-model="provider.newRessource.bandwidth" name="bandwidth" required/> MBps
 					<span style="color:red" ng-show="newMachineForm.bandwidth.$dirty && newMachineForm.bandwidth.$invalid">
 					</span>
 				</div>
@@ -126,5 +109,28 @@
 		<!--<tr>-->
 		<!--<td><button class="saveItem">save</button><button class="cancelItem">Cancel</button>{{#each errors}}<div>{{message}}</div>{{/each}}</td>-->
 		<!--</tr>-->
+		<!--
+
+		<tr align="right">
+			<button type="button" class="btn btn-primary" ng-click="provider.SaveProviderRessources" >Save</button>
+		</tr>
+		<table align="center" border="2" title="Provider ressources">
+			<tr>
+				<td>CPU </td><td><input type="text" name="CPU" ng-model="provider.currentUser.Ressources.CPU" required/> Ghz</td>
+			</tr>
+			<tr>
+				<td>Memory </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Memory" required/> Gb</td>
+			</tr>
+			<tr>
+				<td>Storage </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Storage" required/> Gb</td>
+			</tr>
+			<tr>
+				<td>Bandwidth </td><td><input type="text" name="Bandwidth" ng-model="provider.currentUser.Ressources.Bandwidth" required/> Mbps</td>
+			</tr>
+			<tr>
+			<td>Elapse_time </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Elapse_time" required/></td>
+			</tr>
+		</table>-->
+
 	</div>
 </div>

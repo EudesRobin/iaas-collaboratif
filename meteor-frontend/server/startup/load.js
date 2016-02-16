@@ -78,8 +78,11 @@ Meteor.startup(function () {
         }
         command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
         break;
-        case "test":
+        case "test_valid":
         command="echo "+params;
+        break;
+        case "test_error":
+        throw new Meteor.Error(500,params,"details error");
         break;
         default:
         return;
