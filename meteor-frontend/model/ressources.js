@@ -3,6 +3,16 @@ Ressources = new Mongo.Collection("Ressources", {
   transform: function (doc) { return new Ressource(doc); }
 });
 
+var resValue = new SimpleSchema({
+	available : {
+		type: Number,
+		decimal: true
+	},
+	total : {
+		type: Number,
+		decimal: true
+	},
+})
 Schemas.Ressources = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	user_id : {
@@ -10,20 +20,19 @@ Schemas.Ressources = new SimpleSchema({
 		regEx : SimpleSchema.RegEx.Id
 	},
 	cpu : {
-		type: Number, // in GHz
+		type: resValue
 	},
-	memory : {
-		type: Number, // in Gb
+	ram : {
+		type: resValue
 	},
 	storage :{
-		type: Number, // in Gb
+		type: resValue
 	},
 	bandwidth:{
-		type: Number, // in Gbit/s
+		type: resValue
 	},
 	dns : { 
 		type: String,
-		optional: true,
 		regEx: SimpleSchema.RegEx.Domain
 	},
 	elapse_time : {   // in seconds

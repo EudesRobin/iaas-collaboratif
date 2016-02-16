@@ -33,10 +33,10 @@
 			<tbody>
 				<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
 					<td>{{ressource.dns}}</td>
-					<td>{{ressource.cpu}} Ghz</td>
-					<td>{{ressource.memory}} Gb</td>
-					<td>{{ressource.storage}} Gb</td>
-					<td>{{ressource.bandwidth}} Mbps</td>
+					<td>{{ressource.cpu.total}} Ghz</td>
+					<td>{{ressource.ram.total}} Gb</td>
+					<td>{{ressource.storage.total}} Gb</td>
+					<td>{{ressource.bandwidth.total}} Mbps</td>
 					<td>Buttons</td>
 				</tr>
 			</tbody>
@@ -56,7 +56,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">CPU:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.cpu" step="0.1" name="cpu" required/> Ghz
+					<input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/> Ghz
 					<span style="color:red" ng-show="newMachineForm.cpu.$dirty && newMachineForm.cpu.$invalid">
 					</span>
 				</div>
@@ -64,7 +64,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">RAM:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.memory" name="ram" required/> GB
+					<input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/> GB
 					<span style="color:red" ng-show="newMachineForm.ram.$dirty && newMachineForm.ram.$invalid">
 					</span>
 				</div>
@@ -72,7 +72,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">Storage:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.storage" name="storage" required/> GB
+					<input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/> GB
 					<span style="color:red" ng-show="newMachineForm.storage.$dirty && newMachineForm.storage.$invalid">
 					</span>
 				</div>
@@ -80,7 +80,7 @@
 			<div class="form-group">
 				<label class="control-label col-sm-1">Bandwidth:</label>
 				<div class="col-sm-10">
-					<input type="number" ng-model="provider.newRessource.bandwidth" name="bandwidth" required/> MBps
+					<input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/> MBps
 					<span style="color:red" ng-show="newMachineForm.bandwidth.$dirty && newMachineForm.bandwidth.$invalid">
 					</span>
 				</div>

@@ -30,6 +30,10 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 
 
 			this.insertRessource = () => {
+				this.newRessource.cpu.available = this.newRessource.cpu.total;
+				this.newRessource.ram.available = this.newRessource.ram.total;
+				this.newRessource.storage.available = this.newRessource.storage.total;
+				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
 				this.currentUser.getProvider().addRessource(this.newRessource);
 			};
 

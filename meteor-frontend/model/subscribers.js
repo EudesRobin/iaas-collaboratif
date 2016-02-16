@@ -29,7 +29,7 @@ Subscriber.prototype.setFields = function(s) {
 Subscriber.prototype.allocate = function(opts) {
 	if (! opts) return null;
 	check(opts, Schemas.Machines);
-	var r = Ressource.findOne({
+	var r = Ressources.findOne({
 		cpu: 		{$gte: opts.cpu}, 
 		memory: 	{$gte: opts.memory}, 
 		storage: 	{$gte: opts.storage}, 

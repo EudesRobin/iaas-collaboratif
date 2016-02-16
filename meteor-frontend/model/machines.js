@@ -6,21 +6,29 @@
 Schemas.Machines = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	ressource_id : {
-		type: Meteor.Collection.ObjectID,
-	 	index: 1,
+		type: String,
+		regEx : SimpleSchema.RegEx.Id
 	},
-	// subscriber_id : {
-	// 	type: Meteor.Collection.ObjectID,
-	//  	index: 1,
-	//  	unique: true
-	// },
 	cpu : {
 		type: Number, // in GHz
-		defaultValue: 1.2
+		decimal: true
 	},
-	ram : {
+	memory : {
 		type: Number, // in Gb
-		defaultValue: 0.512
+		decimal: true
+	},
+	storage :{
+		type: Number, // in Gb
+		decimal: true
+	},
+	bandwidth:{
+		type: Number, // in Gbit/s
+		decimal: true
+	},
+	dns : { 
+		type: String,
+		optional: true,
+		regEx: SimpleSchema.RegEx.Domain
 	},
 	elapse_time : {   // in seconds
 		type: Number, 
