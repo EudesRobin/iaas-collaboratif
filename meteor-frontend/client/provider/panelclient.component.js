@@ -31,6 +31,10 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				this.currentUser.getProvider().setFields(this.currentUser.provider)
 			};
 
+			this.getRowClass = () => {
+				return "success";
+			}
+
 			this.SaveProviderRessources=()=>{
 				Meteor.users
 			}
