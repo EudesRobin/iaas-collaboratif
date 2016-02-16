@@ -17,6 +17,18 @@ fi
 
 
 #====================================
+#Add iaas user to sudoer group for wondershaper
+iaasPermission=$(sudo cat /etc/sudoers | grep iaas)
+if [[ "${iaasPermission}" == "iaas ALL=(ALL) NOPASSWD: /sbin/wondershaper" ]];then
+	echo "Iaas permission already set"
+else
+	echo "Allow iaas user to use wondershaper"
+	sudo bash -c 'echo "iaas ALL=(ALL) NOPASSWD: /sbin/wondershaper" | (EDITOR="tee -a" visudo)'
+fi
+#====================================
+
+
+#====================================
 # Copy public key to Dockerfile folder
 cp ./frontend.pub ./vm/frontend.pub
 #====================================
