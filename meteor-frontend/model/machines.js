@@ -1,10 +1,13 @@
 // Define a Collection
-// Machines = new Mongo.Collection("Machines", {
-//   transform: function (doc) { return new Machine(doc); }
-// });
+Machines = new Mongo.Collection("Machines", {
+  transform: function (doc) { return new Machine(doc); }
+});
 
 Schemas.Machines = new SimpleSchema({
-	// for ensuring that a ressource is associated to a provider
+	user_id : {
+		type: String,
+		regEx : SimpleSchema.RegEx.Id
+	},
 	ressource_id : {
 		type: String,
 		regEx : SimpleSchema.RegEx.Id
@@ -13,7 +16,7 @@ Schemas.Machines = new SimpleSchema({
 		type: Number, // in GHz
 		decimal: true
 	},
-	memory : {
+	ram : {
 		type: Number, // in Gb
 		decimal: true
 	},
@@ -36,28 +39,28 @@ Schemas.Machines = new SimpleSchema({
 	},
 });
 
-// Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
+Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
 
-// 	Machines.allow({
-// 		insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
-//     	update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
-//     	remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
-//     	fetch: []
-// 	})
+	Machines.allow({
+		insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    	update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
+    	remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
+    	fetch: []
+	})
 
 Machine = function (opts) {
 	_.extend(this, opts);
 }
 
 
-// // Publishing to move to independants files
-// if (Meteor.isServer) {
-//   // Only publish infos that are public or belong to the current user
-//   Meteor.publish("machines", function () {
-//     return Machines.find({ subscriber_id: this.userId });
-//   });
-// }
+// Publishing to move to independants files
+if (Meteor.isServer) {
+  // Only publish infos that are public or belong to the current user
+  Meteor.publish("machines", function () {
+    return Machines.find({ user_id: this.userId });
+  });
+}
 
-// if (Meteor.isClient) {
-// 	Meteor.subscribe("machines");
-// }
+if (Meteor.isClient) {
+	Meteor.subscribe("machines");
+}

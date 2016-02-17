@@ -43,6 +43,11 @@ Schemas.Ressources = new SimpleSchema({
 		type: Boolean,
 		optional: true	
 	},
+	machines_ids : {
+		type: [String],
+		defaultValue: [],
+		optional: true	
+	},
 });
 
 Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});

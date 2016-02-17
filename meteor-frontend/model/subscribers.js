@@ -26,15 +26,100 @@ Subscriber.prototype.setFields = function(s) {
   	});
 };
 
-Subscriber.prototype.allocate = function(opts) {
-	if (! opts) return null;
-	check(opts, Schemas.Machines);
-	var r = Ressources.findOne({
-		cpu: 		{$gte: opts.cpu}, 
-		memory: 	{$gte: opts.memory}, 
-		storage: 	{$gte: opts.storage}, 
-		bandwidth: 	{$gte: opts.bandwidth}
-	});
-	if (! r) return null;
-	
+Subscriber.prototype.allocate = function(machine) {
+	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
+		console.log("ALLOCATE FUNCTION", err, response)		
+	})
 };
+
+Subscriber.prototype.desallocate = function(machine_id) {
+	Meteor.call("desallocate", Meteor.userId(), machine_id, function(err, response){
+		console.log("DESALLOCATE FUNCTION", err, response)		
+	})
+};
+
+Meteor.methods({
+	allocate: function(userId, machine) {
+		machine = machine || {};
+		machine._id = Meteor.uuid();
+		machine.cpu = machine.cpu || 1;
+		machine.ram = machine.ram || 1;
+		machine.storage = machine.storage || 1;
+		machine.bandwidth = machine.bandwidth || 1;
+		machine.dns = machine.dns || "default.com";
+
+		var query = {
+			"cpu.available" : 		{$gte: machine.cpu			}, 
+			"ram.available" :		{$gte: machine.ram			}, 
+			"storage.available" : 	{$gte: machine.storage		}, 
+			"bandwidth.available" :	{$gte: machine.bandwidth	}
+		}
+
+		// TRANSACTION-PART 1
+		// an atomic operation in mongoDB since it applies to only one document
+		var ok = Ressources.update(query, {
+			$inc : {"cpu.available": -machine.cpu				}, 
+			$inc : {"ram.available": -machine.ram				}, 
+			$inc : {"storage.available": -machine.storage		}, 
+			$inc : {"bandwidth.available": -machine.bandwidth	},
+			$push: {"machines_ids": machine._id					},
+		}, {
+			"upsert": false,
+			"multi": false
+		});
+
+		if (ok) 
+		{
+			var myRessource = Ressources.find({machines_ids: machine._id}).fetch()
+			if (myRessource.length !== 1) return new Error("Could not allocate a machine. Something went wrong");
+			machine.user_id = userId;
+			machine.ressource_id = myRessource[0]._id;
+			
+			// TRANSACTION-PART 2
+			// this second query should be a transaction-like operation. We let it this way for now
+			Machines.insert(machine); 
+			return {error: null, machine: machine};
+		}
+		else 
+		{
+			if (! Ressources.findOne(query)) return {error: "No ressource available", machine: null};
+			else return {error: "An error occured in database ressource allocation", machine: null};
+		}
+
+	},
+
+	desallocate: function(userId, machine_id) {
+		
+		var machine = Machines.findOne({_id: machine_id, user_id: userId});
+		
+		// TRANSACTION-PART 1
+		var ok = Machines.remove({_id: machine_id, user_id: userId}, {
+			"justOne": true
+		});
+
+		if (ok) 
+		{
+			// TRANSACTION-PART 2
+			ok = Ressources.update({
+				_id: machine.ressource_id,
+				machines: machine._id 		// shouldn't be necessary
+			}, {
+				$inc : {"cpu.available": +machine.cpu				}, 
+				$inc : {"ram.available": +machine.ram				}, 
+				$inc : {"storage.available": +machine.storage		}, 
+				$inc : {"bandwidth.available": +machine.bandwidth	},
+				$pull: {"machines_ids": machine._id					},
+			}, {
+				"upsert": false,
+				"multi": false
+			});
+
+			return {error: ok? "Failed to update Ressources database" : null};
+		}
+		else 
+		{
+			return {error: "Failed to update Machine database"};
+		}
+
+	}
+})

@@ -46,12 +46,12 @@ Schemas.Users = new SimpleSchema({
   },
   provider : {
     type: Schemas.Providers,
-    defaultValue: null,
+    defaultValue: {},
     optional: true,
   },
   subscriber : {
     type: Schemas.Subscribers,
-    defaultValue: null,
+    defaultValue: {},
     optional: true,
   }
 });
