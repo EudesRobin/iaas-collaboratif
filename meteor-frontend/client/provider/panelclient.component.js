@@ -28,7 +28,6 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				}
 			});
 
-
 			this.ressourcesIsEmpty = () => {
 				return Ressources.find({user_id: Meteor.userId()}).fetch().length == 0;
 			}
@@ -40,6 +39,26 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
 				this.currentUser.getProvider().addRessource(this.newRessource);
 				this.newRessource ={};
+			};
+
+			this.startRessource = (ressource) => {
+				ressource.usable=true;
+				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
+					if (error) console.error('Oops, unable to update the user...');
+					else console.log('Done!');
+				});
+			};
+
+			this.stopRessource = (ressource) => {
+				ressource.usable=false;
+				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
+					if (error) console.error('Oops, unable to update the user...');
+					else console.log('Done!');
+				});
+			};
+
+			this.deleteRessource = (ressource) => {
+				Ressources.remove({_id: ressource._id});
 			};
 
 			this.save = () => {

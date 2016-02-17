@@ -1,6 +1,7 @@
 Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
+		optional: true
 	},
 	machines : {
 		type: [Schemas.Machines],

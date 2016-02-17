@@ -1,13 +1,13 @@
 <style type="text/css">
-#details {
-	border-radius: 10px;
-	border: 1px;
-	border-style: solid;
-	border-color: #D0D0D0  ;
-}
-#details .table tbody tr:hover td, .table tbody tr:hover th {
-  background-color: #c7c7c5;
-}
+	#details {
+		border-radius: 10px;
+		border: 1px;
+		border-style: solid;
+		border-color: #D0D0D0  ;
+	}
+	#details .table tbody tr:hover td, .table tbody tr:hover th {
+		background-color: #c7c7c5;
+	}
 </style>
 <div class="container-fluid">
 
@@ -18,82 +18,83 @@
 	<div ng-if="isLoggedIn">
 		<div class="container">
 			<div class="row">
-			<div class="col-md-4 col-md-offset-3" id="details">
-			<br><h3>Insert new machine</h3>
+				<div class="col-md-4 col-md-offset-3" id="details">
+					<br><h3>Insert new machine</h3>
 
-			<form name="newMachineForm" class="form-horizontal">
-				<table class="table table-hover">
-				<tr><div class="form-group">
-					<td><label class="control-label col-sm-1">DNS</label></td>
-					<div class="col-sm-10">
-						<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
-					<span style="color:red" ng-show="newMachineForm.dns.$dirty && newMachineForm.dns.$invalid">
-					</span></td>
-					</div>
-				</div></tr>
-				<tr><div class="form-group">
-					<td><label class="control-label col-sm-1">CPU</label></td>
-					<div class="col-sm-10">
-						<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/> Ghz
-					<span style="color:red" ng-show="newMachineForm.cpu.$dirty && newMachineForm.cpu.$invalid">
-					</span></td>
-					</div>
-				</div></tr>
-				<tr><div class="form-group">
-					<td><label class="control-label col-sm-1">RAM</label></td>
-					<div class="col-sm-10">
-						<td><input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/> GB
-					<span style="color:red" ng-show="newMachineForm.ram.$dirty && newMachineForm.ram.$invalid">
-					</span></td>
-					</div>
-				</div></tr>
-				<tr><div class="form-group">
-					<td><label class="control-label col-sm-1">Storage</label></td>
-					<div class="col-sm-10">
-						<td><input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/> GB
-					<span style="color:red" ng-show="newMachineForm.storage.$dirty && newMachineForm.storage.$invalid">
-					</span></td>
-					</div>
-				</div></tr>
-				<tr><div class="form-group">
-					<td><label class="control-label col-sm-1">Bandwidth</label></td>
-					<div class="col-sm-10">
-						<td><input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/> MBps
-					<span style="color:red" ng-show="newMachineForm.bandwidth.$dirty && newMachineForm.bandwidth.$invalid">
-					</span></td>
-					</div>
-				</div></tr>
-				</table>
-				<p><button ng-click="provider.insertRessource()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid" style="margin: 0 auto;display: block;">Save</button></p>
-			
-			</form>
-		</div>
-		</div>
+					<form name="newMachineForm" class="form-horizontal">
+						<table class="table table-hover">
+							<tr><div class="form-group">
+								<td><label class="control-label col-sm-1">DNS</label></td>
+								<div class="col-sm-10">
+									<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
+									</td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
+								<td><label class="control-label col-sm-1">CPU</label></td>
+								<div class="col-sm-10">
+									<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/> Ghz
+									</td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
+								<td><label class="control-label col-sm-1">RAM</label></td>
+								<div class="col-sm-10">
+									<td><input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/> GB
+									</td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
+								<td><label class="control-label col-sm-1">Storage</label></td>
+								<div class="col-sm-10">
+									<td><input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/> GB
+									</td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
+								<td><label class="control-label col-sm-1">Bandwidth</label></td>
+								<div class="col-sm-10">
+									<td><input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/> MBps
+									</td>
+								</div>
+							</div></tr>
+						</table>
+						<p><button ng-click="provider.insertRessource()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid" style="margin: 0 auto;display: block;">Save</button></p>
+
+					</form>
+				</div>
+			</div>
 		</div>
 
 		<div ng-hide="provider.ressourcesIsEmpty()">
-		<table class="table">
-			<thead>
-				<tr>
-					<th>DNS</th>
-					<th>CPU</th>
-					<th>RAM</th>
-					<th>Storage</th>
-					<th>Bandwidth</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
-					<td>{{ressource.dns}}</td>
-					<td>{{ressource.cpu.total}} Ghz</td>
-					<td>{{ressource.ram.total}} Gb</td>
-					<td>{{ressource.storage.total}} Gb</td>
-					<td>{{ressource.bandwidth.total}} Mbps</td>
-					<td>Buttons</td>
-				</tr>
-			</tbody>
-		</table>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>DNS</th>
+						<th>CPU</th>
+						<th>RAM</th>
+						<th>Storage</th>
+						<th>Bandwidth</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
+						<td style="vertical-align:middle">{{ressource.dns}}</td>
+						<td style="vertical-align:middle">{{ressource.cpu.total}} Ghz</td>
+						<td style="vertical-align:middle">{{ressource.ram.total}} Gb</td>
+						<td style="vertical-align:middle">{{ressource.storage.total}} Gb</td>
+						<td style="vertical-align:middle">{{ressource.bandwidth.total}} Mbps</td>
+						<td>
+							<div class="btn-group inline">
+								<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
+								<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
+								<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;">Delete</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 
 
