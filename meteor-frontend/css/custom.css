@@ -1,0 +1,9 @@
+#details {
+	border-radius: 10px;
+	border: 1px;
+	border-style: solid;
+	border-color: #D0D0D0  ;
+}
+#details .table tbody tr:hover td, .table tbody tr:hover th {
+  background-color: #c7c7c5;
+}
