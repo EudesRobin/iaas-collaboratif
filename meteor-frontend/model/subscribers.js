@@ -3,11 +3,11 @@ Schemas.Subscribers = new SimpleSchema({
 		type: String,
 		optional: true
 	},
-	machines : {
-		type: [Schemas.Machines],
-		optional: true,
-		defaultValue: []
-	},
+	// machines : {
+	// 	type: [Schemas.Machines],
+	// 	optional: true,
+	// 	defaultValue: []
+	// },
 });
 
 Subscriber = function (opts) {
