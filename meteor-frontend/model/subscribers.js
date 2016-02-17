@@ -2,7 +2,7 @@ Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
 		optional: true
-	},
+	}
 	// machines : {
 	// 	type: [Schemas.Machines],
 	// 	optional: true,
@@ -25,6 +25,10 @@ Subscriber.prototype.setFields = function(s) {
   		if (error) console.error('Oops, unable to update the user...');
   		else console.log('Done!');
   	});
+};
+
+Subscriber.prototype.getMachines = function() {
+	return Machines.find()
 };
 
 Subscriber.prototype.allocate = function(machine) {
@@ -53,16 +57,17 @@ Meteor.methods({
 			"cpu.available" : 		{$gte: machine.cpu			}, 
 			"ram.available" :		{$gte: machine.ram			}, 
 			"storage.available" : 	{$gte: machine.storage		}, 
-			"bandwidth.available" :	{$gte: machine.bandwidth	}
+			"bandwidth.available" :	{$gte: machine.bandwidth	},
+			"usable" : true
 		}
 
 		// TRANSACTION-PART 1
 		// an atomic operation in mongoDB since it applies to only one document
 		var ok = Ressources.update(query, {
-			$inc : {"cpu.available": -machine.cpu				}, 
-			$inc : {"ram.available": -machine.ram				}, 
-			$inc : {"storage.available": -machine.storage		}, 
-			$inc : {"bandwidth.available": -machine.bandwidth	},
+			$inc : {"cpu.available": -machine.cpu				, 
+			 		"ram.available": -machine.ram				, 
+			 		"storage.available": -machine.storage		, 
+			 		"bandwidth.available": -machine.bandwidth	},
 			$push: {"machines_ids": machine._id					},
 		}, {
 			"upsert": false,
@@ -75,6 +80,8 @@ Meteor.methods({
 			if (myRessource.length !== 1) return new Error("Could not allocate a machine. Something went wrong");
 			machine.user_id = userId;
 			machine.ressource_id = myRessource[0]._id;
+			machine.dns = myRessource[0].dns;
+			machine.state = "initial";
 			
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
@@ -105,10 +112,10 @@ Meteor.methods({
 				_id: machine.ressource_id,
 				machines: machine._id 		// shouldn't be necessary
 			}, {
-				$inc : {"cpu.available": +machine.cpu				}, 
-				$inc : {"ram.available": +machine.ram				}, 
-				$inc : {"storage.available": +machine.storage		}, 
-				$inc : {"bandwidth.available": +machine.bandwidth	},
+				$inc : {"cpu.available": +machine.cpu				, 
+						"ram.available": +machine.ram				, 
+						"storage.available": +machine.storage		, 
+						"bandwidth.available": +machine.bandwidth	},
 				$pull: {"machines_ids": machine._id					},
 			}, {
 				"upsert": false,

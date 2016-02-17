@@ -39,6 +39,10 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
 		}
 	});
 
+ //    $scope.$on("myEvent", function (event, args) {
+ //        exec_cmd("test_valid",args.details)
+ // });
+
   $scope.exec_cmd = function (cmd,param) {
     Meteor.call('exec_cmd',cmd,param, function (err, response) {
         if(err){

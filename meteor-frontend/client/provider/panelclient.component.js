@@ -25,7 +25,7 @@ angular.module('iaas-collaboratif')
 				},
 				ressources: () => {
 					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
-					return Ressources.find({user_id: Meteor.userId()})
+					return Ressources.find({user_id: Meteor.userId()});
 				}
 			});
 
@@ -47,15 +47,20 @@ angular.module('iaas-collaboratif')
 			this.startRessource = (ressource) => {
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the user...');
+					if (error) console.error('Oops, unable to update the ressource...');
 					else console.log('Done!');
 				});
 			};
 
 			this.stopRessource = (ressource) => {
 				ressource.usable=false;
+				// for(int i=0;i<ressource.machines_id.length;i++){
+				// 	Machines.update({_id: ressource.machines_id[i]}, {$set:{state:'down'}}, (error) => {
+				// 	if (error) console.error('Oops, unable to update the machine...');
+				// 	else console.log('Done!');
+				// }
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the user...');
+					if (error) console.error('Oops, unable to update the ressource...');
 					else console.log('Done!');
 				});
 			};
