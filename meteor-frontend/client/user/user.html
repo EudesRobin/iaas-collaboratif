@@ -69,7 +69,7 @@
 						<th>RAM</th>
 						<th>Storage</th>
 						<th>Bandwidth</th>
-						<!--<th>Actions</th>-->
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -80,11 +80,11 @@
 						<td style="vertical-align:middle">{{machine.storage}} Gb</td>
 						<td style="vertical-align:middle">{{machine.bandwidth}} Mbps</td>
 						<td>
-							<!-- <div class="btn-group inline">
-								<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
-								<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
-								<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;">Remove</button>
-							</div> -->
+							<div class="btn-group inline">
+								<button ng-click="user.startMachine(machine)" class="btn btn-success centered" style="margin: 0 auto;display: block;">Start</button>
+								<button ng-click="user.stopMachine(machine)" class="btn btn-warning centered" style="margin: 0 auto;display: block;">Stop</button>
+								<button ng-click="user.deleteMachine(machine)" class="btn btn-danger centered" style="margin: 0 auto;display: block;">Remove</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>

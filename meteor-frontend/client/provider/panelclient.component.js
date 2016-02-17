@@ -44,7 +44,7 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 			this.startRessource = (ressource) => {
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the user...');
+					if (error) console.error('Oops, unable to update the ressource...');
 					else console.log('Done!');
 				});
 			};
@@ -52,7 +52,7 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 			this.stopRessource = (ressource) => {
 				ressource.usable=false;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the user...');
+					if (error) console.error('Oops, unable to update the ressource...');
 					else console.log('Done!');
 				});
 			};

@@ -81,6 +81,7 @@ Meteor.methods({
 			machine.user_id = userId;
 			machine.ressource_id = myRessource[0]._id;
 			machine.dns = myRessource[0].dns;
+			machine.state = "initial";
 			
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
