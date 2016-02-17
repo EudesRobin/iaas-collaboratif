@@ -4,57 +4,65 @@
 		<br>Please connect to go further.
 	</div>
 
+	<!-- btn access machine form -->
 	<div ng-if="isLoggedIn">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-4 col-md-offset-3" id="details">
-					<br><h3>Insert new machine</h3>
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Insert new machine</button>
+			</div>
+		</div>
 
-					<form name="newMachineForm" class="form-horizontal">
-						<table class="table table-hover">
-							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">DNS</label></td>
-								<div class="col-sm-10">
-									<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
-									</td>
-								</div>
-							</div></tr>
-							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">CPU</label></td>
-								<div class="col-sm-10">
-									<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/> Ghz
-									</td>
-								</div>
-							</div></tr>
-							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">RAM</label></td>
-								<div class="col-sm-10">
-									<td><input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/> GB
-									</td>
-								</div>
-							</div></tr>
-							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">Storage</label></td>
-								<div class="col-sm-10">
-									<td><input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/> GB
-									</td>
-								</div>
-							</div></tr>
-							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">Bandwidth</label></td>
-								<div class="col-sm-10">
-									<td><input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/> MBps
-									</td>
-								</div>
-							</div></tr>
-						</table>
-						<p><button ng-click="provider.insertRessource()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid" style="margin: 0 auto;display: block;">Save</button></p>
+		<!-- Insert machine form  -->
+		<div class="modal fade text-center" myModal id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Insert new machine</h4>
 
-					</form>
+						<div class="modal-body">
+							<div class="row">
+								<form name="newMachineForm" class="form-horizontal">
+									<table class="table table-hover">
+										<tr>
+											<td><label class="control-label">Domain name</label></td>
+											<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/></td>
+										</tr>
+										<tr>
+											<td><label class="control-label">CPU (unit: Ghz)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/></td>
+										</tr>
+										<tr>
+											<td><label class="control-label">RAM (unit: GB)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/></td>
+										</tr>
+										<tr>
+											<td><label class="control-label">Storage(unit: GB)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/></td>
+										</tr>
+										<tr>
+											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/></td>
+										</tr>
+									</table>
+
+									<div class="col-sm-offset-4 col-sm-4 text-center">
+										<div class="btn-group">
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+										</div>
+										<div class="btn-group">
+											<button ng-click="provider.insertRessource()" class="btn btn-success" ng-disabled="newMachineForm.$invalid" >Save</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
+		<!-- Table ressources provider -->
 		<div ng-hide="provider.ressourcesIsEmpty()">
 			<table class="table">
 				<thead>
@@ -71,64 +79,25 @@
 					<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
 						<td style="vertical-align:middle">{{ressource.dns}}</td>
 						<td style="vertical-align:middle">{{ressource.cpu.total}} Ghz</td>
-						<td style="vertical-align:middle">{{ressource.ram.total}} Gb</td>
-						<td style="vertical-align:middle">{{ressource.storage.total}} Gb</td>
-						<td style="vertical-align:middle">{{ressource.bandwidth.total}} Mbps</td>
+						<td style="vertical-align:middle">{{ressource.ram.total}} GB</td>
+						<td style="vertical-align:middle">{{ressource.storage.total}} GB</td>
+						<td style="vertical-align:middle">{{ressource.bandwidth.total}} MBps</td>
 						<td>
-							<div class="btn-group inline">
-								<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
-								<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
-								<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;">Delete</button>
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group">
+									<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
+								</div>
+								<div class="btn-group">
+									<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
+								</div>
+								<div class="btn-group">
+									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirmation ?">Delete</button>
+								</div>
 							</div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-
-
-		<!--<pre>Provider cpu="{{provider.currentUser.Ressources.cpu}}"</pre>-->
-		<!--<tr>-->
-		<!--<th>Memory</th>-->
-		<!--<td><input type="text" id="editItemMemory" value="{{collab_Memory}}"></td>-->
-		<!--</tr>-->
-		<!--<tr>-->
-		<!--<th>Hard Storage</th>-->
-		<!--<td><input type="text" id="editItemStorage" value="{{collab_Storage}}"></td>-->
-		<!--</tr>-->
-		<!--<tr>-->
-		<!--<th>Network</th>-->
-		<!--<td><input type="text" id="editItemNetwork" value="{{collab_Network}}"></td>-->
-		<!--</tr>-->
-		<!--<tr>-->
-		<!--<th>Last modified</th>-->
-		<!--<td><input type="text" id="editItemModifDate" value="{{collab_ModifDate}}"></td>-->
-		<!--</tr>-->
-		<!--<tr>-->
-		<!--<td><button class="saveItem">save</button><button class="cancelItem">Cancel</button>{{#each errors}}<div>{{message}}</div>{{/each}}</td>-->
-		<!--</tr>-->
-		<!--
-
-		<tr align="right">
-			<button type="button" class="btn btn-primary" ng-click="provider.SaveProviderRessources" >Save</button>
-		</tr>
-		<table align="center" border="2" title="Provider ressources">
-			<tr>
-				<td>CPU </td><td><input type="text" name="CPU" ng-model="provider.currentUser.Ressources.CPU" required/> Ghz</td>
-			</tr>
-			<tr>
-				<td>Memory </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Memory" required/> Gb</td>
-			</tr>
-			<tr>
-				<td>Storage </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Storage" required/> Gb</td>
-			</tr>
-			<tr>
-				<td>Bandwidth </td><td><input type="text" name="Bandwidth" ng-model="provider.currentUser.Ressources.Bandwidth" required/> Mbps</td>
-			</tr>
-			<tr>
-			<td>Elapse_time </td><td><input type="text" name="ram" ng-model="provider.currentUser.Ressources.Elapse_time" required/></td>
-			</tr>
-		</table>-->
-
 	</div>
 </div>

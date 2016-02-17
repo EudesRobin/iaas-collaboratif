@@ -4,7 +4,27 @@ angular.module('iaas-collaboratif', [
 	'accounts.ui',
 	'angularUtils.directives.dirPagination',
 	'ui.bootstrap'
-	]);
+	])
+.directive('ngConfirmClick', [
+  function(){
+    return {
+      priority: -1,
+      restrict: 'A',
+      link: function(scope, element, attrs){
+        element.bind('click', function(e){
+          var message = attrs.ngConfirmClick;
+          if(message && !confirm(message)){
+            e.stopImmediatePropagation();
+            e.preventDefault();
+          }
+        });
+      }
+    }
+  }
+]);
+
+
+
 
 angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($scope){
 	$scope.helpers({
