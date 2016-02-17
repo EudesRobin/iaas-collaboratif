@@ -51,6 +51,11 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 
 			this.stopRessource = (ressource) => {
 				ressource.usable=false;
+				// for(int i=0;i<ressource.machines_id.length;i++){
+				// 	Machines.update({_id: ressource.machines_id[i]}, {$set:{state:'down'}}, (error) => {
+				// 	if (error) console.error('Oops, unable to update the machine...');
+				// 	else console.log('Done!');
+				// }
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) console.error('Oops, unable to update the ressource...');
 					else console.log('Done!');
