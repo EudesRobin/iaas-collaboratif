@@ -13,7 +13,6 @@
 						<h3 style="text-align:center;">Your profile</h3>
 						<p>
 							<input type="email" name="email"  class="col-xs-10" ng-model="profile.currentUser.emails[0].address" required />
-							<span style="color:red" ng-show="mailForm.email.$dirty && mailForm.email.$invalid"></span>
 							<button ng-click="profile.save()" class="btn btn-primary btn-xs" style="margin-left:10px;" ng-disabled="mailForm.$invalid">Save</button>
 						</p>
 					</div>
