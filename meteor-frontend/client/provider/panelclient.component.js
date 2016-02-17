@@ -1,5 +1,6 @@
 
-angular.module('iaas-collaboratif').directive('provider', function () {
+angular.module('iaas-collaboratif')
+.directive('provider', function () {
 	return {
 		restrict: 'E',
 		templateUrl: 'client/provider/panelclient.html',
@@ -39,6 +40,8 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
 				this.currentUser.getProvider().addRessource(this.newRessource);
 				this.newRessource ={};
+				$(".modal-backdrop").hide();
+				$(".modal").hide();
 			};
 
 			this.startRessource = (ressource) => {

@@ -5,58 +5,78 @@
 	</div>
 
 	<div ng-if="isLoggedIn">
-		Please paste your public ssh key :<br>
-		<form name="keyForm">
-			<textarea name="key" ng-model="user.currentUser.subscriber.sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)" cols="70" rows="6" required>Public SSH key</textarea>
-			<br><button ng-click="user.save()" class="btn btn-primary" ng-disabled="keyForm.$invalid">Save</button>
-		</form>
-		<button type="button" class="btn btn-primary" ng-click="exec_cmd('create','ubuntussh 1 test 512M 1 1G')">Create test</button>
-		<button type="button" class="btn btn-danger" ng-click="exec_cmd('stop','test0')">Stop test</button>
-		<button type="button" class="btn btn-success" ng-click="exec_cmd('test_valid','Valid param')">test successful notif</button>
-		<button type="button" class="btn btn-warning" ng-click="exec_cmd('test_error','Error param')">test error notif</button>
-
-
-
 		<div class="container">
 			<div class="row">
-				<div class="col-md-4 col-md-offset-3" id="details">
+				<div class="col-md-6">
+					<div class="details text-center" style="margin-bottom:30px;" >
+					<h3>Your SSH Public key</h3>
+					<form name="keyForm">
+						<textarea name="key" ng-model="user.currentUser.subscriber.sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)" cols="70" rows="6" required>Public SSH key</textarea>
+						<br>
+						<p>
+							<button ng-click="user.save()" class="btn btn-primary" ng-disabled="keyForm.$invalid">Save</button>
+						</p>
+					</form>
+				</div>
+					<div class="details text-center" >
+					<h3>Actions [TESTING]</h3>
+					<p><div class="btn-toolbar" role="toolbar">
+						<div class="btn-group">
+							<button type="button" class="btn btn-primary" ng-click="exec_cmd('create','ubuntussh 1 test 512M 1 1G')">Create test</button>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-danger" ng-click="exec_cmd('stop','test0')">Stop test</button>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-success" ng-click="exec_cmd('test_valid','Valid param')">test successful notif</button>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-warning" ng-click="exec_cmd('test_error','Error param')">test error notif</button>
+						</div>
+					</div></p>
+				</div>
+				</div>
+				<div class="col-md-5 details text-center" style="margin-left:30px;" >
 					<br><h3>Ask for a new machine</h3>
 
 					<form name="newMachineForm" class="form-horizontal">
 						<table class="table table-hover">
 							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">CPU</label></td>
+								<td><label class="control-label">CPU (unit: Ghz)</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.cpu" step="0.1" name="cpu" required/> Ghz
+									<td><input type="number" ng-model="user.newMachine.cpu" step="0.1" name="cpu" required/>
 									</td>
 								</div>
 							</div></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">RAM</label></td>
+								<td><label class="control-label">RAM (unit: GB)</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.ram" name="ram" required/> GB
+									<td><input type="number" ng-model="user.newMachine.ram" name="ram" required/>
 									</td>
 								</div>
 							</div></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">Storage</label></td>
+								<td><label class="control-label">Storage (unit: GB)</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.storage" name="storage" required/> GB
+									<td><input type="number" ng-model="user.newMachine.storage" name="storage" required/>
 									</td>
 								</div>
 							</div></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label col-sm-1">Bandwidth</label></td>
+								<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.bandwidth" name="bandwidth" required/> MBps
+									<td><input type="number" ng-model="user.newMachine.bandwidth" name="bandwidth" required/>
 									</td>
 								</div>
 							</div></tr>
 						</table>
-						<p><button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || keyForm.$invalid" style="margin: 0 auto;display: block;">Register</button></p>
+						<p>
+							<div class="alert alert-info">You must have save your public ssh key first</div><br>
+							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || keyForm.$invalid" style="margin: 0 auto;display: block;">Register</button></p>
 
 					</form>
 				</div>
+
 			</div>
 		</div>
 
