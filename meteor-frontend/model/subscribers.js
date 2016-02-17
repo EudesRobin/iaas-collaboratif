@@ -2,7 +2,7 @@ Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
 		optional: true
-	},
+	}
 	// machines : {
 	// 	type: [Schemas.Machines],
 	// 	optional: true,
@@ -53,7 +53,8 @@ Meteor.methods({
 			"cpu.available" : 		{$gte: machine.cpu			}, 
 			"ram.available" :		{$gte: machine.ram			}, 
 			"storage.available" : 	{$gte: machine.storage		}, 
-			"bandwidth.available" :	{$gte: machine.bandwidth	}
+			"bandwidth.available" :	{$gte: machine.bandwidth	},
+			"usable" : true
 		}
 
 		// TRANSACTION-PART 1

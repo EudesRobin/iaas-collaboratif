@@ -23,13 +23,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			});
 
-			this.insertMachine = () => {
-				
-			}
-
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
 			};
+
+			this.insertMachine = () => {
+				this.save();
+				this.currentUser.getSubscriber().allocate(this.newMachine);
+			}
 		}
 	}
 });
