@@ -33,19 +33,19 @@ existingStopScript=$(ls /home/iaas/|grep stop.sh|wc -l)
 existingWatchDog=$(ls /home/iaas/|grep watchdog.sh|wc -l)
 existingBandwidth=$(ls /home/iaas/|grep limitBandwidth.sh.sh|wc -l)
 if [[ (! $existingInitializeScript == 1) ]];then
-	sudo cp -pr ./initializeCore.sh /home/iaas/
+	sudo cp -pr ./containerManagment/initializeCore.sh /home/iaas/
 fi
 if [[ (! $existingStartScript == 1) ]];then
-	sudo cp -pr ./start.sh /home/iaas/
+	sudo cp -pr ./containerManagment/start.sh /home/iaas/
 fi
 if [[ (! $existingStopScript == 1) ]];then
-	sudo cp -pr ./stop.sh /home/iaas/
+	sudo cp -pr ./containerManagment/stop.sh /home/iaas/
 fi
 if [[ (! $existingWatchDog == 1) ]];then
-	sudo cp -pr ./watchdog.sh /home/iaas/
+	sudo cp -pr ./containerManagment/watchdog.sh /home/iaas/
 fi
 if [[ (! $existingBandwidth == 1) ]];then
-	sudo cp -pr ./limitBandwidth.sh /home/iaas/
+	sudo cp -pr ./containerManagment/limitBandwidth.sh /home/iaas/
 fi
 #===================================
 
