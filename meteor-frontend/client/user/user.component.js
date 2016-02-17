@@ -22,7 +22,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					return Meteor.users.findOne(Meteor.userId());
 				},
 				machines: () => {
-					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
 					return Machines.find({user_id: Meteor.userId()});
 				}
 			});
@@ -43,7 +42,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.insertMachine = () => {
 				this.save();
 				this.currentUser.getSubscriber().allocate(this.newMachine);
-			}
+			};
+			this.machinesIsEmpty= () =>{
+				return Machines.find({user_id: Meteor.userId()}).fetch().length==0;
+			};
 		}
 	}
 });
