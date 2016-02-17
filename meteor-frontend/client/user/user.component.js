@@ -20,6 +20,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				},
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
+				},
+				usingResources: ()=>{
+					return Machines.find({user_id: Meteor.userId()});
 				}
 			});
 
@@ -30,7 +33,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.insertMachine = () => {
 				this.save();
 				this.currentUser.getSubscriber().allocate(this.newMachine);
-			}
+			};
+			this.machinesIsEmpty= () =>{
+				return Machines.find({user_id: Meteor.userId()}).fetch().length==0;
+			};
 		}
 	}
 });

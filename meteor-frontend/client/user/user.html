@@ -59,7 +59,32 @@
 				</div>
 			</div>
 		</div>
-
+		<div ng-hide="user.machinesIsEmpty()">
+			<table class="table">
+				<thead>
+				<tr>
+					<th>ressourceID</th>
+					<th>DNS</th>
+					<th>CPU</th>
+					<th>RAM</th>
+					<th>Storage</th>
+					<th>Bandwidth</th>
+					<!--<th>Actions</th>-->
+				</tr>
+				</thead>
+				<tbody>
+				<tr ng-repeat="usingResource in user.usingResources" >
+					<td>{{usingResource.ressource_id}}</td>
+					<td>{{usingResource.dns}}</td>
+					<td>{{usingResource.cpu}} Ghz</td>
+					<td>{{usingResource.ram}} Gb</td>
+					<td>{{usingResource.storage}} Gb</td>
+					<td>{{usingResource.bandwidth}} Mbps</td>
+					<!--<td>Buttons</td>-->
+				</tr>
+				</tbody>
+			</table>
+		</div>
 
 	</div>
 </div>
