@@ -20,8 +20,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				},
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
+				},
+				machines: () => {
+					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
+					return Machines.find({user_id: Meteor.userId()});
 				}
 			});
+
+			this.machinesIsEmpty = () => {
+				console.log("Length ", Ressources.find({user_id: Meteor.userId()}).fetch().length);
+				return Machines.find({user_id: Meteor.userId()}).fetch().length == 0;
+			}
+
+			this.getRowClass = (machine) => {
+				return machine ? "success" : "danger";
+			}
 
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);

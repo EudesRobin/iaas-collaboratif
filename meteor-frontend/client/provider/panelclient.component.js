@@ -24,7 +24,7 @@ angular.module('iaas-collaboratif').directive('provider', function () {
 				},
 				ressources: () => {
 					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
-					return Ressources.find({user_id: Meteor.userId()})
+					return Ressources.find({user_id: Meteor.userId()});
 				}
 			});
 
