@@ -26,6 +26,10 @@ Subscriber.prototype.setFields = function(s) {
   	});
 };
 
+Subscriber.prototype.getMachines = function() {
+	return Machines.find()
+};
+
 Subscriber.prototype.allocate = function(machine) {
 	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
 		console.log("ALLOCATE FUNCTION", err, response)		
@@ -58,10 +62,10 @@ Meteor.methods({
 		// TRANSACTION-PART 1
 		// an atomic operation in mongoDB since it applies to only one document
 		var ok = Ressources.update(query, {
-			$inc : {"cpu.available": -machine.cpu				}, 
-			$inc : {"ram.available": -machine.ram				}, 
-			$inc : {"storage.available": -machine.storage		}, 
-			$inc : {"bandwidth.available": -machine.bandwidth	},
+			$inc : {"cpu.available": -machine.cpu				, 
+			 		"ram.available": -machine.ram				, 
+			 		"storage.available": -machine.storage		, 
+			 		"bandwidth.available": -machine.bandwidth	},
 			$push: {"machines_ids": machine._id					},
 		}, {
 			"upsert": false,
@@ -104,10 +108,10 @@ Meteor.methods({
 				_id: machine.ressource_id,
 				machines: machine._id 		// shouldn't be necessary
 			}, {
-				$inc : {"cpu.available": +machine.cpu				}, 
-				$inc : {"ram.available": +machine.ram				}, 
-				$inc : {"storage.available": +machine.storage		}, 
-				$inc : {"bandwidth.available": +machine.bandwidth	},
+				$inc : {"cpu.available": +machine.cpu				, 
+						"ram.available": +machine.ram				, 
+						"storage.available": +machine.storage		, 
+						"bandwidth.available": +machine.bandwidth	},
 				$pull: {"machines_ids": machine._id					},
 			}, {
 				"upsert": false,
