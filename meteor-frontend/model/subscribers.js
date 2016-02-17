@@ -2,11 +2,11 @@ Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
 	},
-	machines : {
-		type: [Schemas.Machines],
-		optional: true,
-		defaultValue: []
-	},
+	// machines : {
+	// 	type: [Schemas.Machines],
+	// 	optional: true,
+	// 	defaultValue: []
+	// },
 });
 
 Subscriber = function (opts) {
