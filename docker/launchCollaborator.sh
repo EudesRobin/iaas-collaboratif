@@ -29,8 +29,11 @@ fi
 
 
 #====================================
-# Copy public key to Dockerfile folder
-cp ./frontend.pub ./vm/frontend.pub
+# Copy public key to Dockerfile folder if not already existing
+isPublicKeyAlreadySet=$(ls ./vm/|grep "frontend.pub"|wc -l)
+if [[ $isPublicKeyAlreadySet == 0 ]];then
+	cp ./frontend.pub ./vm/frontend.pub
+fi
 #====================================
 
 

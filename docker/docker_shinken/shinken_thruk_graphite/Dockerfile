@@ -47,7 +47,7 @@ RUN         pip install Twisted==11.1.0 && \
                 pip install gunicorn==19.1.1
 
 # Install and configure thruk
-RUN         gpg --keyserver keys.gnupg.net --recv-keys F8C1CA08A57B9ED7 && \
+RUN         gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys F8C1CA08A57B9ED7 && \
                 gpg --armor --export F8C1CA08A57B9ED7 | apt-key add - && \
                 echo 'deb http://labs.consol.de/repo/stable/debian wheezy main' >> /etc/apt/sources.list && \
                 apt-get update && \
