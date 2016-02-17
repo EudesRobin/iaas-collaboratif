@@ -37,6 +37,11 @@ Schemas.Machines = new SimpleSchema({
 		type: Number, 
 		optional: true	
 	},
+	state : {
+		type: String, 
+		allowedValues: ["initial", "up", "down"],
+		optional: true	
+	},
 });
 
 Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
