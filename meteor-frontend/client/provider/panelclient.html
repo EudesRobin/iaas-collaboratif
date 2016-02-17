@@ -1,14 +1,3 @@
-<style type="text/css">
-	#details {
-		border-radius: 10px;
-		border: 1px;
-		border-style: solid;
-		border-color: #D0D0D0  ;
-	}
-	#details .table tbody tr:hover td, .table tbody tr:hover th {
-		background-color: #c7c7c5;
-	}
-</style>
 <div class="container-fluid">
 
 	<div ng-hide="isLoggedIn">
@@ -26,7 +15,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label col-sm-1">DNS</label></td>
 								<div class="col-sm-10">
-									<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])" required/>
+									<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])?" required/>
 									</td>
 								</div>
 							</div></tr>
@@ -87,9 +76,9 @@
 						<td style="vertical-align:middle">{{ressource.bandwidth.total}} Mbps</td>
 						<td>
 							<div class="btn-group inline">
-								<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
-								<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
-								<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;">Delete</button>
+								<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Up</button>
+								<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Down</button>
+								<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;">Remove</button>
 							</div>
 						</td>
 					</tr>
