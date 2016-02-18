@@ -18,6 +18,10 @@ angular.module('iaas-collaboratif')
       .state('provider', {
         url: '/provider',
         template: '<provider></provider>'
+      })
+      .state('help', {
+        url: '/help',
+        template: '<help></help>'
       });
     $urlRouterProvider.otherwise("/");
 
