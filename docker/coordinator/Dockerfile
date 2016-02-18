@@ -21,6 +21,8 @@ RUN chmod 600 ~/.ssh/authorized_keys
 RUN cp ./frontend.pub ~/.ssh/authorized_keys
 
 ADD ./copyKey.sh ./
+ADD ./dividePublicKey.sh ./
+ADD ./deletePublicKey.sh ./
 
 RUN ./copyKey.sh
 

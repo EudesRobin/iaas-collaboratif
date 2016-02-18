@@ -27,6 +27,7 @@ done < coreFile.data
 for ((i=0; i<$containerNb; i++));
 do
 	imgType="${1}"
+	docker cp $imgType:/root/.ssh/authorized_keys ./
 	echo "Stopping ${imgType}"
 	docker stop ${imgType}
 	echo "Removing ${imgType}"
@@ -40,5 +41,9 @@ for ((j=$coreNumber; j>0; j--));
 			sed -i 's/\('${cpu}',\).*/\10/' ./coreFile.data
 		fi
 	done
+
+docker cp ./authorized_keys coordinator:/.
+
+rm ./authorized_keys
 
 exit 0

@@ -50,5 +50,6 @@ docker build -t centosssh ./images/centos/
 docker build -t debianssh ./images/debian/
 #====================================
 
+sudo /home/iaas/initializeCore.sh
 
 exit 0

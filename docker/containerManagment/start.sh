@@ -71,6 +71,7 @@ do
 			imgType="${3}$i"
 			echo "Running ${imgType} with "$memorySoftLimit" of memory" 
 			docker run -ti -d -P --expose 22 --net=iaasnetwork -m $memoryHardLimit --memory-reservation $memorySoftLimit --cpuset-cpus="$cpuset" --name $imgType ${1}
+			docker cp ./authorized_keys $imgType:/root/.ssh/
 			for ((l=0; l<${5}; l++));
 			do
 				#========================================
@@ -86,5 +87,7 @@ do
 	done
 done
 #========================================================
+
+rm authorized_keys
 
 exit 0

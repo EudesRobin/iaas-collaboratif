@@ -10,6 +10,10 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 
 RUN ssh-keygen -y -P "" -t dsa -f /etc/ssh/ssh_host_dsa_key
 
+RUN mkdir ~/.ssh/
+RUN touch ~/.ssh/authorized_keys
+RUN chmod 600 ~/.ssh/authorized_keys
+
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 

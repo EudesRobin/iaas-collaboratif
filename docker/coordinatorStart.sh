@@ -10,7 +10,7 @@ docker ps -a | grep 'Created' | awk '{print $1}'| xargs --no-run-if-empty docker
 
 #==============================================
 # Clean coreFile.data
-./initializeCore.sh
+sudo /home/iaas/initializeCore.sh
 #==============================================
 
 
