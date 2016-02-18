@@ -53,7 +53,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 
-			this.exec_cmd = function (cmd,param) {
+			this.exec_cmd = (cmd,param) => {
 				Meteor.call('exec_cmd',cmd,param, function (err, response) {
 					if(err){
 						var title;
@@ -116,7 +116,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine) => {
 				this.save();
-				//exec_cmd('launch_machine',Meteor.userId+" \""+this.currentUser.subscriber.sshKey+"\"");
+				//this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
 				ressourceAvailable = temp_machine[0].usable &&
