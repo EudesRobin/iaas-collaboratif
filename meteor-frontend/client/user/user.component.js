@@ -119,10 +119,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				//this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
-				ressourceAvailable = temp_machine[0].usable &&
-					temp_machine[0].cpu.available>=machine.cpu&&
-					temp_machine[0].ram.available>= machine.ram&&temp_machine[0].storage.available>=machine.storage;
-				if (ressourceAvailable){
+				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) console.error('Oops, unable to update the machine...');
