@@ -85,7 +85,7 @@ Meteor.startup(function () {
         throw new Meteor.Error(500,params,"details error");
         break;
         case "launch_machine":
-        command="/home/iaas-collaboratif/scripts/createKey.sh "+params;
+        command="~/iaas-collaboratif/scripts/createKey.sh "+params;
         break;
         default:
         return;
