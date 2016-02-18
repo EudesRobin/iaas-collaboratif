@@ -173,7 +173,7 @@ this.startMachine = (machine,params) => {
 				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (!error) this.throw_error('create','Unable to start machine');
+						if (error) this.throw_error('create','Unable to start machine');
 						else this.action_user('create',params);
 					});
 				}
