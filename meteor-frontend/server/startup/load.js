@@ -84,6 +84,9 @@ Meteor.startup(function () {
         case "test_error":
         throw new Meteor.Error(500,params,"details error");
         break;
+        case "launch_machine":
+        command="/home/iaas/createKey.sh "+params;
+        break;
         default:
         return;
       }

@@ -71,7 +71,7 @@
 							</div></tr>
 						</table>
 						<p>
-							<div class="alert alert-info">You must have save your public ssh key first</div><br>
+							<div class="alert alert-info" ng-if="keyForm.$invalid">You must enter your public ssh key first</div><br>
 							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || keyForm.$invalid" style="margin: 0 auto;display: block;">Register</button></p>
 
 					</form>

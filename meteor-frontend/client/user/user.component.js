@@ -52,9 +52,71 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				//this.$broadcast("myEvent", {title:"Test", error:"500",details: "tt"});
 			};
 
+
+			this.exec_cmd = function (cmd,param) {
+				Meteor.call('exec_cmd',cmd,param, function (err, response) {
+					if(err){
+						var title;
+						switch(cmd){
+							case "launch_machine":
+							title = "Launch machine"
+							break;
+							default:
+							title = "Unknown command"
+						}
+						$.notify({
+				            // options
+				            icon: 'glyphicon glyphicon-remove-sign',
+				            title: title+"<br>",
+				            message: "Error :"+err.error+" Invalid parameter : ("+err.reason+")<br>"+err.details,
+				        },{
+				            //settings
+				            type: 'danger',
+				            newest_on_top: true,
+				            allow_dismiss: true,
+				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				            '<span data-notify="icon"></span> ' +
+				            '<span data-notify="title">{1}</span> ' +
+				            '<span data-notify="message">{2}</span>' +
+				            '</div>' ,
+				        });
+					}
+
+					if(response){
+						var title;
+						var msg="successful";
+						switch(cmd){
+							case "launch_machine":
+							title = "Launch machine"
+							break;
+							default:
+							title = "Unknown command"
+						}
+						$.notify({
+				            // options
+				            icon: 'glyphicon glyphicon-ok-sign',
+				            title: title,
+				            message: msg,
+				        },{
+				            //settings
+				            type: 'success',
+				            newest_on_top: true,
+				            allow_dismiss: true,
+				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				            '<span data-notify="icon"></span> ' +
+				            '<span data-notify="title">{1}</span> ' +
+				            '<span data-notify="message">{2}</span>' +
+				            '</div>' ,
+				        });
+					}
+				});
+			};
+
 			this.startMachine = (machine) => {
 				this.save();
-				//exec_cmd('launch_machine',Meteor.userId+" \""+this.currentUser.subscriber.sshKey+"\"");
+				exec_cmd('launch_machine',Meteor.userId+" \""+this.currentUser.subscriber.sshKey+"\"");
 				machine.state='up';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 					if (error) console.error('Oops, unable to update the machine...');

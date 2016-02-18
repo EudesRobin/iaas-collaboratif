@@ -23,9 +23,6 @@ angular.module('iaas-collaboratif', [
   }
 ]);
 
-
-
-
 angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($scope){
 	$scope.helpers({
 		users: () => {
