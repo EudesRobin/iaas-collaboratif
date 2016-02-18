@@ -116,12 +116,12 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine) => {
 				this.save();
-				exec_cmd('launch_machine',Meteor.userId+" \""+this.currentUser.subscriber.sshKey+"\"");
-				temp_machine = Machines.find({_id: machine._id}).fetch();
+				//exec_cmd('launch_machine',Meteor.userId+" \""+this.currentUser.subscriber.sshKey+"\"");
+				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
-				ressourceAvailable = temp_machine && temp_machine.usable &&
-					temp_machine.state!=='up' && temp_machine.cpu>=machine.cpu&&
-					temp_machine.ram>= machine.ram&&temp_machine.storage>=machine.storage;
+				ressourceAvailable = temp_machine[0].usable &&
+					temp_machine[0].cpu.available>=machine.cpu&&
+					temp_machine[0].ram.available>= machine.ram&&temp_machine[0].storage.available>=machine.storage;
 				if (ressourceAvailable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
