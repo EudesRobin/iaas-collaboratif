@@ -32,15 +32,24 @@ Meteor.startup(function () {
       }
 
       switch (cmd) {
-        case "stop":
+        // TEST CMD
+        case "create_test":
+        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        break;
+        case "stop_test":
+        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        break;
+
+        // USER CMD
+        case "stop_user":
         // var r_split = params.split(" ");
         // if(r_split.length!=1){
         //   throw_error(r_split.length,'Invalid parameter length');
         // }
         //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
-        command="echo "+params;
+        command="echo stop_user "+params;
         break;
-        case "create":
+        case "create_user":
         // var r_split = params.split(" ");
         // if(r_split.length!=6){
         //   throw_error(r_split.length,'Invalid parameters length');
@@ -82,25 +91,19 @@ Meteor.startup(function () {
         //   throw_error(r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
         // }
         //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
-        command=" echo "+params;
+        command="echo start_user "+params;
         break;
-        case "test_valid":
-        command="echo "+params;
+        case "remove_user":
+        command="echo remove_user "+params;
         break;
-        case "remove":
-        command="echo "+params;
-        break;
-        case "launch_machine":
-        //command="~/iaas-collaboratif/scripts/createKey.sh "+params;
-        command= "echo launch_machine";
-        break;
+
         default:
         throw_error('unknown command','nothing to say');
       }
 
       exec(command,function(error,stdout,stderr){
         if(error){
-          throw new Meteor.Error(500,command+" failed");
+          throw_error(command,error.details);
         }
 
         future.return(stdout.toString());

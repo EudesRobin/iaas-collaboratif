@@ -36,22 +36,17 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
 		}
 	});
 
-  $scope.exec_cmd = function (cmd,param) {
-    Meteor.call('exec_cmd',cmd,param, function (err, response) {
+  $scope.action_test = function (cmd,param) {
+    cmd_concat=cmd+'_test';
+    Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
         if(err){
             var title;
             switch(cmd){
-                case "create_test":
+                case "create":
                 title = "Creation instance"
                 break;
-                case "stop_test":
+                case "stop":
                 title = "Kill instance"
-                break;
-                case "test_valid":
-                title = "Test notification"
-                break;
-                case "test_error":
-                title = "Test error notification"
                 break;
                 default:
                 title = "Unknown command"
@@ -84,12 +79,6 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
                 break;
                 case "stop_test":
                 title = "Kill instance"
-                break;
-                case "test_valid":
-                title = "Test valid notification"
-                break;
-                case "test_error":
-                title = "Test error notification"
                 break;
                 default:
                 title = "Unknown command"

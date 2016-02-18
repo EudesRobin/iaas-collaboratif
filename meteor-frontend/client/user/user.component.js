@@ -53,7 +53,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 
 			this.action_user = (cmd,param) => {
-				Meteor.call('exec_cmd',cmd,param, function (err, response) {
+				cmd_concat=cmd+'_user';
+				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
 					if(err){
 						var title;
 						switch(cmd){
@@ -130,23 +131,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 };
 
 this.throw_error = (cmd,params) => {
-	Meteor.call('throw_error',cmd,params, function (err, response) {
-		if(err){
-			var title;
-			switch(cmd){
-				case "create":
-				title = "Error creation instance"
-				break;
-				case "stop":
-				title = "Error kill instance"
-				break;
-				case "remove":
-				title = "Error remove instance"
-				break;						
-				default:
-				title = "Error Unknown command"
-			}
-			$.notify({
+	var title;
+	switch(cmd){
+		case "create":
+		title = "Error creation instance"
+		break;
+		case "stop":
+		title = "Error kill instance"
+		break;
+		case "remove":
+		title = "Error remove instance"
+		break;						
+		default:
+		title = "Error Unknown command"
+	}
+	$.notify({
 				            // options
 				            icon: 'glyphicon glyphicon-remove-sign',
 				            title: title+"<br>",
@@ -163,8 +162,6 @@ this.throw_error = (cmd,params) => {
 				            '<span data-notify="message">{2}</span>' +
 				            '</div>' ,
 				        });
-		}
-	});
 };
 
 this.startMachine = (machine,params) => {
@@ -176,7 +173,7 @@ this.startMachine = (machine,params) => {
 				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (error) this.throw_error('create','Unable to start machine');
+						if (!error) this.throw_error('create','Unable to start machine');
 						else this.action_user('create',params);
 					});
 				}
