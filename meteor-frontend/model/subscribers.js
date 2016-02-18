@@ -22,8 +22,8 @@ Subscriber.prototype.setFields = function(s) {
   	this.subscriber = s;
   	// updating database
   	Users.update({_id: this._id}, {$set:{subscriber:s}}, (error) => {
-  		if (error) console.error('Oops, unable to update the user...');
-  		else console.log('Done!');
+  		//if (error) console.error('Oops, unable to update the user...');
+  		//else console.log('Done! kkkkkkkkkkkkkkkkkkkkkkk');
   	});
 };
 

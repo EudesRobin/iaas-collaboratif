@@ -116,7 +116,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine) => {
 				this.save();
-				this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
+				
 				temp_machine = Machines.find({_id: machine._id}).fetch();
 
 				ressourceAvailable = temp_machine && temp_machine.usable &&
@@ -126,7 +126,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) console.error('Oops, unable to update the machine...');
-						else console.log('Done!');
+						else this.exec_cmd('launch_machine','KOK');
 				});
 				}
 			};
@@ -135,7 +135,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				machine.state='down';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 					if (error) console.error('Oops, unable to update the machine...');
-					else console.log('Done!');
+					else this.exec_cmd('launch_machine','KOK Kill');
 				});
 			};
 

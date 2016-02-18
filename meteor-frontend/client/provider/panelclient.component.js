@@ -47,8 +47,8 @@ angular.module('iaas-collaboratif')
 			this.startRessource = (ressource) => {
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the ressource...');
-					else console.log('Done!');
+					if (error) console.error('Oops, unable to update the ressource..jkjkjkjjkljlkl.');
+					else console.log('Done! jkjkjkjjkljlkl');
 				});
 			};
 
@@ -56,13 +56,13 @@ angular.module('iaas-collaboratif')
 				ressource.usable=false;
 				 for(i=0;i<ressource.machines_ids.length;i++){
 				 	Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
-				 	if (error) console.error('Oops, unable to update the machine...');
-				 	else console.log('Done!');
+				 	if (error) console.error('Oops, unable to update the machine...jkjkjkjjkljlkljkjkjkjjkljlkl');
+				 	else console.log('Done! jkjkjkjjkljlkl');
 				 });
 				 }
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) console.error('Oops, unable to update the ressource...');
-					else console.log('Done!');
+					if (error) console.error('Oops, unable to update the ressource...jkjkjkjjkljlkl');
+					else console.log('Done! jkjkjkjjkljlkl');
 				});
 			};
 
