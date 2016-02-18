@@ -59,22 +59,22 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						var title;
 						switch(cmd){
 							case "create":
-							title = "Creation instance"
+							title = "Error creation instance"
 							break;
 							case "stop":
-							title = "Kill instance"
+							title = "Error ill instance"
 							break;
 							case "remove":
-							title = "Remove instance"
+							title = "Error remove instance"
 							break;						
 							default:
-							title = "Unknown command"
+							title = "Error unknown command"
 						}
 						$.notify({
 				            // options
 				            icon: 'glyphicon glyphicon-remove-sign',
 				            title: title+"<br>",
-				            message: "Error :"+err.error+" Invalid parameter : ("+err.reason+")<br>"+err.details,
+				            message: err.details,
 				        },{
 				            //settings
 				            type: 'danger',

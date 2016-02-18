@@ -43,19 +43,19 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             var title;
             switch(cmd){
                 case "create":
-                title = "Creation instance"
+                title = "Error creation instance"
                 break;
                 case "stop":
-                title = "Kill instance"
+                title = "Error  kill instance"
                 break;
                 default:
-                title = "Unknown command"
+                title = "Error unknown command"
             }
             $.notify({
             // options
             icon: 'glyphicon glyphicon-remove-sign',
             title: title+"<br>",
-            message: "Error :"+err.error+" Invalid parameter : ("+err.reason+")<br>"+err.details,
+            message: err.details,
             },{
             //settings
             type: 'danger',
@@ -74,10 +74,10 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             var title;
             var msg="successful";
             switch(cmd){
-                case "create_test":
+                case "create":
                 title = "Creation instance"
                 break;
-                case "stop_test":
+                case "stop":
                 title = "Kill instance"
                 break;
                 default:
