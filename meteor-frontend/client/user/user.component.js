@@ -102,13 +102,16 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						var msg="successful";
 						switch(cmd){
 		                case "create":
-		                title = "Creation instance"
+		                title = "Creation instance<br>"
+		                msg= response;
 		                break;
 		                case "stop":
-		                title = "Kill instance"
+		                title = "Kill instance<br>"
+		                msg= response;
 		                break;
 		                case "remove":
-		                title = "Remove instance"
+		                title = "Remove instance<br>"
+		                msg=response;
 		                break;
 							default:
 							title = "Unknown command"
@@ -153,14 +156,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				machine.state='down';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 					if (error) this.exec_cmd('stop_error','Error param');
-					else this.exec_cmd('stop','OK');
+					else this.exec_cmd('stop',params);
 				});
 			};
 
-			this.deleteMachine = (machine) => {
+			this.deleteMachine = (machine,params) => {
 				Machines.remove({_id: machine._id},(error) => {
 					if (error) this.exec_cmd('remove_error','Error param');
-					else this.exec_cmd('remove','todo');
+					else this.exec_cmd('remove',params);
 				});
 			};
 		}
