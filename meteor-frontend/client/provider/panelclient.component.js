@@ -59,6 +59,7 @@ angular.module('iaas-collaboratif')
 				 	if (error) console.error('Oops, unable to update the machine...');
 				 	else console.log('Done!');
 				 });
+					 //console.log(Machines.find({_id: ressource.machines_ids[i]}.state));
 				 }
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) console.error('Oops, unable to update the ressource...');
