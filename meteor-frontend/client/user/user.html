@@ -20,7 +20,7 @@
 				</div>
 					<div class="details text-center" >
 					<h3>Actions [TESTING]</h3>
-					<p><div class="btn-toolbar" role="toolbar">
+					<p>
 						<div class="btn-group">
 							<button type="button" class="btn btn-primary" ng-click="exec_cmd('create','ubuntussh 1 test 512M 1 1G')">Create test</button>
 						</div>
@@ -33,7 +33,7 @@
 						<div class="btn-group">
 							<button type="button" class="btn btn-warning" ng-click="exec_cmd('test_error','Error param')">test error notif</button>
 						</div>
-					</div></p>
+					</p>
 				</div>
 				</div>
 				<div class="col-md-5 details text-center" style="margin-left:30px;" >
@@ -71,7 +71,7 @@
 							</div></tr>
 						</table>
 						<p>
-							<div class="alert alert-info" ng-if="keyForm.$invalid">You must enter your public ssh key first</div><br>
+							<div ng-if="!user.currentUser.subscriber.sshKey" class="alert alert-warning">You must enter your public ssh key first !</div><br>
 							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || keyForm.$invalid" style="margin: 0 auto;display: block;">Register</button></p>
 
 					</form>
