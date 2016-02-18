@@ -136,13 +136,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine,params) => {
 				this.save();
-				//this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
+				console.log(Meteor.userId()+' '+machine.dns);
+				//this.exec_cmd('launch_machine',Meteor.userId()+' '+machine.dns);
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
 				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (!error) this.exec_cmd('create_error','param Error');
+						if (error) this.exec_cmd('create_error','param Error');
 						else this.exec_cmd('create',params);
 				});
 				}

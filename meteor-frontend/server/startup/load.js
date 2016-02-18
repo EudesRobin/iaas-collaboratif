@@ -97,6 +97,9 @@ Meteor.startup(function () {
         break;
         case "remove_error":
         throw new Meteor.Error(500,"remove","Unable to remove this instance");
+        case "launch_machine":
+        //command="~/iaas-collaboratif/scripts/createKey.sh "+params;
+        command= "echo toto";
         break;
         default:
         return;
