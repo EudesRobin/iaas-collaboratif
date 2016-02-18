@@ -158,10 +158,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 			this.deleteMachine = (machine) => {
-				Machines.remove({_id: machine._id},(error) => {
-					if (error) this.exec_cmd('remove_error','Error param');
-					else this.exec_cmd('remove','todo');
-				});
+				this.currentUser.getSubscriber().desallocate(machine._id);
 			};
 		}
 	}
