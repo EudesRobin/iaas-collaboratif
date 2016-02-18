@@ -2,6 +2,21 @@
 
 
 #====================================
+isDockerInstalled=$(dpkg -l docker &> /dev/null && echo "1")
+
+if [[ !($isDockerInstalled == 1) ]];then
+	sudo apt-get update
+	sudo apt-get install docker-engine
+	sudo groupadd docker
+	sudo gpasswd -a ${USER} docker
+	sudo service docker restart
+	newgrp docker
+else
+	echo "Docker is already installed, skipping this step."
+fi	
+#====================================
+
+#====================================
 # Create user and copy necessary files to user's home directory
 ./userAdd.sh
 #====================================
