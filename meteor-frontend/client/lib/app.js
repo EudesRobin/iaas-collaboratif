@@ -36,19 +36,15 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
 		}
 	});
 
- //    $scope.$on("myEvent", function (event, args) {
- //        exec_cmd("test_valid",args.details)
- // });
-
   $scope.exec_cmd = function (cmd,param) {
     Meteor.call('exec_cmd',cmd,param, function (err, response) {
         if(err){
             var title;
             switch(cmd){
-                case "create":
+                case "create_test":
                 title = "Creation instance"
                 break;
-                case "stop":
+                case "stop_test":
                 title = "Kill instance"
                 break;
                 case "test_valid":
@@ -83,10 +79,10 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             var title;
             var msg="successful";
             switch(cmd){
-                case "create":
+                case "create_test":
                 title = "Creation instance"
                 break;
-                case "stop":
+                case "stop_test":
                 title = "Kill instance"
                 break;
                 case "test_valid":

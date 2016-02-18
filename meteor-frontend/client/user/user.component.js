@@ -49,7 +49,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.insertMachine = () => {
 				this.save();
 				this.currentUser.getSubscriber().allocate(this.newMachine);
-				//this.$broadcast("myEvent", {title:"Test", error:"500",details: "tt"});
 			};
 
 
@@ -58,10 +57,25 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					if(err){
 						var title;
 						switch(cmd){
-							case "launch_machine":
-							title = "Launch machine"
-							break;
-							default:
+		                case "create":
+		                title = "Creation instance"
+		                break;
+		                case "stop":
+		                title = "Kill instance"
+		                break;
+		                case "remove":
+		                title = "Remove instance"
+		                break;
+		                case "create_error":
+		                title = "Creation instance"
+		                break;
+		                case "stop_error":
+		                title = "Kill instance"
+		                break;
+		                case "remove_error":
+		                title = "Remove instance"
+		                break;							
+		                default:
 							title = "Unknown command"
 						}
 						$.notify({
@@ -87,9 +101,15 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						var title;
 						var msg="successful";
 						switch(cmd){
-							case "launch_machine":
-							title = "Launch machine"
-							break;
+		                case "create":
+		                title = "Creation instance"
+		                break;
+		                case "stop":
+		                title = "Kill instance"
+		                break;
+		                case "remove":
+		                title = "Remove instance"
+		                break;
 							default:
 							title = "Unknown command"
 						}
@@ -114,33 +134,33 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				});
 			};
 
-			this.startMachine = (machine) => {
+			this.startMachine = (machine,params) => {
 				this.save();
-				
-				temp_machine = Machines.find({_id: machine._id}).fetch();
+				//this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
+				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
-				ressourceAvailable = temp_machine && temp_machine.usable &&
-					temp_machine.state!=='up' && temp_machine.cpu>=machine.cpu&&
-					temp_machine.ram>= machine.ram&&temp_machine.storage>=machine.storage;
-				if (ressourceAvailable){
+				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (error) console.error('Oops, unable to update the machine...');
-						else this.exec_cmd('launch_machine','KOK');
+						if (!error) this.exec_cmd('create_error','param Error');
+						else this.exec_cmd('create',params);
 				});
 				}
 			};
 
-			this.stopMachine = (machine) => {
+			this.stopMachine = (machine,params) => {
 				machine.state='down';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-					if (error) console.error('Oops, unable to update the machine...');
-					else this.exec_cmd('launch_machine','KOK Kill');
+					if (error) this.exec_cmd('stop_error','Error param');
+					else this.exec_cmd('stop','OK');
 				});
 			};
 
 			this.deleteMachine = (machine) => {
-				Machines.remove({_id: machine._id});
+				Machines.remove({_id: machine._id},(error) => {
+					if (error) this.exec_cmd('remove_error','Error param');
+					else this.exec_cmd('remove','todo');
+				});
 			};
 		}
 	}

@@ -33,7 +33,8 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,"Invalid parameter length");
         }
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        command="echo stop.sh "+params;
         break;
         case "create":
         var r_split = params.split(" ");
@@ -76,7 +77,8 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[5],"Invalid memory container parameter - Hardlimit - Invalid unit");
         }
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        command=" echo start "+params;
         break;
         case "test_valid":
         command="echo "+params;
@@ -84,8 +86,17 @@ Meteor.startup(function () {
         case "test_error":
         throw new Meteor.Error(500,params,"details error");
         break;
-        case "launch_machine":
+        case "create_error":
+        throw new Meteor.Error(500,"create","Unable to start this instance");
+        break;
+        case "stop_error":
+        throw new Meteor.Error(500,"stop","Unable to stop this instance");
+        break;
+        case "remove":
         command="echo "+params;
+        break;
+        case "remove_error":
+        throw new Meteor.Error(500,"remove","Unable to remove this instance");
         break;
         default:
         return;
