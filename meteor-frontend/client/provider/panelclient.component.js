@@ -55,7 +55,7 @@ angular.module('iaas-collaboratif')
 			this.stopRessource = (ressource) => {
 				ressource.usable=false;
 				 for(i=0;i<ressource.machines_ids.length;i++){
-				 	Machines.update({_id: ressource.machines_id[i]}, {$set:{state:'down'}}, (error) => {
+				 	Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
 				 	if (error) console.error('Oops, unable to update the machine...');
 				 	else console.log('Done!');
 				 });
