@@ -1,6 +1,6 @@
 #!/bin/bash
 
 # Author : Romain Barthelemy
-echo OK
+cd ../meteor-frontend/
 
-echo $2 >> $1.pub
+echo "db.users.findOne({_id : "\""$1"\""}).subscriber.sshKey;" | meteor mongo >> ../scripts/$1.pub
