@@ -116,7 +116,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine) => {
 				this.save();
-				//this.exec_cmd('launch_machine',Meteor.userId+' \"'+this.currentUser.subscriber.sshKey+'\"');
+				this.exec_cmd('launch_machine',Meteor.userId+' '+machine.dns);
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
 				if (temp_machine[0].usable){
