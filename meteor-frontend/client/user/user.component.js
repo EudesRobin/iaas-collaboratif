@@ -52,30 +52,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 
-			this.exec_cmd = (cmd,param) => {
+			this.action_user = (cmd,param) => {
 				Meteor.call('exec_cmd',cmd,param, function (err, response) {
 					if(err){
 						var title;
 						switch(cmd){
-		                case "create":
-		                title = "Creation instance"
-		                break;
-		                case "stop":
-		                title = "Kill instance"
-		                break;
-		                case "remove":
-		                title = "Remove instance"
-		                break;
-		                case "create_error":
-		                title = "Creation instance"
-		                break;
-		                case "stop_error":
-		                title = "Kill instance"
-		                break;
-		                case "remove_error":
-		                title = "Remove instance"
-		                break;							
-		                default:
+							case "create":
+							title = "Creation instance"
+							break;
+							case "stop":
+							title = "Kill instance"
+							break;
+							case "remove":
+							title = "Remove instance"
+							break;						
+							default:
 							title = "Unknown command"
 						}
 						$.notify({
@@ -99,20 +90,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 					if(response){
 						var title;
+						// redef - 4debug
 						var msg="successful";
 						switch(cmd){
-		                case "create":
-		                title = "Creation instance<br>"
-		                msg= response;
-		                break;
-		                case "stop":
-		                title = "Kill instance<br>"
-		                msg= response;
-		                break;
-		                case "remove":
-		                title = "Remove instance<br>"
-		                msg=response;
-		                break;
+							case "create":
+							title = "Creation instance<br>"
+							msg= response;
+							break;
+							case "stop":
+							title = "Kill instance<br>"
+							msg= response;
+							break;
+							case "remove":
+							title = "Remove instance<br>"
+							msg=response;
+							break;
 							default:
 							title = "Unknown command"
 						}
@@ -135,35 +127,73 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				        });
 					}
 				});
-			};
+};
 
-			this.startMachine = (machine,params) => {
-				this.save();
-				console.log(Meteor.userId()+' '+machine.dns);
-				//this.exec_cmd('launch_machine',Meteor.userId()+' '+machine.dns);
+this.throw_error = (cmd,params) => {
+	Meteor.call('throw_error',cmd,params, function (err, response) {
+		if(err){
+			var title;
+			switch(cmd){
+				case "create":
+				title = "Error creation instance"
+				break;
+				case "stop":
+				title = "Error kill instance"
+				break;
+				case "remove":
+				title = "Error remove instance"
+				break;						
+				default:
+				title = "Error Unknown command"
+			}
+			$.notify({
+				            // options
+				            icon: 'glyphicon glyphicon-remove-sign',
+				            title: title+"<br>",
+				            message: params,
+				        },{
+				            //settings
+				            type: 'danger',
+				            newest_on_top: true,
+				            allow_dismiss: true,
+				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				            '<span data-notify="icon"></span> ' +
+				            '<span data-notify="title">{1}</span> ' +
+				            '<span data-notify="message">{2}</span>' +
+				            '</div>' ,
+				        });
+		}
+	});
+};
+
+this.startMachine = (machine,params) => {
+	this.save();
+	console.log(Meteor.userId()+' '+machine.dns);
+				//this.action_user('launch_machine',Meteor.userId()+' '+machine.dns);
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
 				if (temp_machine[0].usable){
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (error) this.exec_cmd('create_error','param Error');
-						else this.exec_cmd('create',params);
-				});
+						if (!error) this.throw_error('create','Unable to start machine');
+						else this.action_user('create',params);
+					});
 				}
 			};
 
 			this.stopMachine = (machine,params) => {
 				machine.state='down';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-					if (error) this.exec_cmd('stop_error','Error param');
-					else this.exec_cmd('stop',params);
+					if (error) this.throw_error('stop','Unable to stop machine');
+					else this.action_user('stop',params);
 				});
 			};
 
 			this.deleteMachine = (machine,params) => {
 				Machines.remove({_id: machine._id},(error) => {
-					if (error) this.exec_cmd('remove_error','Error param');
-					else this.exec_cmd('remove',params);
+					if (error) this.throw_error('remove','Unable to remove machine');
+					else this.action_user('remove',params);
 				});
 			};
 		}
