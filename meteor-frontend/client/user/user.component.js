@@ -56,8 +56,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					this.newMachine.machinetype=this.machinetypeSelect;
 				else
 					this.newMachine.machinetype=this.machinetypeInput;
-				console.log(this.newMachine);
-				this.currentUser.getSubscriber().allocate(this.newMachine);
+					this.currentUser.getSubscriber().allocate(this.newMachine);
 			};
 
 

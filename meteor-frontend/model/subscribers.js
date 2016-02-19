@@ -22,25 +22,107 @@ Subscriber.prototype.setFields = function(s) {
   	this.subscriber = s;
   	// updating database
   	Users.update({_id: this._id}, {$set:{subscriber:s}}, (error) => {
-  		//if (error) console.error('Oops, unable to update the user...');
-  		//else console.log('Done! kkkkkkkkkkkkkkkkkkkkkkk');
   	});
-};
+  };
 
-Subscriber.prototype.getMachines = function() {
-	return Machines.find()
-};
+  Subscriber.prototype.getMachines = function() {
+  	return Machines.find()
+  };
 
-Subscriber.prototype.allocate = function(machine) {
-	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
-		console.log("ALLOCATE FUNCTION", err, response)		
-	})
+  Subscriber.prototype.allocate = function(machine) {
+  	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
+  		if(err){
+  			var title = "Error allocation";
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-remove-sign',
+							title: title+"<br>",
+							message: err.details,
+						},{
+							//settings
+							type: 'danger',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}
+
+  		if(response){
+  			var title ="Allocation";
+  			var msg="successful";
+
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-ok-sign',
+							title: title,
+							message: msg,
+						},{
+							//settings
+							type: 'success',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}
+  	})
 };
 
 //At server end, it's not authorised to run an operation related to client, here Machines so replace it to object machine
 Subscriber.prototype.desallocate = function(machine) {
 	Meteor.call("desallocate", Meteor.userId(), machine, function(err, response){
-		console.log("DESALLOCATE FUNCTION", err, response)		
+  		if(err){
+  			var title = "Error desallocation";
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-remove-sign',
+							title: title+"<br>",
+							message: err.details,
+						},{
+							//settings
+							type: 'danger',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}
+
+  		if(response){
+  			var title ="Desallocation";
+  			var msg="successful";
+
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-ok-sign',
+							title: title,
+							message: msg,
+						},{
+							//settings
+							type: 'success',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}
 	})
 };
 
@@ -65,8 +147,8 @@ Meteor.methods({
 		// an atomic operation in mongoDB since it applies to only one document
 		var ok = Ressources.update(query, {
 			$inc : {"ram.available": -machine.ram				, 
-			 		"storage.available": -machine.storage		, 
-			 		"bandwidth.available": -machine.bandwidth	},
+			"storage.available": -machine.storage		, 
+			"bandwidth.available": -machine.bandwidth	},
 			$push: {"machines_ids": machine._id					},
 		}, {
 			"upsert": false,
@@ -76,7 +158,7 @@ Meteor.methods({
 		if (ok) 
 		{
 			var myRessource = Ressources.find({machines_ids: machine._id}).fetch()
-			if (myRessource.length !== 1) return new Error("Could not allocate a machine. Something went wrong");
+			if (myRessource.length !== 1) throw new Meteor.Error(500,"allocate","Could not allocate a machine. Something went wrong");
 			machine.user_id = userId;
 			machine.ressource_id = myRessource[0]._id;
 			machine.dns = myRessource[0].dns;
@@ -85,12 +167,12 @@ Meteor.methods({
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			Machines.insert(machine); 
-			return {error: null, machine: machine};
+			return;// everything is fine {error: null, machine: machine};
 		}
 		else 
 		{
-			if (! Ressources.findOne(query)) return {error: "No ressource available", machine: null};
-			else return {error: "An error occured in database ressource allocation", machine: null};
+			if (! Ressources.findOne(query)) throw new Meteor.Error(500,"allocate","No ressource available");
+			else throw new Meteor.Error(500,"allocate","An error occured in database ressource allocation");
 		}
 
 	},
@@ -101,8 +183,7 @@ Meteor.methods({
 			setTimeout(function(){
 				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
 				// TRANSACTION-PART 1
-				 var ok= Machines.remove( new_machine._id);
-				alert('Remove a record from Machines');
+				var ok= Machines.remove( new_machine._id);
 				if (ok)
 				{
 					// TRANSACTION-PART 2
@@ -110,19 +191,19 @@ Meteor.methods({
 						_id: new_machine.ressource_id
 					}, {
 						$inc : {"ram.available": new_machine.ram				,
-							"storage.available": new_machine.storage		,
-							"bandwidth.available": new_machine.bandwidth	},
+						"storage.available": new_machine.storage		,
+						"bandwidth.available": new_machine.bandwidth	},
 						$pull: {"machines_ids": new_machine._id					},
 					}, {
 						"upsert": false,
 						"multi": false
 					});
 
-					return {error: ok? "Failed to update Ressources database" : null};
+					throw new Meteor.Error(500,"desallocate","Failed to update Ressources database");
 				}
 				else
 				{
-					return {error: "Failed to update Machine database"};
+					throw new Meteor.Error(500,"desallocate","Failed to update Machine database");
 				}
 
 			},1000);
