@@ -1,5 +1,101 @@
-<div class="container-fluid">
+<div>
+	<ul class="nav nav-pills">
+		<li role="presentation"><a href="#presentation">Presentation</a></li>
+		<li role="presentation"><a href="#provider">Provider side</a></li>
+		<li role="presentation"><a href="#client">Client side</a></li>
+		<li role="presentation"><a href="#docker">Some information about Docker</a></li>
+	</ul>
 
-	Test 
+	<article id="presentation">
+		<h1>Presentation</h1>
+	</article>
+	<article id="provider">
+		<h1>What is happening on provider side?</h1>
+	</article>
+	<article id="client">
+		<h1>What is happening on client side?</h1>
+	</article>
+	<article id="docker">
+		<h1>What is Docker?</h1>
+		<p>Docker allows you to package an application with all of its dependencies into a standardized unit for software development. 
+		Docker containers wrap up a piece of software in a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries – anything you can install on a server. This guarantees that it will always run the same, regardless of the environment it is running in.</p>
+
+		<h4>Lightweight:</h4>
+		<p>Containers running on a single machine all share the same operating system kernel so they start instantly and make more efficient use of RAM. Images are constructed from layered filesystems so they can share common files, making disk usage and image downloads much more efficient.</p>
+
+		<h4>Open:</h4>
+		<p>Docker containers are based on open standards allowing containers to run on all major Linux distributions and Microsoft operating systems with support for every infrastructure.</p>
+
+		<h4>Secure:</h4>
+		<p>Containers isolate applications from each other and the underlying infrastructure while providing an added layer of protection for the application.</p>
+
+		<h2>How is this different from virtual machines?</h2>
+
+		<p>Containers have similar resource isolation and allocation benefits as virtual machines but a different architectural approach allows them to be much more portable and efficient.</p>
+
+		<h4>Virtual Machines:</h4>
+		<p>Each virtual machine includes the application, the necessary binaries and libraries and an entire guest operating system - all of which may be tens of GBs in size.</p>
+
+		<h4>Containers:</h4>
+		<p>Containers include the application and all of its dependencies, but share the kernel with other containers. They run as an isolated process in userspace on the host operating system. They’re also not tied to any specific infrastructure – Docker containers run on any computer, on any infrastructure and in any cloud.</p>
+
+		<h2>How does this help you build better software?</h2>
+		<p>When your app is in Docker containers, you don’t have to worry about setting up and maintaining different environments or different tooling for each language. Focus on creating new features, fixing issues and shipping software.</p>
+
+		<h4>Accelerate Developer Onboarding:</h4>
+		<p>Stop wasting hours trying to setup developer environments, spin up new instances and make copies of production code to run locally. With Docker, you can easily take copies of your live environment and run on any new endpoint running Docker.</p>
+
+		<h4>Empower Developer Creativity:</h4>
+		<p>The isolation capabilities of Docker containers free developers from the worries of using “approved” language stacks and tooling. Developers can use the best language and tools for their application service without worrying about causing conflict issues.</p>
+
+		<h4>Eliminate Environment Inconsistencies:</h4>
+		<p>By packaging up the application with its configs and dependencies together and shipping as a container, the application will always work as designed locally, on another machine, in test or production. No more worries about having to install the same configs into a different environment.</p>
+
+		<h2>Easily Share and Collaborate on Applications</h2>
+
+		<p>Docker creates a common framework for developers and sysadmins to work together on distributed applications.</p>
+
+		<h4>Distribute and share content:</h4>
+		<p>Store, distribute and manage your Docker images in your Docker Hub with your team. Image updates, changes and history are automatically shared across your organization.</p>
+
+		<h4>Simply share your application with others:</h4>
+		<p>Ship one or many containers to others or downstream service teams without worrying about different environment dependencies creating issues with your application. Other teams can easily link to or test against your app without having to learn or worry about how it works.</p>
+
+		<h2>Ship More Software Faster</h2>
+
+		<p>Docker allows you to dynamically change your application like never before from adding new capabilities, scaling out services to quickly changing problem areas.</p>
+
+		<h4>Ship 7X More:</h4>
+		<p>Docker users on average ship software 7X more after deploying Docker in their environment. More frequent updates provide more value to your customers faster.</p>
+
+		<h4>Quickly Scale:</h4>
+		<p>Docker containers spin up and down in seconds making it easy to scale an application service at any time to satisfy peak customer demand, then just as easily spin down those containers to only use the resources you need when you need it.</p>
+
+		<h4>Easily Remediate Issues:</h4>
+		<p>Docker make it easy to identify issues and isolate the problem container, quickly roll back to make the necessary changes then push the updated container into production. The isolation between containers make these changes less disruptive than traditional software models.</p>
+	</article>
+
+	<script type="text/javascript">
+	// create the back to top button
+	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+
+	var amountScrolled = 50;
+
+	$(window).scroll(function() {
+		if ( $(window).scrollTop() > amountScrolled ) {
+			$('a.back-to-top').fadeIn('slow');
+		} else {
+			$('a.back-to-top').fadeOut('slow');
+		}
+	});
+
+	$('a.back-to-top, a.simple-back-to-top').click(function() {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 700);
+		return false;
+	});
+
+	</script>
 	
 </div>

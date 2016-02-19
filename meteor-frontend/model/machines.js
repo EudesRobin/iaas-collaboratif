@@ -12,6 +12,9 @@ Schemas.Machines = new SimpleSchema({
 		type: String,
 		regEx : SimpleSchema.RegEx.Id
 	},
+	machinetype : {
+		type: String
+	},
 	cpu : {
 		type: Number, // in GHz
 		decimal: true
