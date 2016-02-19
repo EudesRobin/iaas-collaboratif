@@ -30,25 +30,25 @@
 										</tr>
 										<tr>
 											<td><label class="control-label">CPU (unit: Ghz)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" name="cpu" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.cpu.total" step="0.1" min="0.1" max="1000" name="cpu" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">RAM (unit: GB)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.ram.total" name="ram" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.ram.total" step="0.1" min="0.1" max="1000" name="ram" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Storage(unit: GB)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.storage.total" name="storage" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.storage.total" step="0.1" min="0.1" max="1000" name="storage" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" name="bandwidth" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="0.1" min="0.1" max="1000" name="bandwidth" required/></td>
 										</tr>
 									</table>
-
+									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 0.1 ; max value : 1000<br>Domain name must be (at least) like this : *.* </div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
-											<button type="button" class="btn btn-danger" data-dismiss="modal">Exit/Cancel</button>
+											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
 										</div>
 										<div class="btn-group">
 											<button ng-click="provider.insertRessource()" class="btn btn-success" ng-disabled="newMachineForm.$invalid" >Save</button>
@@ -91,7 +91,7 @@
 									<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirmation ?">Delete</button>
+									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Delete</button>
 								</div>
 							</div>
 						</td>

@@ -40,6 +40,7 @@ angular.module('iaas-collaboratif')
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
 				this.currentUser.getProvider().addRessource(this.newRessource);
 				this.newRessource ={};
+				$('#add').modal('hide');
 			};
 
 			this.throw_success = (cmd,param) => {
