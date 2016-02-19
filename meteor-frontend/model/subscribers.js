@@ -53,7 +53,6 @@ Meteor.methods({
 		machine.storage = machine.storage || 1;
 		machine.bandwidth = machine.bandwidth || 1;
 		machine.dns = machine.dns || "default.com";
-
 		var query = {
 			"cpu" : 		{$gte: machine.cpu			}, 
 			"ram.available" :		{$gte: machine.ram			}, 
