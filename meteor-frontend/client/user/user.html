@@ -34,6 +34,16 @@
 					<form name="newMachineForm" class="form-horizontal">
 						<table class="table table-hover">
 							<tr><div class="form-group">
+								<td><label class="control-label">Machine type</label></td>
+								<div class="col-sm-10">
+									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType" ng-required="user.machinetypeSelect!='other'">
+										<option selected>ubuntussh</option>
+										<option>other</option>
+									<input ng-show="user.machinetypeSelect=='other'" type="text" ng-model="user.machinetypeInput" ng-required="user.machinetypeSelect=='other'"/>
+									</select></td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
 								<td><label class="control-label">CPU (unit: Ghz)</label></td>
 								<div class="col-sm-10">
 									<td><input type="number" ng-model="user.newMachine.cpu" step="0.1" name="cpu" required/>
@@ -75,6 +85,7 @@
 			<table class="table">
 				<thead>
 					<tr>
+						<th>Machine type</th>
 						<th>DNS</th>
 						<th>CPU</th>
 						<th>RAM</th>
@@ -85,6 +96,7 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
+						<td style="vertical-align:middle">{{machine.machinetype}}</td>
 						<td style="vertical-align:middle">{{machine.dns}}</td>
 						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{machine.ram}} Gb</td>

@@ -48,6 +48,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.insertMachine = () => {
 				this.save();
+				if(this.machinetypeSelect!='other')
+					this.newMachine.machinetype=this.machinetypeSelect;
+				else
+					this.newMachine.machinetype=this.machinetypeInput;
 				this.currentUser.getSubscriber().allocate(this.newMachine);
 			};
 
@@ -71,22 +75,22 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							title = "Error unknown command"
 						}
 						$.notify({
-				            // options
-				            icon: 'glyphicon glyphicon-remove-sign',
-				            title: title+"<br>",
-				            message: err.details,
-				        },{
-				            //settings
-				            type: 'danger',
-				            newest_on_top: true,
-				            allow_dismiss: true,
-				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				            '<span data-notify="icon"></span> ' +
-				            '<span data-notify="title">{1}</span> ' +
-				            '<span data-notify="message">{2}</span>' +
-				            '</div>' ,
-				        });
+							// options
+							icon: 'glyphicon glyphicon-remove-sign',
+							title: title+"<br>",
+							message: err.details,
+						},{
+							//settings
+							type: 'danger',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
 					}
 
 					if(response){
@@ -110,63 +114,63 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							title = "Unknown command"
 						}
 						$.notify({
-				            // options
-				            icon: 'glyphicon glyphicon-ok-sign',
-				            title: title,
-				            message: msg,
-				        },{
-				            //settings
-				            type: 'success',
-				            newest_on_top: true,
-				            allow_dismiss: true,
-				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				            '<span data-notify="icon"></span> ' +
-				            '<span data-notify="title">{1}</span> ' +
-				            '<span data-notify="message">{2}</span>' +
-				            '</div>' ,
-				        });
+							// options
+							icon: 'glyphicon glyphicon-ok-sign',
+							title: title,
+							message: msg,
+						},{
+							//settings
+							type: 'success',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
 					}
 				});
-};
+			};
 
-this.throw_error = (cmd,params) => {
-	var title;
-	switch(cmd){
-		case "create":
-		title = "Error creation instance"
-		break;
-		case "stop":
-		title = "Error kill instance"
-		break;
-		case "remove":
-		title = "Error remove instance"
-		break;						
-		default:
-		title = "Error Unknown command"
-	}
-	$.notify({
-				            // options
-				            icon: 'glyphicon glyphicon-remove-sign',
-				            title: title+"<br>",
-				            message: params,
-				        },{
-				            //settings
-				            type: 'danger',
-				            newest_on_top: true,
-				            allow_dismiss: true,
-				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				            '<span data-notify="icon"></span> ' +
-				            '<span data-notify="title">{1}</span> ' +
-				            '<span data-notify="message">{2}</span>' +
-				            '</div>' ,
-				        });
-};
+			this.throw_error = (cmd,params) => {
+				var title;
+				switch(cmd){
+					case "create":
+					title = "Error creation instance"
+					break;
+					case "stop":
+					title = "Error kill instance"
+					break;
+					case "remove":
+					title = "Error remove instance"
+					break;						
+					default:
+					title = "Error Unknown command"
+				}
+				$.notify({
+							// options
+							icon: 'glyphicon glyphicon-remove-sign',
+							title: title+"<br>",
+							message: params,
+						},{
+							//settings
+							type: 'danger',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+			};
 
-this.startMachine = (machine,params) => {
-	this.save();
-	console.log(Meteor.userId()+' '+machine.dns);
+			this.startMachine = (machine,params) => {
+				this.save();
+				//console.log(Meteor.userId()+' '+machine.dns);
 				//this.action_user('launch_machine',Meteor.userId()+' '+machine.dns);
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
