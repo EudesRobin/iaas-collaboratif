@@ -53,7 +53,6 @@ Meteor.methods({
 		machine.storage = machine.storage || 1;
 		machine.bandwidth = machine.bandwidth || 1;
 		machine.dns = machine.dns || "default.com";
-
 		var query = {
 			"cpu" : 		{$gte: machine.cpu			}, 
 			"ram.available" :		{$gte: machine.ram			}, 
@@ -90,6 +89,7 @@ Meteor.methods({
 		}
 		else 
 		{
+			//console.log(query);
 			if (! Ressources.findOne(query)) return {error: "No ressource available", machine: null};
 			else return {error: "An error occured in database ressource allocation", machine: null};
 		}
