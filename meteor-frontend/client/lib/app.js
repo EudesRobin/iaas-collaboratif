@@ -36,35 +36,26 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
 		}
 	});
 
- //    $scope.$on("myEvent", function (event, args) {
- //        exec_cmd("test_valid",args.details)
- // });
-
-  $scope.exec_cmd = function (cmd,param) {
-    Meteor.call('exec_cmd',cmd,param, function (err, response) {
+  $scope.action_test = function (cmd,param) {
+    cmd_concat=cmd+'_test';
+    Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
         if(err){
             var title;
             switch(cmd){
                 case "create":
-                title = "Creation instance"
+                title = "Error creation instance"
                 break;
                 case "stop":
-                title = "Kill instance"
-                break;
-                case "test_valid":
-                title = "Test notification"
-                break;
-                case "test_error":
-                title = "Test error notification"
+                title = "Error  kill instance"
                 break;
                 default:
-                title = "Unknown command"
+                title = "Error unknown command"
             }
             $.notify({
             // options
             icon: 'glyphicon glyphicon-remove-sign',
             title: title+"<br>",
-            message: "Error :"+err.error+" Invalid parameter : ("+err.reason+")<br>"+err.details,
+            message: err.details,
             },{
             //settings
             type: 'danger',
@@ -88,12 +79,6 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
                 break;
                 case "stop":
                 title = "Kill instance"
-                break;
-                case "test_valid":
-                title = "Test valid notification"
-                break;
-                case "test_error":
-                title = "Test error notification"
                 break;
                 default:
                 title = "Unknown command"
