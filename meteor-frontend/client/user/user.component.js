@@ -42,9 +42,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			}
 
-			this.isMachineDown=(machine)=>{
-				return machine.state==="up";
-			}
+			// this.isMachineDown=(machine)=>{
+			// 	return machine.state==="up";
+			// }
 
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
@@ -174,8 +174,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			this.startMachine = (machine,params) => {
 				this.save();
-				//console.log(Meteor.userId()+' '+machine.dns);
-				//this.action_user('launch_machine',Meteor.userId()+' '+machine.dns);
 				temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
 				if (temp_machine[0].usable){
@@ -198,13 +196,11 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.deleteMachine = (machine) => {
 				this.save();
 				this.currentUser.getSubscriber().desallocate(machine);
-
-				// how to throw error / success notif here ?
-				//if (error) this.throw_error('remove','Unable to remove machine');
-				//else this.action_user('remove',params);
+				// notif done in subscriber.js
 			};
 			this.updateMachine=(machine) => {
-				console.log('Machine is down');
+				// nothing more to do here ?
+				//console.log('Machine is down');
 			}
 		}
 	}

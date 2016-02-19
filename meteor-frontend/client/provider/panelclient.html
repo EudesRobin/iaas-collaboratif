@@ -78,7 +78,7 @@
 				<tbody>
 					<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
 						<td style="vertical-align:middle">{{ressource.dns}}</td>
-						<td style="vertical-align:middle">{{ressource.cpu.total}} Ghz</td>
+						<td style="vertical-align:middle">{{ressource.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{ressource.ram.total}} GB</td>
 						<td style="vertical-align:middle">{{ressource.storage.total}} GB</td>
 						<td style="vertical-align:middle">{{ressource.bandwidth.total}} MBps</td>

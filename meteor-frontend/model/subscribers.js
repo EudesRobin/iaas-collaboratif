@@ -12,7 +12,19 @@ Schemas.Subscribers = new SimpleSchema({
 
 Subscriber = function (opts) {
 	_.extend(this, opts);
-}
+};
+
+throwError = function(error, reason, details) {  
+  var meteorError = new Meteor.Error(error, reason, details);
+
+  if (Meteor.isClient) {
+    // this error is never used
+    // on the client, the return value of a stub is ignored
+    return meteorError;
+  } else if (Meteor.isServer) {
+    throw meteorError;
+  }
+};
 
 Subscriber.prototype.setFields = function(s) {
 	if (! s) return null;
@@ -158,7 +170,7 @@ Meteor.methods({
 		if (ok) 
 		{
 			var myRessource = Ressources.find({machines_ids: machine._id}).fetch()
-			if (myRessource.length !== 1) throw new Meteor.Error(500,"allocate","Could not allocate a machine. Something went wrong");
+			if (myRessource.length !== 1) throwError(500,"allocate","Could not allocate a machine. Something went wrong");
 			machine.user_id = userId;
 			machine.ressource_id = myRessource[0]._id;
 			machine.dns = myRessource[0].dns;
@@ -167,12 +179,12 @@ Meteor.methods({
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			Machines.insert(machine); 
-			return;// everything is fine {error: null, machine: machine};
+			return "DONE";
 		}
 		else 
 		{
-			if (! Ressources.findOne(query)) throw new Meteor.Error(500,"allocate","No ressource available");
-			else throw new Meteor.Error(500,"allocate","An error occured in database ressource allocation");
+			if (! Ressources.findOne(query)) throwError(500,"allocate","No ressource available");
+			else throwError(500,"allocate","An error occured in database ressource allocation");
 		}
 
 	},
@@ -199,11 +211,11 @@ Meteor.methods({
 						"multi": false
 					});
 
-					throw new Meteor.Error(500,"desallocate","Failed to update Ressources database");
+					throwError(500,"desallocate","Failed to update Ressources database");
 				}
 				else
 				{
-					throw new Meteor.Error(500,"desallocate","Failed to update Machine database");
+					throwError(500,"desallocate","Failed to update Machine database");
 				}
 
 			},1000);
