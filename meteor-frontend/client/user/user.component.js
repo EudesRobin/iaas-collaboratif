@@ -203,7 +203,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				//if (error) this.throw_error('remove','Unable to remove machine');
 				//else this.action_user('remove',params);
 			};
-			this.modifyMachine=(machine) => {
+			this.updateMachine=(machine) => {
 				console.log('Machine is down');
 			}
 		}
