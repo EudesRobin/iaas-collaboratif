@@ -1,21 +1,26 @@
 <div>
-	<ul class="nav nav-pills">
+	<ul class="nav nav-pills centered">
 		<li role="presentation"><a href="#presentation">Presentation</a></li>
 		<li role="presentation"><a href="#provider">Provider side</a></li>
 		<li role="presentation"><a href="#client">Client side</a></li>
 		<li role="presentation"><a href="#docker">Some information about Docker</a></li>
 	</ul>
 
-	<article id="presentation">
+	<span class="anchor" id="presentation"></span>
+	<div class="section">
 		<h1>Presentation</h1>
-	</article>
-	<article id="provider">
+		<img src="http://air.imag.fr/images/5/59/Infrastructure_globale.png" style="display: block; margin-left: auto; margin-right: auto">
+	</div>
+	<span class="anchor" id="provider"></span>
+	<div class="section">
 		<h1>What is happening on provider side?</h1>
-	</article>
-	<article id="client">
+	</div>
+	<span class="anchor" id="client"></span>
+	<div class="section">
 		<h1>What is happening on client side?</h1>
-	</article>
-	<article id="docker">
+	</div>
+	<span class="anchor" id="docker"></span>
+	<div class="section">
 		<h1>What is Docker?</h1>
 		<p>Docker allows you to package an application with all of its dependencies into a standardized unit for software development. 
 		Docker containers wrap up a piece of software in a complete filesystem that contains everything it needs to run: code, runtime, system tools, system libraries – anything you can install on a server. This guarantees that it will always run the same, regardless of the environment it is running in.</p>
@@ -73,29 +78,28 @@
 
 		<h4>Easily Remediate Issues:</h4>
 		<p>Docker make it easy to identify issues and isolate the problem container, quickly roll back to make the necessary changes then push the updated container into production. The isolation between containers make these changes less disruptive than traditional software models.</p>
-	</article>
+	</div>
 
 	<script type="text/javascript">
-	// create the back to top button
-	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+		// create the back to top button
+		$('body').prepend('<a href="#" class="back-to-top" title="Back to top">Back to Top</a>');
 
-	var amountScrolled = 50;
+		var amountScrolled = 50;
 
-	$(window).scroll(function() {
-		if ( $(window).scrollTop() > amountScrolled ) {
-			$('a.back-to-top').fadeIn('slow');
-		} else {
-			$('a.back-to-top').fadeOut('slow');
-		}
-	});
+		$(window).scroll(function() {
+			if ( $(window).scrollTop() > amountScrolled ) {
+				$('a.back-to-top').fadeIn('slow');
+			} else {
+				$('a.back-to-top').fadeOut('slow');
+			}
+		});
 
-	$('a.back-to-top, a.simple-back-to-top').click(function() {
-		$('html, body').animate({
-			scrollTop: 0
-		}, 700);
-		return false;
-	});
-
+		$('a.back-to-top, a.simple-back-to-top').click(function() {
+			$('html, body').animate({
+				scrollTop: 0
+			}, 700);
+			return false;
+		});
 	</script>
 	
 </div>
