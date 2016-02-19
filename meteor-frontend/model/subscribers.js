@@ -37,8 +37,9 @@ Subscriber.prototype.allocate = function(machine) {
 	})
 };
 
-Subscriber.prototype.desallocate = function(machine_id) {
-	Meteor.call("desallocate", Meteor.userId(), machine_id, function(err, response){
+//At server end, it's not authorised to run an operation related to client, here Machines so replace it to object machine
+Subscriber.prototype.desallocate = function(machine) {
+	Meteor.call("desallocate", Meteor.userId(), machine, function(err, response){
 		console.log("DESALLOCATE FUNCTION", err, response)		
 	})
 };
@@ -95,36 +96,37 @@ Meteor.methods({
 
 	},
 
-	desallocate: function(userId, machine_id) {
-		
-		var machine = Machines.findOne({_id: machine_id, user_id: userId});
-		
-		// TRANSACTION-PART 1
-		var ok = Machines.remove({_id: machine_id, user_id: userId}, {
-			"justOne": true
-		});
+	desallocate: function(userId, machine) {
 
-		if (ok) 
-		{
-			// TRANSACTION-PART 2
-			ok = Ressources.update({
-				_id: machine.ressource_id,
-				machines: machine._id 		// shouldn't be necessary
-			}, {
-				$inc : {"ram.available": +machine.ram				, 
-						"storage.available": +machine.storage		, 
-						"bandwidth.available": +machine.bandwidth	},
-				$pull: {"machines_ids": machine._id					},
-			}, {
-				"upsert": false,
-				"multi": false
-			});
+		if (Meteor.isClient){
+			setTimeout(function(){
+				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
+				// TRANSACTION-PART 1
+				 var ok= Machines.remove( new_machine._id);
+				alert('Remove a record from Machines');
+				if (ok)
+				{
+					// TRANSACTION-PART 2
+					ok = Ressources.update({
+						_id: new_machine.ressource_id
+					}, {
+						$inc : {"ram.available": new_machine.ram				,
+							"storage.available": new_machine.storage		,
+							"bandwidth.available": new_machine.bandwidth	},
+						$pull: {"machines_ids": new_machine._id					},
+					}, {
+						"upsert": false,
+						"multi": false
+					});
 
-			return {error: ok? "Failed to update Ressources database" : null};
-		}
-		else 
-		{
-			return {error: "Failed to update Machine database"};
+					return {error: ok? "Failed to update Ressources database" : null};
+				}
+				else
+				{
+					return {error: "Failed to update Machine database"};
+				}
+
+			},1000);
 		}
 
 	}

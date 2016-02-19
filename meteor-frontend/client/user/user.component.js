@@ -192,7 +192,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 			this.deleteMachine = (machine) => {
-				this.currentUser.getSubscriber().desallocate(machine._id);
+				this.save();
+				this.currentUser.getSubscriber().desallocate(machine);
 
 				// how to throw error / success notif here ?
 				//if (error) this.throw_error('remove','Unable to remove machine');
