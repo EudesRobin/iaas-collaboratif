@@ -89,7 +89,6 @@ Meteor.methods({
 		}
 		else 
 		{
-			//console.log(query);
 			if (! Ressources.findOne(query)) return {error: "No ressource available", machine: null};
 			else return {error: "An error occured in database ressource allocation", machine: null};
 		}
