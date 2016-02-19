@@ -137,7 +137,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 			this.deleteMachine = (machine) => {
-				Machines.remove({_id: machine._id});
+				this.currentUser.getSubscriber().desallocate(machine._id);
 			};
 		}
 	}
