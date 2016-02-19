@@ -1,4 +1,4 @@
-<div>
+<div class="help">
 	<ul class="nav nav-pills centered">
 		<li role="presentation"><a href="#presentation">Presentation</a></li>
 		<li role="presentation"><a href="#provider">Provider side</a></li>
@@ -9,11 +9,35 @@
 	<span class="anchor" id="presentation"></span>
 	<div class="section">
 		<h1>Presentation</h1>
+		<p>The objective of this project is to allow a user group (member) to pool their laptops or desktop in order to calculate big data of few users. To do so, the solution should work with Docker to virtualize user machines and control the use of resources of each machine.</p>
+		<br>
 		<img src="http://air.imag.fr/images/5/59/Infrastructure_globale.png" style="display: block; margin-left: auto; margin-right: auto">
 	</div>
 	<span class="anchor" id="provider"></span>
 	<div class="section">
 		<h1>What is happening on provider side?</h1>
+		
+		<h4>First step: user creation</h4>
+		<p>Since we can only interact with the coordinator instance from the front-end, we need a way to launch new container. It's not possible to do so from a container, and that task need to be done from the host. That's why the first step is to create a new user on provider machine we will use to launch new containers or stop them. The moment it is done, we deploy necessary scripts in this user's home. Those scripts are necessary to launch and stop new containers. It is simpler for us to do so than transferring those files from the coordinator to the host when the connection is established.</p>
+
+		<h4>Second step: images creation</h4>
+		<p>Then, the second step consists in building coordinator and monitoring (shinken) images. To do so we use Dockerfile that allow us to build a container containing all we need. The coordinator instance just contains a ssh web-server. That container exposes it's port 22 and will be used as a jump host to connect the front-end/clients to the other instances.</p>
+
+		<h4>Third step: coordinator and monitoring instance deployment</h4>
+		<p>Finally, when the images are successfully built, we can run these containers on Docker deamon. We are now able to connect the front-end to the coordinator instance and deploy instances.</p>
+
+		<h4>Resources management</h4>
+		
+		<p><b>CPU:</b> To restrict CPU usage, we just need to know the hyper-threading coefficient of provider machine, and remember which CPU is already used. There is a Docker option we can use while launching container that allow us to choose which CPU the container will use to run. The example below shows how this works with 4 CPU (and hyper-threading coefficient is 2).
+		<br><br>  
+		<img src="http://air.imag.fr/images/thumb/3/37/CPUShare.png/800px-CPUShare.png" style="display: block; margin-left: auto; margin-right: auto">
+		<br>
+		<b>Memory:</b> While launching a container, we set memory soft limit as the value required/reserved by the client. The hard limit is set as the maximum memory made available by the provider In doing so, a container can use more memory that his soft limit. But if several containers are running on the same host, Docker will ensure that each container doesn't consume more memory than his soft limit.
+		<br><br>
+		<b>Disk:</b> Docker doesn't seem to provide a functionality to restrict disk usage. And yet, it's really important for us to make sure that a client will not use to much space disk of the provider. To do so, we implemented a watchdog that check every 30 seconds the disk usage of each container and stop them if they reach the limit defined by the provider. We also use that watchdog to inspect and save container's information that will be used on the front-end to display container's state and space disk usage. Thanks to that, clients will know if they are about to reach the limit.
+		<br><br>
+		<b>Bandwidth:</b> Since all the containers run on the same Docker network, we are able to use Wondershaper to set a limit for bandwidth usage. Then, Docker takes care to divide equitably the available bandwidth to each container.</p>
+
 	</div>
 	<span class="anchor" id="client"></span>
 	<div class="section">

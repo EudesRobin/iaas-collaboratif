@@ -42,6 +42,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			}
 
+			this.isMachineDown=(machine)=>{
+				return machine.state==="up";
+			}
+
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
 			};
@@ -200,6 +204,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				//if (error) this.throw_error('remove','Unable to remove machine');
 				//else this.action_user('remove',params);
 			};
+			this.modifyMachine=(machine) => {
+				console.log('Machine is down');
+			}
 		}
 	}
 });

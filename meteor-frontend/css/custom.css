@@ -8,6 +8,8 @@
 	background-color: #c7c7c5;
 }
 
+/* Help page styles */
+
 .anchor{
 	display: block;
 	height: 50px; /*same height as header*/
@@ -34,4 +36,20 @@
 
 .nav-tabs.centered, .nav-pills.centered {
     text-align:center;
+}
+
+.section > h1 {
+	text-align:center;
+}
+
+.section > p {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+/* Responsive image */
+
+img {
+	max-width: 100%;
+	height: auto;
 }
