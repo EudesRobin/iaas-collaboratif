@@ -101,7 +101,7 @@ Meteor.startup(function () {
         if(error){
           future.throw(new Meteor.Error(500,command,error+' '));
         }else{
-        future.return(stdout.toString());
+          future.return(stdout.toString());
         }
       });
       return future.wait();
