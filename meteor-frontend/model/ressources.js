@@ -20,7 +20,7 @@ Schemas.Ressources = new SimpleSchema({
 		regEx : SimpleSchema.RegEx.Id
 	},
 	cpu : {
-		type: resValue
+		type: Number,
 	},
 	ram : {
 		type: resValue

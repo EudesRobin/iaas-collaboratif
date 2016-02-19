@@ -55,7 +55,7 @@ Meteor.methods({
 		machine.dns = machine.dns || "default.com";
 
 		var query = {
-			"cpu.available" : 		{$gte: machine.cpu			}, 
+			"cpu" : 		{$gte: machine.cpu			}, 
 			"ram.available" :		{$gte: machine.ram			}, 
 			"storage.available" : 	{$gte: machine.storage		}, 
 			"bandwidth.available" :	{$gte: machine.bandwidth	},
@@ -65,8 +65,7 @@ Meteor.methods({
 		// TRANSACTION-PART 1
 		// an atomic operation in mongoDB since it applies to only one document
 		var ok = Ressources.update(query, {
-			$inc : {"cpu.available": -machine.cpu				, 
-			 		"ram.available": -machine.ram				, 
+			$inc : {"ram.available": -machine.ram				, 
 			 		"storage.available": -machine.storage		, 
 			 		"bandwidth.available": -machine.bandwidth	},
 			$push: {"machines_ids": machine._id					},
@@ -111,8 +110,7 @@ Meteor.methods({
 					ok = Ressources.update({
 						_id: new_machine.ressource_id
 					}, {
-						$inc : {"cpu.available": new_machine.cpu				,
-							"ram.available": new_machine.ram				,
+						$inc : {"ram.available": new_machine.ram				,
 							"storage.available": new_machine.storage		,
 							"bandwidth.available": new_machine.bandwidth	},
 						$pull: {"machines_ids": new_machine._id					},
