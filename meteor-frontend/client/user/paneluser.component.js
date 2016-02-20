@@ -42,10 +42,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			}
 
-			// this.isMachineDown=(machine)=>{
-			// 	return machine.state==="up";
-			// }
-
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
 			};
@@ -198,10 +194,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				this.currentUser.getSubscriber().desallocate(machine);
 				// notif done in subscriber.js
 			};
-			this.updateMachine=(machine) => {
-				// nothing more to do here ?
-				//console.log('Machine is down');
-			}
+
 		}
 	}
 });

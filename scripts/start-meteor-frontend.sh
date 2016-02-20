@@ -3,7 +3,7 @@
 # Author : Robin Eudes
 
 # Use : start Meteor , for our app 
-if ! -d "${HOME}/iaas-collaboratif"
+if ! test "${HOME}/iaas-collaboratif"
 then
 	echo "folder ${HOME}/iaas-collaboratif not found"
 	exit 1

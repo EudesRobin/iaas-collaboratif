@@ -33,8 +33,16 @@ angular.module('iaas-collaboratif')
 				return Ressources.find({user_id: Meteor.userId()}).fetch().length == 0;
 			}
 
+			this.Isusable=(ressource)=>{
+				return ressource.usable===true;
+			}
+
+			this.updateRessource=(ressource) => {
+				// TODO
+				console.log(ressource);
+			}
+
 			this.insertRessource = () => {
-				//this.newRessource.cpu = this.newRessource.cpu;
 				this.newRessource.ram.available = this.newRessource.ram.total;
 				this.newRessource.storage.available = this.newRessource.storage.total;
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
