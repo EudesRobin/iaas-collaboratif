@@ -3,7 +3,11 @@
 # Author : Robin Eudes
 
 # Use : start Meteor , for our app 
-
-${HOME}/iaas-collaboratif/scripts/check_running.sh;
-
-echo "Meteor is running - Frontend is up :)"
+if ! -d "${HOME}/iaas-collaboratif"
+then
+	echo "folder ${HOME}/iaas-collaboratif not found"
+	exit 1
+else
+	${HOME}/iaas-collaboratif/scripts/check_running.sh
+	echo "Meteor started..."
+fi
