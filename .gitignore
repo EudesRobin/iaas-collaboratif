@@ -1,1 +1,4 @@
 # files to ignore...
+README.html
+*~
+.Rhistory
