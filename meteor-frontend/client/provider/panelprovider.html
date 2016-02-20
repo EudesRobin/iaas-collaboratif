@@ -1,3 +1,14 @@
+<script>
+$(document).on("click", ".modifprovider", function () {
+     var rsc = $(this).data('rsc');
+     $(".modal-body #dns").val( rsc.dns );
+     $(".modal-body #cpu").val( rsc.cpu );
+     $(".modal-body #storage").val( rsc.storage.total );
+     $(".modal-body #ram").val( rsc.ram.total );
+     $(".modal-body #bandwidth").val( rsc.bandwidth.total );
+});
+</script>
+
 <div class="container-fluid">
 
 	<div ng-hide="isLoggedIn">
@@ -75,23 +86,23 @@
                                     <table class="table table-hover">
 										<tr>
 											<td><label class="control-label">Domain name</label></td>
-											<td><input type="text" ng-model="dns" placeholder="dns" name="dns" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])" required/></td>
+											<td><input type="text" id="dns" ng-model="dns" name="dns" value="" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])" required/></td>
 										</tr>
                                         <tr>
                                             <td><label class="control-label">CPU (unit: Ghz)</label></td>
-                                            <td><input type="number" ng-model="ressource.cpu" placeholder="ressource.cpu" step="0.1" min="0.1" max="1000" name="cpu" required/></td>
+                                            <td><input type="number" id="cpu" ng-model="ressource.cpu" value="" step="0.1" min="0.1" max="1000" name="cpu" required/></td>
                                         </tr>
                                         <tr>
                                             <td><label class="control-label">RAM (unit: GB)</label></td>
-                                            <td><input type="number" ng-model="ressource.ram.total" placeholder="ressource.ram.total" step="0.1" min="0.1" max="1000" name="ram" required/></td>
+                                            <td><input type="number" id="ram" value="" ng-model="ressource.ram.total" step="0.1" min="0.1" max="1000" name="ram" required/></td>
                                         </tr>
                                         <tr>
                                             <td><label class="control-label">Storage(unit: GB)</label></td>
-                                            <td><input type="number" ng-model="ressource.storage" placeholder="ressource.storage.total" step="0.1" min="0.1" max="1000" name="storage" required/></td>
+                                            <td><input type="number" id="storage" value="" ng-model="ressource.storage" step="0.1" min="0.1" max="1000" name="storage" required/></td>
                                         </tr>
                                         <tr>
                                             <td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
-                                            <td><input type="number" ng-model="ressource.bandwidth" placeholder="ressource.bandwidth" step="0.1" min="0.1" max="1000" name="bandwidth" required/></td>
+                                            <td><input type="number" id="bandwidth" value="" ng-model="ressource.bandwidth" step="0.1" min="0.1" max="1000" name="bandwidth" required/></td>
                                         </tr>
                                     </table>
 									<div ng-if="ModifyMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 0.1 ; max value : 1000<br>Domain name must be (at least) like this : *.* </div>
@@ -110,7 +121,6 @@
                 </div>
             </div>
         </div>
-
 		<!-- Table ressources provider -->
 		<div ng-hide="provider.ressourcesIsEmpty()">
 			<table class="table">
@@ -142,8 +152,8 @@
 								<div class="btn-group">
 									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Delete</button>
 								</div>
-								<button class="btn btn-primary centered" ng-disabled="provider.Isusable(ressource)"
-                                        data-toggle="modal" data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
+								<button class="btn btn-primary centered modifprovider" ng-disabled="provider.Isusable(ressource)"
+                                        data-toggle="modal" data-rsc='{{ressource}}' data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
 							</div>
 						</td>
 					</tr>
