@@ -31,7 +31,7 @@ Might be deleted later.
 A folder where you will find few bash scripts to setup/start/stop meteor, start the project, and some others stuffs. A more detailed README.md file in this folder will explain how to use them.
 
 **meteor-frontend :**
-This folder contains the meteor projet, the webui. A more detailed READEME.md file in this folder will explain a bit this webui.
+This folder contains the meteor projet, the webui. A more detailed README.md file in this folder will explain a bit this webui.
 
 
 Links
