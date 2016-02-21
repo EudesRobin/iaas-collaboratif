@@ -9,13 +9,13 @@ Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Lo�
 
 How does it work ?
 ---------------
-    ├── client
-    ├── css
-    ├── index.html
-    ├── model
-    ├── public
-    ├── README.md
-    └── server
+├── client
+├── index.html
+├── model
+├── public
+├── README.md
+└── server
+
 
 [Files scructure in Meteor](http://docs.meteor.com/#/basic/filestructure).
 
@@ -40,9 +40,6 @@ Files in /public are served to the client as-is. Use this to store assets such a
 > -- <cite> http://docs.meteor.com/#/basic/filestructure</cite>
 
 ----------
-
-**css:**
-Contains some css custom rules.
 
 **model:**
 Contains a description of the model used to store data.
