@@ -33,13 +33,31 @@ angular.module('iaas-collaboratif')
 				return Ressources.find({user_id: Meteor.userId()}).fetch().length == 0;
 			}
 
+			// needed to get id for the modify form ressource provider
+			// I think there is a better way to do this...
+			this.getid = () => {
+				return document.getElementById("rid").value;
+			}
+
 			this.Isusable=(ressource)=>{
 				return ressource.usable===true;
 			}
 
-			this.updateRessource=(ressource) => {
-				// TODO
-				console.log(ressource);
+			this.updateRessource=(rid) => {
+				var ressource = Ressources.find({_id:rid}).fetch()[0];
+				Ressources.update({_id: ressource._id}, {$set:{
+					dns:dns.value,cpu:Number(cpu.value),
+					ram:{total:Number(ram.value),available:Number(ram.value)},
+					bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
+					storage:{total:Number(storage.value),available:Number(storage.value)}
+				}},(error) => {
+					if (error) this.throw_error('modify','Unable to modify properties');
+					else this.throw_success('modify','Domain properties modified');
+				});
+				
+				$('#modify_machine').modal('hide');
+				// need to reload to fully clear form var :/
+				// location.reload(); 
 			}
 
 			this.insertRessource = () => {
@@ -63,6 +81,9 @@ angular.module('iaas-collaboratif')
 					break;
 					case "remove":
 					title = "Domain deleted<br>"
+					break;
+					case "modify":
+					title = "Domain properties update<br>"
 					break;
 					default:
 					title = "Unknown command"
@@ -97,7 +118,10 @@ angular.module('iaas-collaboratif')
 					break;
 					case "remove":
 					title = "Error - Domain not deleted"
-					break;						
+					break;
+					case "modify":
+					title = "Domain properties update<br>"
+					break;					
 					default:
 					title = "Error Unknown command"
 				}
