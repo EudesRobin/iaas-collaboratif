@@ -108,6 +108,8 @@
 
     #sidebar-wrapper {
         width: 10%;
+	min-width:100px;
+	position:absolute;
     }
 
     #wrapper.toggled #sidebar-wrapper {
