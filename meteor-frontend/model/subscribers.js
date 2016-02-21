@@ -62,9 +62,7 @@ Subscriber.prototype.setFields = function(s) {
 							'<span data-notify="message">{2}</span>' +
 							'</div>' ,
 						});
-  		}
-
-  		if(response){
+  		}else{
   			var title ="Allocation";
   			var msg="successful";
 

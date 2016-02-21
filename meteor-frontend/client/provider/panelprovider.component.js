@@ -51,13 +51,13 @@ angular.module('iaas-collaboratif')
 					bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
 					storage:{total:Number(storage.value),available:Number(storage.value)}
 				}},(error) => {
-					if (error) this.throw_error('modify','Unable to modify properties');
+					if (error)this.throw_error('modify','Unable to modify properties');
 					else this.throw_success('modify','Domain properties modified');
+					// reset form
+					document.getElementById("modfmachine").reset();
 				});
-				
 				$('#modify_machine').modal('hide');
-				// need to reload to fully clear form var :/
-				// location.reload(); 
+
 			}
 
 			this.insertRessource = () => {

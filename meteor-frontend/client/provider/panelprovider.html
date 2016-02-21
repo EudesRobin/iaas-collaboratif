@@ -7,7 +7,6 @@ $(document).on("click", ".modifprovider", function () {
      $(".modal-body #storage").attr("placeholder", rsc.storage.total );
      $(".modal-body #ram").attr("placeholder",rsc.ram.total );
      $(".modal-body #bandwidth").attr("placeholder",rsc.bandwidth.total );
-     delete rsc;
 });
 </script>
 
@@ -85,7 +84,7 @@ $(document).on("click", ".modifprovider", function () {
                         <h4 class="modal-title" id="modalmodify">Modify machines</h4>
                         <div class="modal-body">
                             <div class="row">
-                                <form name="ModifyMachineForm" class="form-horizontal">
+                                <form name="ModifyMachineForm" class="form-horizontal" id="modfmachine">
                                     <table class="table table-hover">
 										<tr>
 											<td><label class="control-label">Domain name</label></td>

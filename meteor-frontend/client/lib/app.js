@@ -16,11 +16,11 @@ angular.module('iaas-collaboratif', [
           if(message && !confirm(message)){
             e.stopImmediatePropagation();
             e.preventDefault();
-          }
-        });
-      }
+        }
+    });
     }
-  }
+}
+}
 ]);
 
 angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($scope){
@@ -56,18 +56,18 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             icon: 'glyphicon glyphicon-remove-sign',
             title: title+"<br>",
             message: err.details,
-            },{
+        },{
             //settings
             type: 'danger',
             newest_on_top: true,
             allow_dismiss: true,
             template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                        '<span data-notify="icon"></span> ' +
-                        '<span data-notify="title">{1}</span> ' +
-                        '<span data-notify="message">{2}</span>' +
-                      '</div>' ,
-            });
+            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+            '<span data-notify="icon"></span> ' +
+            '<span data-notify="title">{1}</span> ' +
+            '<span data-notify="message">{2}</span>' +
+            '</div>' ,
+        });
         }
 
         if(response){
@@ -88,18 +88,18 @@ angular.module('iaas-collaboratif').controller("rootCtrl", ['$scope', function($
             icon: 'glyphicon glyphicon-ok-sign',
             title: title,
             message: msg,
-            },{
+        },{
             //settings
             type: 'success',
             newest_on_top: true,
             allow_dismiss: true,
             template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-                        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-                        '<span data-notify="icon"></span> ' +
-                        '<span data-notify="title">{1}</span> ' +
-                        '<span data-notify="message">{2}</span>' +
-                      '</div>' ,
-            });
+            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+            '<span data-notify="icon"></span> ' +
+            '<span data-notify="title">{1}</span> ' +
+            '<span data-notify="message">{2}</span>' +
+            '</div>' ,
+        });
         }
     });
 };
