@@ -11,7 +11,7 @@
 					<div class="details text-center" style="margin-bottom:30px;padding-left: 5%;padding-right:5%" >
 						<h3>Your SSH Public key</h3>
 						<form name="keyForm">
-							<textarea name="key" ng-model="user.currentUser.subscriber.sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)" style="max-width: 100%;width: 100%;height: 100px;min-height: 100px" required>Public SSH key</textarea>
+							<textarea name="key" ng-model="user.currentUser.subscriber.sshKey" pattern="ssh-rsa AAAA[0-9A-Za-z+/]+[=]{0,3} ([^@]+@[^@]+)" style="max-width: 100%;width: 100%;height: 100px;max-height: 250px" required>Public SSH key</textarea>
 							<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">Invalid SSH public key</div>
 								<button ng-click="user.save()" class="btn btn-primary" ng-disabled="keyForm.$invalid">Save</button>
