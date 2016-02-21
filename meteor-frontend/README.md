@@ -9,12 +9,12 @@ Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Lo�
 
 How does it work ?
 ---------------
-├── client
-├── index.html
-├── model
-├── public
-├── README.md
-└── server
+    ├── client
+    ├── index.html
+    ├── model
+    ├── public
+    ├── README.md
+    └── server
 
 
 [Files scructure in Meteor](http://docs.meteor.com/#/basic/filestructure).
