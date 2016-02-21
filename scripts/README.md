@@ -33,11 +33,10 @@ This script assumes that the project have been cloned at the root of your home f
 Kill meteor proccess.
 
 **check_running.sh :**
-Check if the project is already running, if not start it, in a screen session ( see start-meteor-frontend ).
-In fact, the start-meteor-frontend.sh script call this one ;)
+Check if the project is already running. If it's not running, it will be launched in a screen session ( see start-meteor-frontend ). In fact, the start-meteor-frontend.sh script call this one ;)
 
 **createKey.sh :**
-We will need to get user SSH public key, to send it to coordinator's provider node, and at the end, to user's instances.
+We will need to get user SSH public key, send it to coordinator's provider node, and at the end, to user's instances.
 
 Links
 -------
