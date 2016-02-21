@@ -24,9 +24,9 @@ Install Meteor , nodeJS, gulp, bower, fibers, and everything that might be neede
 It will start the meteor project in a screen session.
 
     screen -r meteor to get it in your terminal
-    ctrl+A and press D to detach the session to exit
+    ctrl+A and press D to detach the session
 
-This script assume that to project have be clone at the root of your home folder
+This script assumes that the project have been cloned at the root of your home folder
     ~/iaas-collaboratif/ ....
 
 **kill-meteor.sh :**
@@ -34,7 +34,7 @@ Kill meteor proccess.
 
 **check_running.sh :**
 Check if the project is already running, if not start it, in a screen session ( see start-meteor-frontend ).
-If fact, the start-scrip call this one ;)
+In fact, the start-meteor-frontend.sh script call this one ;)
 
 **createKey.sh :**
 We will need to get user SSH public key, to send it to coordinator's provider node, and at the end, to user's instances.
