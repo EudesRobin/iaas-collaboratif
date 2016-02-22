@@ -30,10 +30,10 @@ Meteor.startup(function () {
       switch (cmd) {
         // TEST CMD
         case "create_test":
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        command="ssh nodetest@nodetest 'docker exec  coordinator ssh -p 22000 iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
         break;
         case "stop_test":
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        command="ssh nodetest@nodetest 'docker exec  coordinator ssh -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
         break;
 
         // USER CMD
