@@ -218,16 +218,16 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 				var ssh_string='# Host is an alias , Hostname is the name of the user instance\n';
 				ssh_string+='# To ssh your instance : type the following command :\n';
-				ssh_string+='# ssh -F config_ssh_'+this.currentUser.username+machine.dns+'ID\n';
-				ssh_string+='Host '+this.currentUser.username+machine.dns+'ID\n';
-				ssh_string+='\tHostname '+this.currentUser.username+machine.dns+'ID\n';
+				ssh_string+='# ssh -F iaas-'+this.currentUser.username+'-'+machine.dns+'-ID.config '+this.currentUser.username+'-'+machine.dns+'-ID\n';
+				ssh_string+='Host '+this.currentUser.username+'-'+machine.dns+'-ID\n';
+				ssh_string+='\tHostname '+this.currentUser.username+'-'+machine.dns+'-ID\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
 				ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
 				ssh_string+='\tUser iaas-client\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
 				ssh_string+='\tIdentityFile ~/.ssh/client_pk';
 
-				downloadURI(makeTextFile(ssh_string),'config_ssh_'+this.currentUser.username+machine.dns+'ID');
+				downloadURI(makeTextFile(ssh_string),'iaas-'+this.currentUser.username+'-'+machine.dns+'-ID.config');
 			};
 
 		}
