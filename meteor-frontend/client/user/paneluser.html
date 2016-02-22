@@ -1,3 +1,31 @@
+<script>
+// function generate(id) {
+// var textFile = null,
+//   makeTextFile = function (text) {
+//     var data = new Blob([text], {type: 'text/plain'});
+
+//     // If we are replacing a previously generated file we need to
+//     // manually revoke the object URL to avoid memory leaks.
+//     if (textFile !== null) {
+//       window.URL.revokeObjectURL(textFile);
+//     }
+
+//     textFile = window.URL.createObjectURL(data);
+
+//     return textFile;
+//   };
+
+
+//   var generate = document.getElementById('generate'),id;
+
+//   create.addEventListener('click', function () {
+//     var link = document.getElementById('id');
+//     link.href = makeTextFile(textbox.value);
+//     link.style.display = 'block';
+//   }, false);
+// };
+</script>
+
 <div class="container-fluid">
 
 	<div ng-hide="isLoggedIn">
@@ -110,6 +138,7 @@
 								<button ng-click="user.startMachine(machine,'params start todo')" class="btn btn-success centered" ng-disabled="keyForm.$invalid" style="margin: 0 auto;display: block;">Start</button>
 								<button ng-click="user.stopMachine(machine,'params stop toto')" class="btn btn-warning centered" style="margin: 0 auto;display: block;">Stop</button>
 								<button ng-click="user.deleteMachine(machine,'params remove todo')" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Remove</button>
+								<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Download SSH config file</button>
 							</div>
 						</td>
 					</tr>
@@ -118,3 +147,4 @@
 		</div>
 	</div>
 </div>
+

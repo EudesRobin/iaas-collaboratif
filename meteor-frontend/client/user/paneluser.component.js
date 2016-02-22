@@ -52,32 +52,32 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					this.newMachine.machinetype=this.machinetypeSelect;
 				else
 					this.newMachine.machinetype=this.machinetypeInput;
-					this.currentUser.getSubscriber().allocate(this.newMachine);
+				this.currentUser.getSubscriber().allocate(this.newMachine);
 					// reset form
 					document.getElementById("machineType").value = "";
 					this.newMachine={};
-			};
+				};
 
 
-			this.action_user = (cmd,param) => {
-				cmd_concat=cmd+'_user';
-				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
-					if(err){
-						var title;
-						switch(cmd){
-							case "create":
-							title = "Error creation instance"
-							break;
-							case "stop":
-							title = "Error ill instance"
-							break;
-							case "remove":
-							title = "Error remove instance"
-							break;						
-							default:
-							title = "Error unknown command"
-						}
-						$.notify({
+				this.action_user = (cmd,param) => {
+					cmd_concat=cmd+'_user';
+					Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
+						if(err){
+							var title;
+							switch(cmd){
+								case "create":
+								title = "Error creation instance"
+								break;
+								case "stop":
+								title = "Error ill instance"
+								break;
+								case "remove":
+								title = "Error remove instance"
+								break;						
+								default:
+								title = "Error unknown command"
+							}
+							$.notify({
 							// options
 							icon: 'glyphicon glyphicon-remove-sign',
 							title: title+"<br>",
@@ -94,10 +94,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							'<span data-notify="message">{2}</span>' +
 							'</div>' ,
 						});
-					}
+						}
 
-					if(response){
-						var title;
+						if(response){
+							var title;
 						// redef - 4debug
 						var msg="successful";
 						switch(cmd){
@@ -153,22 +153,22 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					title = "Error Unknown command"
 				}
 				$.notify({
-							// options
-							icon: 'glyphicon glyphicon-remove-sign',
-							title: title+"<br>",
-							message: params,
-						},{
-							//settings
-							type: 'danger',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
+										// options
+										icon: 'glyphicon glyphicon-remove-sign',
+										title: title+"<br>",
+										message: params,
+									},{
+										//settings
+										type: 'danger',
+										newest_on_top: true,
+										allow_dismiss: true,
+										template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+										'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+										'<span data-notify="icon"></span> ' +
+										'<span data-notify="title">{1}</span> ' +
+										'<span data-notify="message">{2}</span>' +
+										'</div>' ,
+									});
 			};
 
 			this.startMachine = (machine,params) => {
@@ -195,7 +195,38 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.deleteMachine = (machine) => {
 				this.save();
 				this.currentUser.getSubscriber().desallocate(machine);
-				// notif done in subscriber.js
+							// notif done in subscriber.js
+						};
+
+			this.generate = (machine) => {
+				makeTextFile = function (text) {
+					var data = new Blob([text], {type: 'text/plain'});
+					if (textFile !== null) {
+						window.URL.revokeObjectURL(textFile);
+					}
+					var textFile = window.URL.createObjectURL(data);
+					return textFile;
+				};
+				var id = machine._id;
+				var link = document.getElementById(id);
+
+				function downloadURI(uri, name) {
+					var link = document.createElement("a");
+					link.download = name;
+					link.href = uri;
+					link.click();
+				}
+				var ssh_string='# Host is an alias , Hostname is the name of the user instance\n';
+				ssh_string+='# To ssh your instance : type the following command :\n';
+				ssh_string+='# ssh -F config_ssh_ALIAS_INSTANCE ALIAS_INSTANCE\n';
+				ssh_string+='Host ALIAS_INSTANCE\n';
+				ssh_string+='\tHostname DOCKER_INSTANCE_NAME\n';
+				ssh_string+='\tStrictHostKeyChecking no\n';
+				ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
+				ssh_string+='\tUser iaas-client';
+				ssh_string+='\tIdentityFile ~/.ssh/client_pk';
+
+				downloadURI(makeTextFile(ssh_string),'config_ssh_'+machine._id);
 			};
 
 		}
