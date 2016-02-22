@@ -28,7 +28,7 @@ fi
 #==============================================
 # Run containers
 echo "Running containers"
-docker run -ti --expose 22 --net=iaasnetwork --name coordinator -d coordinator
+docker run -ti -p 22:22 --expose 22 --net=iaasnetwork --name coordinator -d coordinator
 docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
 #==============================================
 
