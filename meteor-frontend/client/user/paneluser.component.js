@@ -52,6 +52,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					this.newMachine.machinetype=this.machinetypeSelect;
 				else
 					this.newMachine.machinetype=this.machinetypeInput;
+				this.newMachine.machinename=this.currentUser.username;
 				this.currentUser.getSubscriber().allocate(this.newMachine);
 					// reset form
 					document.getElementById("machineType").value = "";
@@ -196,9 +197,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				this.save();
 				this.currentUser.getSubscriber().desallocate(machine);
 							// notif done in subscriber.js
-						};
+			};		
 
 			this.generate = (machine) => {
+
 				makeTextFile = function (text) {
 					var data = new Blob([text], {type: 'text/plain'});
 					if (textFile !== null) {
@@ -217,17 +219,18 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					link.click();
 				}
 				var ssh_string='# Host is an alias , Hostname is the name of the user instance\n';
-				ssh_string+='# To ssh your instance : type the following command :\n';
-				ssh_string+='# ssh -F iaas-'+this.currentUser.username+'-'+machine.dns+'-ID.config '+this.currentUser.username+'-'+machine.dns+'-ID\n';
-				ssh_string+='Host '+this.currentUser.username+'-'+machine.dns+'-ID\n';
-				ssh_string+='\tHostname '+this.currentUser.username+'-'+machine.dns+'-ID\n';
+				ssh_string+='# We presume that you private key is  ~/.ssh/client_pk\n';
+				ssh_string+='# To ssh your instance : type the following command\n';
+				ssh_string+='# ssh -F iaas-'+machine.machinename+'.config '+machine.machinename+'\n';
+				ssh_string+='Host '+machine.machinename+'\n';
+				ssh_string+='\tHostname '+machine.machinename+'\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
 				ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
 				ssh_string+='\tUser iaas-client\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
 				ssh_string+='\tIdentityFile ~/.ssh/client_pk';
 
-				downloadURI(makeTextFile(ssh_string),'iaas-'+this.currentUser.username+'-'+machine.dns+'-ID.config');
+				downloadURI(makeTextFile(ssh_string),'iaas-'+machine.machinename+'.config');
 			};
 
 		}

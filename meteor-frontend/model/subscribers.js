@@ -45,11 +45,12 @@ Subscriber.prototype.setFields = function(s) {
   	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
   		if(err){
   			var title = "Error allocation";
+  			console.log(err);
   			$.notify({
 							// options
 							icon: 'glyphicon glyphicon-remove-sign',
 							title: title+"<br>",
-							message: err.details,
+							message: err,
 						},{
 							//settings
 							type: 'danger',
@@ -173,7 +174,14 @@ Meteor.methods({
 			machine.ressource_id = myRessource[0]._id;
 			machine.dns = myRessource[0].dns;
 			machine.state = "initial";
-			
+
+			function howmanyothers(providerdns,userid){
+				var temp_machine = Ressources.find({user_id: userid,dns: providerdns}).fetch();
+				return temp_machine.length-1;
+			};
+			var tmp = machine.machinename;
+			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine.dns,machine.user_id);
+			console.log(machine.machinename);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			Machines.insert(machine); 

@@ -15,6 +15,10 @@ Schemas.Machines = new SimpleSchema({
 	machinetype : {
 		type: String
 	},
+	machinename : {
+		type: String,
+		optional : true
+	},
 	cpu : {
 		type: Number, // in GHz
 		decimal: true
