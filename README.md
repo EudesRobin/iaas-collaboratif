@@ -40,6 +40,6 @@ Links
 
 [Kanban - Waffle](https://waffle.io/EudesRobin/iaas-collaboratif)
 
-Licence
+License
 -------
 [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.fr.html)
