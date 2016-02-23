@@ -70,7 +70,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 								title = "Error creation instance"
 								break;
 								case "stop":
-								title = "Error ill instance"
+								title = "Error kill instance"
 								break;
 								case "remove":
 								title = "Error remove instance"
@@ -185,11 +185,11 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			};
 
-			this.stopMachine = (machine,params) => {
+			this.stopMachine = (machine) => {
 				machine.state='down';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 					if (error) this.throw_error('stop','Unable to stop machine');
-					else this.action_user('stop',params);
+					else this.action_user('stop',machine);
 				});
 			};
 

@@ -30,20 +30,19 @@ Meteor.startup(function () {
       switch (cmd) {
         // TEST CMD
         case "create_test":
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh -p 22000 iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        command="ssh nodetest@nodetest 'ssh -p 22000 iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
         break;
         case "stop_test":
-        command="ssh nodetest@nodetest 'docker exec  coordinator ssh -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        command="ssh nodetest@nodetest 'ssh -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
         break;
 
         // USER CMD
         case "stop_user":
-        // var r_split = params.split(" ");
-        // if(r_split.length!=1){
-        //   throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
-        // }
-        //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
-        command="echo stop_user "+params;
+        var r_split = params.machinename.split(" ");
+        if(r_split.length!=1){
+          throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
+        }
+        command="ssh client-iaas@"+params.dns+" 'ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
         break;
         case "create_user":
         // var r_split = params.split(" ");
