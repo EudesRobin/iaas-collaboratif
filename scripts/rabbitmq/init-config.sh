@@ -63,5 +63,3 @@ cd ..
 # creating rabbitmq config file
 config="[{rabbit, [{ssl_listeners, [5671]},{ssl_options, [{cacertfile,\"`pwd`/testca/cacert.pem\"},{certfile,\"`pwd`/server/cert.pem\"},{keyfile,\"`pwd`/server/key.pem\"},{verify,verify_peer},{fail_if_no_peer_cert,false}]}]}]."
 echo $config > rabbitmq.config
-
-sudo RABBITMQ_CONFIG_FILE=`pwd`/rabbitmq rabbitmq-server
