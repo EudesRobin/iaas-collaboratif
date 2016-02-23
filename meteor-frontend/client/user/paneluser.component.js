@@ -180,7 +180,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) this.throw_error('create','Unable to start machine');
-						else this.action_user('create',params);
+						else this.action_user('create',machine.dns+'-'+params);
 					});
 				}
 			};

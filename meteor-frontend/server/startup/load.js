@@ -45,6 +45,8 @@ Meteor.startup(function () {
         command="ssh client-iaas@"+params.dns+" 'ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
         break;
         case "create_user":
+        var dns = params.split("-")[0].split(" ");
+        var r_split=params.split("-")[1].split(" ");
         // var r_split = params.split(" ");
         // if(r_split.length!=6){
         //   throw new Meteor.Error(500,r_split.length,'Invalid parameters length');
@@ -85,8 +87,8 @@ Meteor.startup(function () {
         // }else{
         //   throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
         // }
-        //command="ssh nodetest@nodetest 'docker exec  coordinator ssh iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
-        command="echo start_user "+params;
+        command="echo ssh client-iaas@"+dns+"'ssh iaas@172.17.0.1 /home/iaas/start.sh "+r_split+"'";
+        //command="echo start_user "+params;
         break;
         case "remove_user":
         command="echo remove_user "+params;
