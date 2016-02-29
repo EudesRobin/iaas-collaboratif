@@ -18,7 +18,7 @@ scp ${1} iaas@172.17.0.1:./authorized_keys
 
 #====================================
 # Copy key to coordinator authorized_keys file 
-cat ${1} >> ~/.ssh/authorized_keys
+cat ${1} >> /home/iaas-client/.ssh/authorized_keys
 #====================================
 
 exit 0

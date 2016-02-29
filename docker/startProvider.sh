@@ -30,8 +30,11 @@ else
 	echo "SSH server already installed, skipping this step."
 fi
 
-sudo sed -i 's/Port 22/Port 22000/g' /etc/ssh/sshd_config	
-sudo service ssh restart
+isPortSet=$(grep "Port 22000" < /etc/ssh/sshd_config|wc -l)
+if [[ !($isPortSet == 1) ]];then
+	sudo sed -i 's/Port 22/Port 22000/g' /etc/ssh/sshd_config	
+	sudo service ssh restart
+fi
 #====================================
 
 

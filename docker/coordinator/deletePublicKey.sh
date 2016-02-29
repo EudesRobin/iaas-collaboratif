@@ -19,9 +19,9 @@ if [[ $isAuthorized_keysExisting == 1 ]];then
 
 	#====================================
 	# Remove public key existing in coordinator authorized key file
-	touch ~/.ssh/tmpkeys
-	cat ~/.ssh/authorized_keys | grep -v "$pub_key" > ~/.ssh/tmpkeys
-	mv ~/.ssh/tmpkeys ~/.ssh/authorized_keys
+	touch /home/iaas-client/.ssh/tmpkeys
+	cat /home/iaas-client/.ssh/authorized_keys | grep -v "$pub_key" > /home/iaas-client/.ssh/tmpkeys
+	mv /home/iaas-client/.ssh/tmpkeys /home/iaas-client/.ssh/authorized_keys
 	#====================================
 
 	echo "Done"
