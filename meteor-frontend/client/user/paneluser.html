@@ -53,6 +53,13 @@
 								</div>
 							</div></tr>
 							<tr><div class="form-group">
+								<td><label class="control-label">Number of cpu</label></td>
+								<div class="col-sm-10">
+									<td><input type="number" ng-model="user.newMachine.cpunumber" step="1" min="1" name="cpuNumber" required/>
+									</td>
+								</div>
+							</div></tr>
+							<tr><div class="form-group">
 								<td><label class="control-label">CPU (unit: Ghz)</label></td>
 								<div class="col-sm-10">
 									<td><input type="number" ng-model="user.newMachine.cpu" step="0.1" min="0.1" max="1000" name="cpu" required/>
