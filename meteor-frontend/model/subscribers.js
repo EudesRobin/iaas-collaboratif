@@ -178,12 +178,20 @@ Meteor.methods({
 			machine.state = "initial";
 
 			// return how many other instances userid are running at providerdns
-			function howmanyothers(providerdns,userid){
-				var tmp = Ressources.find({user_id: userid,dns: providerdns}).fetch();
-				return tmp[0].machines_ids.length-1;
+			function howmanyothers(machineid){
+				var providerdns = Ressources.find({machines_ids: machineid}).fetch()[0];
+				var cpt=0;
+				var userid = Meteor.userId();
+				// loop machines_ids on provider
+				for(i=0;i<providerdns.machines_ids.length;i++){
+					if(Machines.find({_id: providerdns.machines_ids[i]}).fetch().length>0){
+						if(Machines.find({_id: providerdns.machines_ids[i]}).fetch()[0].user_id===userid) cpt++;
+					}
+				}
+				return cpt;
 			};
 			var tmp = machine.machinename;
-			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine.dns,machine.user_id);
+			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			Machines.insert(machine); 

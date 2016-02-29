@@ -71,7 +71,6 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 			};
 
 			this.save = () => {
-				console.log(this.currentUser.username);
 				Meteor.users.update({_id: Meteor.userId()}, {
 					$set: {
 						emails: [this.currentUser.emails[0]],
