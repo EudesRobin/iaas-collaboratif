@@ -18,7 +18,7 @@
 							</p>
 						</form>
 					</div>
-					<div class="details text-center" >
+					<div class="details text-center" style="margin-bottom:30px;">
 						<h3>Actions [TESTING]</h3>
 						<p>
 							<div class="btn-group">
@@ -29,8 +29,16 @@
 							</div>
 						</p>
 					</div>
+					<div class="details text-center" >
+						<h3>Actions</h3>
+						<p>
+							<div class="btn-group">
+								<button type="button" class="btn btn-primary" ng-click="user.generate_all()">Generate all-in-one SSH config</button>
+							</div>
+						</p>
+					</div>
 				</div>
-				<div class="col-md-5 details text-center" style="margin-left:30px;" >
+				<div class="col-md-5 details text-center" style="margin-left:30px;margin-bottom:30px;" >
 					<h3>Ask for a new Machine</h3>
 					<form name="newMachineForm" class="form-horizontal">
 						<table class="table table-hover">
@@ -134,7 +142,7 @@
 									<button ng-click="user.deleteMachine(machine,'params remove todo')" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Remove</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Get SSH config file</button>
+									<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Generate SSH config file</button>
 								</div>
 							</div>
 						</td>
