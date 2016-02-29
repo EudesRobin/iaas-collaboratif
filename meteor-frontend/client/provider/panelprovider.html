@@ -138,6 +138,7 @@ $(document).on("click", ".modifprovider", function () {
 				<thead>
 					<tr>
 						<th>DNS</th>
+						<th>Number of CPU</th>
 						<th>CPU</th>
 						<th>RAM</th>
 						<th>Storage</th>
@@ -148,6 +149,7 @@ $(document).on("click", ".modifprovider", function () {
 				<tbody>
 					<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
 						<td style="vertical-align:middle">{{ressource.dns}}</td>
+						<td style="vertical-align:middle">{{ressource.cpunumber.total}}</td>
 						<td style="vertical-align:middle">{{ressource.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{ressource.ram.total}} GB</td>
 						<td style="vertical-align:middle">{{ressource.storage.total}} GB</td>
