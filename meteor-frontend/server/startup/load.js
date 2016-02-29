@@ -90,6 +90,9 @@ Meteor.startup(function () {
         command="echo ssh client-iaas@"+dns+"'ssh iaas@172.17.0.1 /home/iaas/start.sh "+r_split+"'";
         //command="echo start_user "+params;
         break;
+        // case "sendkey_user":
+        // command="echo remove_user "+params;
+        // break;
         case "remove_user":
         command="echo remove_user "+params;
         break;

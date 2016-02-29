@@ -179,7 +179,8 @@ Meteor.methods({
 
 			// return how many other instances userid are running at providerdns
 			function howmanyothers(providerdns,userid){
-				return Ressources.find({user_id: userid,dns: providerdns}).fetch()[0].machines_ids.length-1;
+				var tmp = Ressources.find({user_id: userid,dns: providerdns}).fetch();
+				return tmp[0].machines_ids.length-1;
 			};
 			var tmp = machine.machinename;
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine.dns,machine.user_id);
