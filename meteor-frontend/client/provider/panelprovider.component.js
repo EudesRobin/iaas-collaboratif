@@ -61,6 +61,7 @@ angular.module('iaas-collaboratif')
 			}
 
 			this.insertRessource = () => {
+				this.newRessource.cpunumber.available = this.newRessource.cpunumber.total;
 				this.newRessource.ram.available = this.newRessource.ram.total;
 				this.newRessource.storage.available = this.newRessource.storage.total;
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;

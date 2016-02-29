@@ -23,6 +23,10 @@ Schemas.Machines = new SimpleSchema({
 		type: Number, // in GHz
 		decimal: true
 	},
+	cpunumber : {
+		type: Number,
+		decimal: false
+	},
 	ram : {
 		type: Number, // in Gb
 		decimal: true

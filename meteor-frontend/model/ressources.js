@@ -13,6 +13,18 @@ var resValue = new SimpleSchema({
 		decimal: true
 	},
 })
+
+var resValueInt = new SimpleSchema({
+	available : {
+		type: Number,
+		decimal: false
+	},
+	total : {
+		type: Number,
+		decimal: false
+	},
+})
+
 Schemas.Ressources = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	user_id : {
@@ -21,6 +33,9 @@ Schemas.Ressources = new SimpleSchema({
 	},
 	cpu : {
 		type: Number,
+	},
+	cpunumber : {
+		type: resValueInt,
 	},
 	ram : {
 		type: resValue
