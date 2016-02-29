@@ -162,7 +162,7 @@ Meteor.methods({
 			"cpunumber.available": -machine.cpunumber		, 
 			"storage.available": -machine.storage		, 
 			"bandwidth.available": -machine.bandwidth	},
-			$push: {"machines_ids": machine._id					},
+			$push: {"machines_ids": machine._id			},
 		}, {
 			"upsert": false,
 			"multi": false
