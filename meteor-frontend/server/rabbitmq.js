@@ -30,5 +30,6 @@ Meteor.startup(function () {
 
 	function doWork (data) {
     	console.log(data);
+    	
 	}
 });
