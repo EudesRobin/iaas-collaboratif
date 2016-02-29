@@ -45,7 +45,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Number of CPU</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" name="cpuNumber" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" max="100000" name="cpuNumber" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">CPU (unit: Ghz)</label></td>
