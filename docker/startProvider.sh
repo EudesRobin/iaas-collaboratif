@@ -2,6 +2,8 @@
 
 
 #====================================
+# Checking if Docker is already installed
+
 isDockerInstalled=$(dpkg -l docker &> /dev/null && echo "1")
 
 if [[ !($isDockerInstalled == 1) ]];then
@@ -15,6 +17,23 @@ else
 	echo "Docker is already installed, skipping this step."
 fi	
 #====================================
+
+
+#====================================
+# Checking if SSH is already installed
+
+isSSHInstalled=$(sudo service ssh status &> /dev/null && echo "1")
+
+if [[ !($isSSHInstalled == 1) ]];then
+	sudo apt-get install openssh-server
+else
+	echo "SSH server already installed, skipping this step."
+fi
+
+sudo sed -i 's/Port 22/Port 22000/g' /etc/ssh/sshd_config	
+sudo service ssh restart
+#====================================
+
 
 #====================================
 # Create user and copy necessary files to user's home directory

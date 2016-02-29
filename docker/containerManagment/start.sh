@@ -68,7 +68,7 @@ do
 
 			#============================================
 			# Running docker containers
-			imgType="${3}$i"
+			imgType="${3}"
 			echo "Running ${imgType} with "$memorySoftLimit" of memory" 
 			docker run -ti -d -P --expose 22 --net=iaasnetwork -m $memoryHardLimit --memory-reservation $memorySoftLimit --cpuset-cpus="$cpuset" --name $imgType ${1}
 			docker cp ./authorized_keys $imgType:/root/.ssh/
