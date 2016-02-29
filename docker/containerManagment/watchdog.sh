@@ -68,5 +68,6 @@ while [ 1 ];do
 		k=$(( $k + 1 ))
 	done < watchdog.data
 	echo "]" >> instances.data
+	docker cp ./instances.data coordinator:./publisher/
 	sleep 30s
 done

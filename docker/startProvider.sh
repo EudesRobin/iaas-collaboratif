@@ -79,6 +79,22 @@ fi
 ./coordinatorStart.sh
 #====================================
 
+#====================================
+# Setting instance.data file which will be send by rabbitmq
+echo "[" >> ./instances.data
+docker ps -s | awk '{print $(NF-5),$(NF-4),$(NF-3)}' > ./watchdog.data
+while IFS=' '  read container size unit;do
+	if [[ !($k == 0) ]];then
+		docker inspect --type=container --size --format='{{json .}}' $container >> ./instances.data
+		echo "," >> ./instances.data
+	fi
+	k=$(( $k + 1 ))
+done < ./watchdog.data
+echo "]" >> ./instances.data
+docker cp ./instances.data coordinator:./
+sudo rm ./instances.data
+sudo rm ./watchdog.data
+#====================================
 
 #====================================
 # Build images
@@ -88,5 +104,7 @@ docker build -t debianssh ./images/debian/
 #====================================
 
 sudo /home/iaas/initializeCore.sh
+
+docker exec -d coordinator ./publisher/sendInformationAboutContainers.sh
 
 exit 0
