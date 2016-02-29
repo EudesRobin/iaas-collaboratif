@@ -184,7 +184,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 		this.startMachine = (machine) => {
 			this.save();
-			temp_machine = Ressources.find({_id: machine.ressource_id}).fetch()[0];
+			var temp_machine = Ressources.find({_id: machine.ressource_id}).fetch()[0];
 
 			if (temp_machine.usable){
 				machine.state='up';
