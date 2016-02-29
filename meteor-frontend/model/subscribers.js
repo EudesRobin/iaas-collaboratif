@@ -50,7 +50,7 @@ Subscriber.prototype.setFields = function(s) {
 							// options
 							icon: 'glyphicon glyphicon-remove-sign',
 							title: title+"<br>",
-							message: err,
+							message: err.details,
 						},{
 							//settings
 							type: 'danger',
