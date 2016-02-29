@@ -57,6 +57,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					this.currentUser.getSubscriber().allocate(this.newMachine);
 				// reset form
 				document.getElementById("machineType").value = "";
+				document.getElementById("nbmch").value = "";
 				this.newMachine={};
 			};
 

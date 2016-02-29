@@ -175,13 +175,12 @@ Meteor.methods({
 			machine.dns = myRessource[0].dns;
 			machine.state = "initial";
 
+			// return how many other instances userid are running at providerdns
 			function howmanyothers(providerdns,userid){
-				var temp_machine = Ressources.find({user_id: userid,dns: providerdns}).fetch();
-				return temp_machine.length-1;
+				return Ressources.find({user_id: userid,dns: providerdns}).fetch()[0].machines_ids.length-1;
 			};
 			var tmp = machine.machinename;
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine.dns,machine.user_id);
-			console.log(machine.machinename);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			Machines.insert(machine); 
