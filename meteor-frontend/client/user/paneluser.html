@@ -76,8 +76,9 @@
 						</table>
 						<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">You must enter a valid SSH public key first !</div>
+							<div ng-if="!user.currentUser.username" class="alert alert-danger">You must define your username first (see Profile section)</div>
 							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 0,1 ; max value : 1000</div>
-							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || keyForm.$invalid" style="margin: 0 auto;display: block;">Register</button>
+							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || !user.currentUser.subscriber.sshKey || !user.currentUser.username" style="margin: 0 auto;display: block;">Register</button>
 						</p>
 					</form>
 				</div>
