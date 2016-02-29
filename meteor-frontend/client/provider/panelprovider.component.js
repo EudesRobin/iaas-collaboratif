@@ -45,18 +45,27 @@ angular.module('iaas-collaboratif')
 
 			this.updateRessource=(rid) => {
 				var ressource = Ressources.find({_id:rid}).fetch()[0];
-				Ressources.update({_id: ressource._id}, {$set:{
-					dns:dns.value,cpu:Number(cpu.value),
-					cpunumber:{total:Number(cpuNumber.value),available:Number(cpuNumber.value)},
-					ram:{total:Number(ram.value),available:Number(ram.value)},
-					bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
-					storage:{total:Number(storage.value),available:Number(storage.value)}
-				}},(error) => {
-					if (error)this.throw_error('modify','Unable to modify properties');
-					else this.throw_success('modify','Domain properties modified');
+				if (dns.value!=""||cpuNumber.value!=""||cpu.value!=""||ram.value!=""||bandwidth.value!=""||storage.value!=""){
+					dns.value = dns.value==""? ressource.dns:dns.value;
+					cpuNumber.value = cpuNumber.value==""? ressource.cpunumber.total:cpuNumber.value;
+					cpu.value = cpu.value==""? ressource.cpu:cpu.value;
+					ram.value = ram.value==""? ressource.ram.total:ram.value;
+					bandwidth.value = bandwidth.value==""? ressource.bandwidth.total:bandwidth.value;
+					storage.value = storage.value==""? ressource.storage.total:storage.value;
+					Ressources.update({_id: ressource._id}, {$set:{
+						dns:dns.value,
+						cpunumber:{total:Number(cpuNumber.value),available:Number(cpuNumber.value)},
+						cpu:Number(cpu.value),
+						ram:{total:Number(ram.value),available:Number(ram.value)},
+						bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
+						storage:{total:Number(storage.value),available:Number(storage.value)}
+					}},(error) => {
+						if (error)this.throw_error('modify','Unable to modify properties');
+				else this.throw_success('modify','Domain properties modified');
 					// reset form
 					document.getElementById("modfmachine").reset();
 				});
+				}
 				$('#modify_machine').modal('hide');
 
 			}
