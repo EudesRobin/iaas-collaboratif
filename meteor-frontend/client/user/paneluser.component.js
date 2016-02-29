@@ -68,6 +68,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					if(err){
 						var title;
 						switch(cmd){
+							case "sendkey":
+							title = "Error sending key"
+							break;
 							case "create":
 							title = "Error creation instance"
 							break;
@@ -104,6 +107,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						// redef - 4debug
 						var msg="successful";
 						switch(cmd){
+							case "sendkey":
+							title = "Key sent<br>"
+							msg= response;
+							break;
 							case "create":
 							title = "Creation instance<br>"
 							msg= response;
@@ -174,18 +181,20 @@ angular.module('iaas-collaboratif').directive('user', function () {
 											});
 		};
 
-		this.startMachine = (machine,params) => {
-			this.save();
-			temp_machine = Ressources.find({_id: machine.ressource_id}).fetch();
 
-			if (temp_machine[0].usable){
+		this.startMachine = (machine) => {
+			this.save();
+			temp_machine = Ressources.find({_id: machine.ressource_id}).fetch()[0];
+
+			if (temp_machine.usable){
 				machine.state='up';
 				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 					if (error) this.throw_error('create','Unable to start machine');
-					else this.action_user('create',machine.dns+'-'+params);
+					else this.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+temp_machine.ram.total+'G');
 				});
 			}
 		};
+
 
 		this.stopMachine = (machine) => {
 			machine.state='down';
@@ -267,7 +276,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
 				ssh_string+='\tUser iaas-client\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
-				ssh_string+='\tIdentityFile ~/.ssh/client_pk';
+				ssh_string+='\tIdentityFile ~/.ssh/client_pk\n';
 			}
 
 			downloadURI(makeTextFile(ssh_string),'iaas-'+this.currentUser.username+'.config');

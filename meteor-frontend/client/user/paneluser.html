@@ -114,6 +114,7 @@
 						<th>Machine name</th>
 						<th>Machine type</th>
 						<th>Provider</th>
+						<th>Number of CPU</th>
 						<th>CPU</th>
 						<th>RAM</th>
 						<th>Storage</th>
@@ -126,6 +127,7 @@
 						<td style="vertical-align:middle">{{machine.machinename}}</td>
 						<td style="vertical-align:middle">{{machine.machinetype}}</td>
 						<td style="vertical-align:middle">{{machine.dns}}</td>
+						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
 						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{machine.ram}} Gb</td>
 						<td style="vertical-align:middle">{{machine.storage}} Gb</td>
@@ -133,7 +135,7 @@
 						<td>
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
-									<button ng-click="user.startMachine(machine,'params start todo')" class="btn btn-success centered" ng-disabled="keyForm.$invalid" style="margin: 0 auto;display: block;">Start</button>
+									<button ng-click="user.startMachine(machine)" class="btn btn-success centered" ng-disabled="keyForm.$invalid" style="margin: 0 auto;display: block;">Start</button>
 								</div>
 								<div class="btn-group">
 									<button ng-click="user.stopMachine(machine)" class="btn btn-warning centered" style="margin: 0 auto;display: block;">Stop</button>
