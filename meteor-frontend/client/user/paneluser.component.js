@@ -53,32 +53,33 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				else
 					this.newMachine.machinetype=this.machinetypeInput;
 				this.newMachine.machinename=this.currentUser.username;
-				this.currentUser.getSubscriber().allocate(this.newMachine);
-					// reset form
-					document.getElementById("machineType").value = "";
-					this.newMachine={};
-				};
+				for(i=0;i<this.machineNumber;i++)
+					this.currentUser.getSubscriber().allocate(this.newMachine);
+				// reset form
+				document.getElementById("machineType").value = "";
+				this.newMachine={};
+			};
 
 
-				this.action_user = (cmd,param) => {
-					cmd_concat=cmd+'_user';
-					Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
-						if(err){
-							var title;
-							switch(cmd){
-								case "create":
-								title = "Error creation instance"
-								break;
-								case "stop":
-								title = "Error kill instance"
-								break;
-								case "remove":
-								title = "Error remove instance"
-								break;						
-								default:
-								title = "Error unknown command"
-							}
-							$.notify({
+			this.action_user = (cmd,param) => {
+				cmd_concat=cmd+'_user';
+				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
+					if(err){
+						var title;
+						switch(cmd){
+							case "create":
+							title = "Error creation instance"
+							break;
+							case "stop":
+							title = "Error kill instance"
+							break;
+							case "remove":
+							title = "Error remove instance"
+							break;						
+							default:
+							title = "Error unknown command"
+						}
+						$.notify({
 							// options
 							icon: 'glyphicon glyphicon-remove-sign',
 							title: title+"<br>",
@@ -95,10 +96,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							'<span data-notify="message">{2}</span>' +
 							'</div>' ,
 						});
-						}
+					}
 
-						if(response){
-							var title;
+					if(response){
+						var title;
 						// redef - 4debug
 						var msg="successful";
 						switch(cmd){
