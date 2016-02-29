@@ -30,10 +30,10 @@ Meteor.startup(function () {
       switch (cmd) {
         // TEST CMD
         case "create_test":
-        command="ssh nodetest@nodetest 'ssh -p 22000 iaas@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        command="ssh iaas-client@nodetest 'ssh -p 22000 iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"'";
         break;
         case "stop_test":
-        command="ssh nodetest@nodetest 'ssh -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        command="ssh iaas-client@nodetest 'ssh -p 22000 iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params+"'";
         break;
 
         // USER CMD
@@ -42,61 +42,57 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command="ssh client-iaas@"+params.dns+" 'ssh iaas@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
+        command="ssh iaas-client@"+params.dns+" 'ssh iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
         break;
         case "create_user":
         var dns = params.split("-")[0].split(" ");
         var r_split=params.split("-")[1].split(" ");
-        // var r_split = params.split(" ");
-        // if(r_split.length!=6){
-        //   throw new Meteor.Error(500,r_split.length,'Invalid parameters length');
-        // }
-        // // Number of containers to be launched
-        // if(!isInt(r_split[1])){
-        //   throw new Meteor.Error(500,r_split[1],'Invalid number of containers');
-        // }
-        // // Memory of 1 container soft limit
-        // var sub_str=r_split[3].split("");
-        // var l_sub_str=sub_str.length;
-        // if(l_sub_str<2){
-        //   throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter');
-        // }
-        // // check unit
-        // if(["b","k","m","g"].indexOf(sub_str[l_sub_str-1].toLowerCase())+1){
-        //   if(!isInt(r_split[3].split(sub_str[l_sub_str-1])[0])){
-        //     throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter - Invalid limit value');
-        //   }
-        // }else{
-        //   throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter - Invalid Unit');
-        // }
-        // // Number of CPU going to be used by 1 container
-        // if(!isInt(r_split[4])){
-        //   throw new Meteor.Error(500,r_split[4],'Invalid value of CPU used by 1 container');
-        // }
-        // // Memory available set by the collaborator hard limit
-        // var sub2_str=r_split[5].split("");
-        // var l_sub2_str=sub2_str.length;
-        // if(l_sub2_str<2){
-        //   throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter');
-        // }
-        // // check unit
-        // if(["b","k","m","g"].indexOf(sub2_str[l_sub2_str-1].toLowerCase())+1){
-        //   if(!isInt(r_split[5].split(sub2_str[l_sub2_str-1])[0])){
-        //     throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid limit value');
-        //   }
-        // }else{
-        //   throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
-        // }
-        command="echo ssh client-iaas@"+dns+"'ssh iaas@172.17.0.1 /home/iaas/start.sh "+r_split+"'";
+        var r_split = params.split(" ");
+        if(r_split.length!=6){
+          throw new Meteor.Error(500,r_split.length,'Invalid parameters length');
+        }
+        // Number of containers to be launched
+        if(!isInt(r_split[1])){
+          throw new Meteor.Error(500,r_split[1],'Invalid number of containers');
+        }
+        // Memory of 1 container soft limit
+        var sub_str=r_split[3].split("");
+        var l_sub_str=sub_str.length;
+        if(l_sub_str<2){
+          throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter');
+        }
+        // check unit
+        if(["b","k","m","g"].indexOf(sub_str[l_sub_str-1].toLowerCase())+1){
+          if(!isInt(r_split[3].split(sub_str[l_sub_str-1])[0])){
+            throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter - Invalid limit value');
+          }
+        }else{
+          throw new Meteor.Error(500,r_split[3],'Invalid memory container parameter - Invalid Unit');
+        }
+        // Number of CPU going to be used by 1 container
+        if(!isInt(r_split[4])){
+          throw new Meteor.Error(500,r_split[4],'Invalid value of CPU used by 1 container');
+        }
+        // Memory available set by the collaborator hard limit
+        var sub2_str=r_split[5].split("");
+        var l_sub2_str=sub2_str.length;
+        if(l_sub2_str<2){
+          throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter');
+        }
+        // check unit
+        if(["b","k","m","g"].indexOf(sub2_str[l_sub2_str-1].toLowerCase())+1){
+          if(!isInt(r_split[5].split(sub2_str[l_sub2_str-1])[0])){
+            throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid limit value');
+          }
+        }else{
+          throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
+        }
+        command="echo ssh iaas-client@"+dns+"'ssh iaas-admin@172.17.0.1 /home/iaas/start.sh "+r_split+"'";
         //command="echo start_user "+params;
         break;
-        // case "sendkey_user":
-        // command="echo remove_user "+params;
-        // break;
         case "remove_user":
         command="echo remove_user "+params;
         break;
-
         default:
         throw_error('unknown command','nothing to say');
       }
