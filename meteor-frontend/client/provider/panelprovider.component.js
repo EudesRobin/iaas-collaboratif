@@ -47,6 +47,7 @@ angular.module('iaas-collaboratif')
 				var ressource = Ressources.find({_id:rid}).fetch()[0];
 				Ressources.update({_id: ressource._id}, {$set:{
 					dns:dns.value,cpu:Number(cpu.value),
+					cpunumber:{total:Number(cpuNumber.value),available:Number(cpuNumber.value)},
 					ram:{total:Number(ram.value),available:Number(ram.value)},
 					bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
 					storage:{total:Number(storage.value),available:Number(storage.value)}

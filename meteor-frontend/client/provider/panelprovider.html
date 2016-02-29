@@ -3,6 +3,7 @@ $(document).on("click", ".modifprovider", function () {
 	var rsc = $(this).data('rsc');
 	$(".modal-body #rid").val(rsc._id);
 	$(".modal-body #dns").attr("placeholder",rsc.dns);
+	$(".modal-body #cpuNumber").attr("placeholder", rsc.cpunumber.total );
 	$(".modal-body #cpu").attr("placeholder", rsc.cpu );
 	$(".modal-body #storage").attr("placeholder", rsc.storage.total );
 	$(".modal-body #ram").attr("placeholder",rsc.ram.total );
@@ -96,6 +97,10 @@ $(document).on("click", ".modifprovider", function () {
 										<tr>
 											<td><label class="control-label">Domain name</label></td>
 											<td><input type="text" id="dns" ng-model="ressource.dns" name="dns" placeholder="" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])" required/></td>
+										</tr>
+										<tr>
+											<td><label class="control-label">Number of CPU</label></td>
+											<td><input type="number" id="cpuNumber" ng-model="ressource.cpunumber.total" placeholder="" step="1" min="1" max="100000" name="cpuNumber" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">CPU (unit: Ghz)</label></td>
