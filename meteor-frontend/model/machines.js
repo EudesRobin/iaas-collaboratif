@@ -56,6 +56,11 @@ Schemas.Machines = new SimpleSchema({
 		allowedValues: ["providerdown", "up", "down"],
 		optional: true	
 	},
+	rabbitmq: {
+      type: [Object], 
+      optional: true,
+      blackbox: true 
+	}
 });
 
 /**

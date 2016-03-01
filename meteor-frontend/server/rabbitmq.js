@@ -16,7 +16,6 @@ Meteor.startup(function () {
 			    ch.consume(queue, function(msg) {
 			      	if (msg) 
 			      	{
-			      		// data = JSON.parse(msg.content.toString());
 			      		data = (msg.content.toString());
     					console.log(msg);
 			        	doWork(data)
@@ -30,6 +29,40 @@ Meteor.startup(function () {
 
 	function doWork (data) {
     	console.log(data);
-    	
+		instances = JSON.parse(data);
+    	instances.forEach(function (instance) {
+    		if (instance.Name === "/coordinator")
+    		{
+    			// do something
+    		} 
+    		else if (instance.Name === "/shinken")
+    		{
+    			// do something
+    		}
+    		else
+    		{
+    			var name = instance.Name.split("-");
+    			var username = name[0];
+    			var dns = name[1];
+    			var nb_machine = name[2];
+
+    			var ressource = Ressources.find({dns: dns}).fetch();
+    			if (ressource.length > 1) throw new Error("More than one DNS per ressource");
+    			
+    			// updating the ressource state to USABLE
+    			Ressources.update({ressource: ressource._id}, {
+    				$set:{usable: true}
+    			})
+
+    			// updating machine infos
+    			Machines.update({machinename: instance.Name}, {
+    				$set: 
+    				{
+    					"storage.availabe": instance.SizeRw / (1000*1000*1000), // Octets / 10^9
+    					"rabbitmq": instance
+    				}
+    			})
+    		}
+    	})
 	}
 });
