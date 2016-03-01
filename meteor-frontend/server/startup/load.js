@@ -106,8 +106,9 @@ Meteor.startup(function () {
       });
       return future.wait();
     },
-    isRessourceUsable: function (ressourceid) {
-      return Ressources.find({_id: ressourceid}).fetch()[0].usable;
+    getRamAndUsableFromRessource: function (ressourceid) {
+      var tmp=Ressources.find({_id: ressourceid}).fetch()[0];
+      return {ram:tmp.ram,usable:tmp.usable};
     }
   });
 });

@@ -184,20 +184,23 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 		this.startMachine = (machine) => {
 			this.save();
-			var temp_machine = Ressources.find({_id: machine.ressource_id}).fetch()[0];
-
-			Meteor.call('isRessourceUsable',machine.ressource_id, function (err, response) {
+			var action_user=this.action_user;
+			var throw_error=this.throw_error;
+			console.log('Ma machine: ',action_user);
+			Meteor.call('getRamAndUsableFromRessource',machine.ressource_id, function (err, response) {
 				if(err){
 					console.log('Problem to find data on the ressource: ',err);
 					return;
 				}
 
 				if(response){
-					machine.state='up';
-					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (error) this.throw_error('create','Unable to start machine');
-						else this.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+temp_machine.ram.total+'G');
-					});
+					if(response.usable){
+						machine.state='up';
+						Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
+							if (error) throw_error('create','Unable to start machine');
+							else action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+response.ram+'G');
+						});
+					}
 				}
 			});
 		};
