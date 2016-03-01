@@ -16,16 +16,11 @@ Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Lo�
 How to use it ?
 ---------------
     .
-    ├── examples
     ├── LICENCE.md
     ├── meteor-frontend
     ├── README.html
     ├── README.md
     └── scripts
-
-**examples :**
-A folder containing an example of webui dashbord (rdash) with bootstrap. Not related or used by our webui, it's just an example.
-Might be deleted later.
 
 **scripts :**
 A folder where you will find few bash scripts to setup/start/stop meteor, start the project, and some others stuffs. A more detailed README.md file in this folder will explain how to use them.
