@@ -50,7 +50,7 @@ Schemas.Machines = new SimpleSchema({
 	},
 	state : {
 		type: String, 
-		allowedValues: ["initial", "up", "down"],
+		allowedValues: ["providerdown", "up", "down"],
 		optional: true	
 	},
 });

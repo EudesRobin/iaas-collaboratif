@@ -113,7 +113,6 @@
 					<tr>
 						<th>Machine name</th>
 						<th>Machine type</th>
-						<th>Provider</th>
 						<th>Number of CPU</th>
 						<th>CPU</th>
 						<th>RAM</th>
@@ -126,7 +125,6 @@
 					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
 						<td style="vertical-align:middle">{{machine.machinename}}</td>
 						<td style="vertical-align:middle">{{machine.machinetype}}</td>
-						<td style="vertical-align:middle">{{machine.dns}}</td>
 						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
 						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{machine.ram}} Gb</td>

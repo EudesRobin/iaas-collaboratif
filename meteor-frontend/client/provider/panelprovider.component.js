@@ -168,7 +168,6 @@ angular.module('iaas-collaboratif')
 				for(i=0;i<ressource.machines_ids.length;i++){
 					Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
 						if (error) this.throw_error('stop','Unable to make domain offline 1/2');
-						else this.throw_success('stop','Domain is offline 1/2!')
 					});
 					 //console.log(Machines.find({_id: ressource.machines_ids[i]}.state));
 					}

@@ -42,7 +42,7 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command="ssh iaas-client@"+params.dns+" 'ssh iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
+        command="echo ssh iaas-client@"+params.dns+" 'ssh iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
         break;
         case "create_user":
         var dns = params.split("-")[0].split(" ");
@@ -108,7 +108,7 @@ Meteor.startup(function () {
     },
     getRamAndUsableFromRessource: function (ressourceid) {
       var tmp=Ressources.find({_id: ressourceid}).fetch()[0];
-      return {ram:tmp.ram,usable:tmp.usable};
+      return {ram:tmp.ram.total,usable:tmp.usable};
     }
   });
 });

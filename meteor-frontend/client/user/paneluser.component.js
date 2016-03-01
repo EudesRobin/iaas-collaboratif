@@ -34,7 +34,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				if(machine.state==="up"){
 					return "success";
 				}
-				else if(machine.state==="initial"){
+				else if(machine.state==="providerdown"){
 					return "warning";
 				}
 				else{
@@ -150,6 +150,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 		this.throw_error = (cmd,params) => {
 			var title;
 			switch(cmd){
+				case "allocate":
+				title = "Provider not found"
+				break;
 				case "create":
 				title = "Error creation instance"
 				break;
@@ -181,26 +184,77 @@ angular.module('iaas-collaboratif').directive('user', function () {
 											});
 		};
 
+		this.throw_success = (cmd,param) => {
+				var title;
+				var msg=param;
+				switch(cmd){
+					case "reallocate":
+					title = "Reallocate try<br>"
+					break;
+					default:
+					title = "Unknown command"
+				}
+				$.notify({
+				            // options
+				            icon: 'glyphicon glyphicon-ok-sign',
+				            title: title,
+				            message: msg,
+				        },{
+				            //settings
+				            type: 'success',
+				            newest_on_top: true,
+				            allow_dismiss: true,
+				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				            '<span data-notify="icon"></span> ' +
+				            '<span data-notify="title">{1}</span> ' +
+				            '<span data-notify="message">{2}</span>' +
+				            '</div>' ,
+				        });
+			};
+
+
+		this.getRamAndUsableFromRessource = (ressource_id, cb) => {
+			var res;
+			var self=this;
+			Meteor.call('getRamAndUsableFromRessource',ressource_id, function (err, response) {
+				if(err){
+					self.throw_error('allocate','The provider does not exist anymore.')
+				}
+				return cb(err, response);
+			});
+		}
 
 		this.startMachine = (machine) => {
 			this.save();
-			var action_user=this.action_user;
-			var throw_error=this.throw_error;
-			console.log('Ma machine: ',action_user);
-			Meteor.call('getRamAndUsableFromRessource',machine.ressource_id, function (err, response) {
-				if(err){
-					console.log('Problem to find data on the ressource: ',err);
-					return;
+			var self = this;
+			this.getRamAndUsableFromRessource(machine.ressource_id, function (err, resourceRamUsable) {
+				if(!err){
+					if(!resourceRamUsable) return;
 				}
 
-				if(response){
-					if(response.usable){
-						machine.state='up';
-						Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-							if (error) throw_error('create','Unable to start machine');
-							else action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+response.ram+'G');
+				if(err || !resourceRamUsable.usable){
+					self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
+					machine.machinename=self.currentUser.username;
+					self.currentUser.getSubscriber().reallocate(machine, function(err){
+						self.getRamAndUsableFromRessource(machine.ressource_id, function (err, resourceRamUsable) {
+							if(!resourceRamUsable) return;
+							console.log(resourceRamUsable);
+							if(resourceRamUsable.usable){
+								machine.state='up';
+								Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
+									if (error) self.throw_error('create','Unable to start machine');
+									else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+								});
+							}
 						});
-					}
+					});
+				}else{
+					machine.state='up';
+					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
+						if (error) self.throw_error('create','Unable to start machine');
+						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+					});
 				}
 			});
 		};

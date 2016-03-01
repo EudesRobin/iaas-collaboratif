@@ -41,11 +41,58 @@ Subscriber.prototype.setFields = function(s) {
   	return Machines.find()
   };
 
+  Subscriber.prototype.reallocate = function(machine, cb) {
+  	Meteor.call("reallocate", Meteor.userId(), machine, function(err, response){
+  		if(err){
+  			var title = "Error reallocation";
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-remove-sign',
+							title: title+"<br>",
+							message: err.details,
+						},{
+							//settings
+							type: 'danger',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}else{
+  			var title ="Reallocation";
+  			var msg="successful";
+
+  			$.notify({
+							// options
+							icon: 'glyphicon glyphicon-ok-sign',
+							title: title,
+							message: msg,
+						},{
+							//settings
+							type: 'success',
+							newest_on_top: true,
+							allow_dismiss: true,
+							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+							'<span data-notify="icon"></span> ' +
+							'<span data-notify="title">{1}</span> ' +
+							'<span data-notify="message">{2}</span>' +
+							'</div>' ,
+						});
+  		}
+		return cb(err);
+
+  	})
+};
+
   Subscriber.prototype.allocate = function(machine) {
   	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
   		if(err){
   			var title = "Error allocation";
-  			console.log(err);
   			$.notify({
 							// options
 							icon: 'glyphicon glyphicon-remove-sign',
@@ -138,14 +185,46 @@ Subscriber.prototype.desallocate = function(machine) {
 };
 
 Meteor.methods({
+	reallocate: function(userId, machine) {
+		if (Meteor.isClient){
+			function realloc(){
+				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
+				// TRANSACTION-PART 1
+				var ok;
+				ok = Machines.remove( new_machine._id);
+				if (ok)
+				{
+					// TRANSACTION-PART 2
+					ok = Ressources.update({
+						_id: new_machine.ressource_id
+					}, {
+						$inc : {"ram.available": new_machine.ram				,
+						"cpunumber.available": new_machine.cpunumber		,
+						"storage.available": new_machine.storage		,
+						"bandwidth.available": new_machine.bandwidth	},
+						$pull: {"machines_ids": new_machine._id					},
+					}, {
+						"upsert": false,
+						"multi": false
+					});
+
+					throwError(500,"desallocate","Failed to update Ressources database");
+				}
+				else
+				{
+					throwError(500,"desallocate","Failed to update Machine database");
+				}
+
+				Meteor.call('allocate',userId,machine);
+
+			}
+			setTimeout(realloc,1000);
+		}
+	},
 	allocate: function(userId, machine) {
 		machine = machine || {};
-		machine._id = Meteor.uuid();
-		machine.cpu = machine.cpu || 1;
-		machine.ram = machine.ram || 1;
-		machine.storage = machine.storage || 1;
-		machine.bandwidth = machine.bandwidth || 1;
-		machine.dns = machine.dns || "default.com";
+		machine._id = machine._id || Meteor.uuid();
+
 		var query = {
 			"cpu" : 		{$gte: machine.cpu			}, 
 			"cpunumber.available" : {$gte: machine.cpunumber	}, 
@@ -170,12 +249,12 @@ Meteor.methods({
 
 		if (ok) 
 		{
-			var myRessource = Ressources.find({machines_ids: machine._id}).fetch()
+			var myRessource = Ressources.find({machines_ids: machine._id}).fetch();
 			if (myRessource.length !== 1) throwError(500,"allocate","Could not allocate a machine. Something went wrong");
 			machine.user_id = userId;
 			machine.ressource_id = myRessource[0]._id;
 			machine.dns = myRessource[0].dns;
-			machine.state = "initial";
+			machine.state = "down";
 
 			// return how many other instances userid are running at providerdns
 			function howmanyothers(machineid){
@@ -194,7 +273,9 @@ Meteor.methods({
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
-			Machines.insert(machine); 
+			machine = {_id:machine._id,cpunumber: machine.cpunumber,cpu: machine.cpu, ram: machine.ram, storage: machine.storage, bandwidth:machine.bandwidth, machinetype:machine.machinetype,
+				machinename:machine.machinename, user_id:machine.user_id, ressource_id:machine.ressource_id, dns:machine.dns, state:machine.state};
+			Machines.insert(machine,{"modifier": true}); 
 			return "DONE";
 		}
 		else 
@@ -211,7 +292,8 @@ Meteor.methods({
 			setTimeout(function(){
 				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
 				// TRANSACTION-PART 1
-				var ok= Machines.remove( new_machine._id);
+				var ok;
+				ok = Machines.remove( new_machine._id);
 				if (ok)
 				{
 					// TRANSACTION-PART 2
