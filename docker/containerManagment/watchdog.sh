@@ -42,6 +42,8 @@ fi
 #========================================================
 while [ 1 ];do
 	k=0
+	containerNumber=$(docker ps|wc -l)
+	containerNumber=$(( $containerNumber - 1 ))
 	rm watchdog.data
 	rm instances.data
 	echo "[" >> instances.data
@@ -49,7 +51,9 @@ while [ 1 ];do
 	while IFS=' '  read container size unit;do
 		if [[ !($k == 0) ]];then
 			docker inspect --type=container --size --format='{{json .}}' $container >> instances.data
-			echo "," >> instances.data
+			if [[ !($k == $containerNumber) ]];then
+			echo "," >> ./instances.data
+			fi
 			size=${size%.*}
 			if [[ "$unit" == "GB" ]];then
 				size=$(( $size * 1024 * 1024 * 1024 ))
@@ -68,6 +72,7 @@ while [ 1 ];do
 		k=$(( $k + 1 ))
 	done < watchdog.data
 	echo "]" >> instances.data
+
 	docker cp ./instances.data coordinator:./publisher/
 	sleep 30s
 done

@@ -22,6 +22,9 @@ RUN ssh-keygen -q -N "" -t rsa -f ~/.ssh/id_rsa
 
 ADD ./frontend.pub ./
 
+ADD ./copyKey.sh ./
+RUN ./copyKey.sh
+
 RUN adduser --disabled-password --gecos "" iaas-admin
 
 RUN mkdir /home/iaas-admin/.ssh/ && \
@@ -32,12 +35,10 @@ RUN mkdir /home/iaas-admin/.ssh/ && \
     chown iaas-admin:iaas-admin /home/iaas-admin/.ssh/authorized_keys && \
     cp ./frontend.pub /home/iaas-admin/.ssh/authorized_keys
 
-ADD ./copyKey.sh ./
+
 ADD ./dividePublicKey.sh ./
 ADD ./deletePublicKey.sh ./
 ADD ./sendInformationAboutContainers.sh ./
-
-RUN ./copyKey.sh
 
 RUN adduser --disabled-password --gecos "" iaas-client && \
     mkdir /home/iaas-client/.ssh/ && \
