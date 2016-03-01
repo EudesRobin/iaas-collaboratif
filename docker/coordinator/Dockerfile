@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y openssh-server
-RUN apt-get install -y sshpass curl
+RUN apt-get install -y sshpass curl nano cron
 RUN mkdir /var/run/sshd
 
 #Install node
@@ -38,7 +38,8 @@ RUN mkdir /home/iaas-admin/.ssh/ && \
 
 ADD ./dividePublicKey.sh ./
 ADD ./deletePublicKey.sh ./
-ADD ./sendInformationAboutContainers.sh ./
+
+RUN (crontab -l 2>/dev/null; echo "* * * * * node /publisher/publish.js /publisher/instances.data && sleep 30 && node /publisher/publish.js /publisher/instances.data") | crontab -
 
 RUN adduser --disabled-password --gecos "" iaas-client && \
     mkdir /home/iaas-client/.ssh/ && \
