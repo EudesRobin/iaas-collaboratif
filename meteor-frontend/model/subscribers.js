@@ -89,7 +89,7 @@ Subscriber.prototype.setFields = function(s) {
   	})
 };
 
-  Subscriber.prototype.allocate = function(machine) {
+  Subscriber.prototype.allocate = function(machine, cb) {
   	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
   		if(err){
   			var title = "Error allocation";
@@ -110,7 +110,9 @@ Subscriber.prototype.setFields = function(s) {
 							'<span data-notify="message">{2}</span>' +
 							'</div>' ,
 						});
-  		}else{
+  		}
+  		else
+  		{
   			var title ="Allocation";
   			var msg="successful";
 
@@ -132,13 +134,15 @@ Subscriber.prototype.setFields = function(s) {
 							'</div>' ,
 						});
   		}
+  		return cb(err, response);
   	})
 };
 
 //At server end, it's not authorised to run an operation related to client, here Machines so replace it to object machine
-Subscriber.prototype.desallocate = function(machine) {
+Subscriber.prototype.desallocate = function(machine, cb) {
 	Meteor.call("desallocate", Meteor.userId(), machine, function(err, response){
-  		if(err){
+  		if(err)
+  		{
   			var title = "Error desallocation";
   			$.notify({
 							// options
@@ -158,8 +162,8 @@ Subscriber.prototype.desallocate = function(machine) {
 							'</div>' ,
 						});
   		}
-
-  		if(response){
+  		else 
+  		{
   			var title ="Desallocation";
   			var msg="successful";
 
@@ -181,46 +185,47 @@ Subscriber.prototype.desallocate = function(machine) {
 							'</div>' ,
 						});
   		}
+  		return cb(err, response);
 	})
 };
 
 Meteor.methods({
-	reallocate: function(userId, machine) {
-		if (Meteor.isClient){
-			function realloc(){
-				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
-				// TRANSACTION-PART 1
-				var ok;
-				ok = Machines.remove( new_machine._id);
-				if (ok)
-				{
-					// TRANSACTION-PART 2
-					ok = Ressources.update({
-						_id: new_machine.ressource_id
-					}, {
-						$inc : {"ram.available": new_machine.ram				,
-						"cpunumber.available": new_machine.cpunumber		,
-						"storage.available": new_machine.storage		,
-						"bandwidth.available": new_machine.bandwidth	},
-						$pull: {"machines_ids": new_machine._id					},
-					}, {
-						"upsert": false,
-						"multi": false
-					});
+	// reallocate: function(userId, machine) {
+	// 	console.log('WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this)
+	// 	// if (Meteor.isClient){
+	// 		function realloc(){
+	// 			var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
+	// 			// TRANSACTION-PART 1
+	// 			var ok;
+	// 			ok = Machines.remove( new_machine._id);
+	// 			if (ok)
+	// 			{
+	// 				// TRANSACTION-PART 2
+	// 				ok = Ressources.update({
+	// 					_id: new_machine.ressource_id
+	// 				}, {
+	// 					$inc : {"ram.available": new_machine.ram				,
+	// 					"cpunumber.available": new_machine.cpunumber		,
+	// 					"storage.available": new_machine.storage		,
+	// 					"bandwidth.available": new_machine.bandwidth	},
+	// 					$pull: {"machines_ids": new_machine._id					},
+	// 				}, {
+	// 					"upsert": false,
+	// 					"multi": false
+	// 				});
 
-					throwError(500,"desallocate","Failed to update Ressources database");
-				}
-				else
-				{
-					throwError(500,"desallocate","Failed to update Machine database");
-				}
+	// 				throwError(500,"desallocate","Failed to update Ressources database");
+	// 			}
+	// 			else
+	// 			{
+	// 				throwError(500,"desallocate","Failed to update Machine database");
+	// 			}
+	// 			Meteor.call('allocate',userId,machine);
 
-				Meteor.call('allocate',userId,machine);
-
-			}
-			setTimeout(realloc,1000);
-		}
-	},
+	// 		}
+	// 		setTimeout(realloc,1000);
+	// 	// }
+	// },
 	allocate: function(userId, machine) {
 		machine = machine || {};
 		machine._id = machine._id || Meteor.uuid();
@@ -258,7 +263,7 @@ Meteor.methods({
 
 			// return how many other instances userid are running at providerdns
 			function howmanyothers(machineid){
-				var providerdns = Ressources.find({machines_ids: machineid}).fetch()[0];
+				var providerdns = Ressources.findOne({machines_ids: machineid});
 				var cpt=0;
 				var userid = Meteor.userId();
 				// loop machines_ids on provider
@@ -269,14 +274,14 @@ Meteor.methods({
 				}
 				return cpt;
 			};
-			var tmp = machine.machinename;
+			// var tmp = machine.machinename;
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			machine = {_id:machine._id,cpunumber: machine.cpunumber,cpu: machine.cpu, ram: machine.ram, storage: machine.storage, bandwidth:machine.bandwidth, machinetype:machine.machinetype,
 				machinename:machine.machinename, user_id:machine.user_id, ressource_id:machine.ressource_id, dns:machine.dns, state:machine.state};
-			Machines.insert(machine,{"modifier": true}); 
-			return "DONE";
+			Machines.insert(machine); 
+			return {err: null, machine: machine};
 		}
 		else 
 		{
@@ -288,36 +293,38 @@ Meteor.methods({
 
 	desallocate: function(userId, machine) {
 
-		if (Meteor.isClient){
-			setTimeout(function(){
-				var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
-				// TRANSACTION-PART 1
-				var ok;
-				ok = Machines.remove( new_machine._id);
-				if (ok)
-				{
-					// TRANSACTION-PART 2
-					ok = Ressources.update({
-						_id: new_machine.ressource_id
-					}, {
-						$inc : {"ram.available": new_machine.ram				,
-						"cpunumber.available": new_machine.cpunumber		,
-						"storage.available": new_machine.storage		,
-						"bandwidth.available": new_machine.bandwidth	},
-						$pull: {"machines_ids": new_machine._id					},
-					}, {
-						"upsert": false,
-						"multi": false
-					});
+		var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
+		// TRANSACTION-PART 1
+		var ok;
+		ok = Machines.remove( new_machine._id);
+		if (ok)
+		{
+			// TRANSACTION-PART 2
+			ok = Ressources.update({
+				_id: new_machine.ressource_id
+			}, {
+				$inc : {"ram.available": new_machine.ram				,
+				"cpunumber.available": new_machine.cpunumber		,
+				"storage.available": new_machine.storage		,
+				"bandwidth.available": new_machine.bandwidth	},
+				$pull: {"machines_ids": new_machine._id					},
+			}, {
+				"upsert": false,
+				"multi": false
+			});
 
-					throwError(500,"desallocate","Failed to update Ressources database");
-				}
-				else
-				{
-					throwError(500,"desallocate","Failed to update Machine database");
-				}
+			if (! ok) {
+				throwError(500,"desallocate","Failed to update Ressources database");
+				return {err: "Failed to update Ressources database"}
+			}
+			return {err: null, ok_ressource:Ressources.find({machines_ids: machine._id}).fetch().length == 0 , ok_machine: Machines.find({_id: machine._id, user_id: userId}).fetch().length == 0}
 
-			},1000);
+		}
+		else
+		{
+			Machine.insert(new_machine);
+			throwError(500,"desallocate","Failed to update Machine database");
+			return {err: "Failed to update Machine database"}
 		}
 
 	}

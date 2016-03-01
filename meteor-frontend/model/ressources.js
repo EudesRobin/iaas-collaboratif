@@ -56,7 +56,8 @@ Schemas.Ressources = new SimpleSchema({
 	},
 	usable : {
 		type: Boolean,
-		optional: true	
+		optional: true,
+		defaultValue: false
 	},
 	machines_ids : {
 		type: [String],
