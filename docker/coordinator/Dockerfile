@@ -18,8 +18,6 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
 
-RUN ssh-keygen -q -N "" -t rsa -f ~/.ssh/id_rsa
-
 ADD ./frontend.pub ./
 
 ADD ./copyKey.sh ./
@@ -49,6 +47,8 @@ RUN adduser --disabled-password --gecos "" iaas-client && \
     chmod 600 home/iaas-client/.ssh/authorized_keys && \
     chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys && \
     cp ./frontend.pub /home/iaas-client/.ssh/authorized_keys
+
+RUN ssh-keygen -q -N "" -t rsa -f home/iaas-admin/.ssh/id_rsa
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
