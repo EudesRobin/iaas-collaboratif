@@ -58,7 +58,7 @@ Meteor.startup(function () {
     			Machines.update({machinename: instance.Name}, {
     				$set: 
     				{
-    					"storage.availabe": instance.SizeRw / (1000*1000*1000), // Octets / 10^9
+    					// "storage.availabe": instance.SizeRw / (1000*1000*1000), // Octets / 10^9
     					"rabbitmq": instance
     				}
     			})
