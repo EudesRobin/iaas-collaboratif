@@ -34,10 +34,14 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-client@'+params.dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-admin@172.17.0.1 /home/iaas/stop.sh '+params.machinename+"'";
+        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" -o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" iaas-client@'+params.dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh '+params.machinename+"'";
         break;
         case "create_user":
-        var dns = params.split(" ")[2].split("-")[1];
+        var dns = params.split(" ")[2].split("-");
+        dns.splice(0,1);
+        dns.splice(dns.length-1,1);
+        dns = dns.join("-");
+        
         var r_split=params.split("-")[1].split(" ");
         var r_split = params.split(" ");
         if(r_split.length!=7){
@@ -95,7 +99,7 @@ Meteor.startup(function () {
           throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
         }
 
-        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-client@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-admin@172.17.0.1 /home/iaas/start.sh '+params+"'";
+        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-client@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/start.sh '+params+"'";
         break;
         default:
         throw_error('unknown command','nothing to say');

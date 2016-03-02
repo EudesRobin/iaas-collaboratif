@@ -70,8 +70,8 @@ Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
 
 Ressources.allow({
 	insert: function(userId,doc) {return userId && doc.user_id === userId;},
-    update: function(userId, doc, fieldNames, modifier) {console.log("update", "userId", userId, Meteor.userId(), "doc", doc, "fieldNames", fieldNames, "modifier", modifier);return userId && doc.user_id === userId && ! _.contains(fieldNames, 'machines_ids') },
-    remove: function(userId,doc) {console.log("remove", "userId", userId, "doc", doc); return userId && userId === doc.user_id;},
+    update: function(userId, doc, fieldNames, modifier) {return userId && doc.user_id === userId && ! _.contains(fieldNames, 'machines_ids') },
+    remove: function(userId,doc) {return userId && userId === doc.user_id;},
     fetch: ["user_id"]
 })
 
