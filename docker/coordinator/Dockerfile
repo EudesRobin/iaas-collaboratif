@@ -20,9 +20,6 @@ RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/ssh
 
 ADD ./frontend.pub ./
 
-ADD ./copyKey.sh ./
-RUN ./copyKey.sh
-
 RUN adduser --disabled-password --gecos "" iaas-admin
 
 RUN mkdir /home/iaas-admin/.ssh/ && \
@@ -49,6 +46,9 @@ RUN adduser --disabled-password --gecos "" iaas-client && \
     cp ./frontend.pub /home/iaas-client/.ssh/authorized_keys
 
 RUN ssh-keygen -q -N "" -t rsa -f home/iaas-admin/.ssh/id_rsa && chown -R iaas-admin:iaas-admin home/iaas-admin/.ssh
+
+ADD ./copyKey.sh ./
+RUN ./copyKey.sh
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
