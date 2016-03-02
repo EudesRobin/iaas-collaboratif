@@ -3,7 +3,7 @@
 
 #==============================================
 # Check existing images
-isShinkenBuilt=$(docker images | grep shinken | wc -l)
+#isShinkenBuilt=$(docker images | grep shinken | wc -l)
 isCoordinatorBuilt=$(docker images | grep coordinator | wc -l)
 #==============================================
 
@@ -34,11 +34,11 @@ else
 		echo "Using already built coordinator's image"
 	fi
 
-	if [[ (! $isShinkenBuilt == 1) ]];then
-		echo "Building monitoring system"
-		docker build -t shinken ./docker_shinken/shinken_thruk_graphite/
-	else
-		echo "Using already built shinken's image"
-	fi
+	#if [[ (! $isShinkenBuilt == 1) ]];then
+	#	echo "Building monitoring system"
+	#	docker build -t shinken ./docker_shinken/shinken_thruk_graphite/
+	#else
+	#	echo "Using already built shinken's image"
+	#fi
 fi
 #==============================================

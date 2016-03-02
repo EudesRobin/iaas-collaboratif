@@ -47,7 +47,8 @@ RUN adduser --disabled-password --gecos "" iaas-client && \
     chown iaas-client:iaas-client /home/iaas-client/.ssh && \
     chmod -R 700 /home/iaas-client/.ssh/ && \
     chmod 600 home/iaas-client/.ssh/authorized_keys && \
-    chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys
+    chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys && \
+    cp ./frontend.pub /home/iaas-client/.ssh/authorized_keys
 
 ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile

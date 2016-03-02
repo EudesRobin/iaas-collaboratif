@@ -29,7 +29,17 @@ fi
 # Run containers
 echo "Running containers"
 docker run -ti -p 22:22 --expose 22 --net=iaasnetwork --name coordinator -d coordinator
-docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
+#We found out a new monitoring system that seems to be more that enough for what we need
+docker run --net=iaasnetwork \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+#docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
 #==============================================
 
 exit 0
