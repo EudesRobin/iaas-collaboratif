@@ -233,19 +233,18 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					// reallocating the ressource
 					self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
 					machine.machinename=self.currentUser.username;
-
 					self.currentUser.getSubscriber().desallocate(machine, function (err, resp) {
 						if (err) return console.error("Failed to reallocate, desallocation failed", err);
 						self.currentUser.getSubscriber().allocate(machine, function (err, new_machine) {
 							if (err) return console.error("Failed to reallocate, allocation failed", err);
-
 							self.getRamAndUsableFromRessource(new_machine.machine.ressource_id, function (err, isItAvailable) {
 								if(err) return console.error("An error occured while reallocating the machine", err);
 								if(isItAvailable.usable){
-									machine.state='up';
 									Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 										if (error) self.throw_error('create','Unable to start machine');
-										else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+										else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G',function(){
+											machine.state='up';
+										});
 									});
 								}
 							});	
@@ -253,10 +252,12 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					})
 				}
 				else{
-					machine.state='up';
+					
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) self.throw_error('create','Unable to start machine');
-						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G',function(){
+							machine.state='up';
+						});
 					});
 				}
 			});
@@ -264,10 +265,11 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 
 		this.stopMachine = (machine) => {
-			machine.state='down';
 			Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 				if (error) this.throw_error('stop','Unable to stop machine');
-				else this.action_user('stop',machine);
+				else this.action_user('stop',machine,function(){
+					machine.state='down';
+				});
 			});
 		};
 
