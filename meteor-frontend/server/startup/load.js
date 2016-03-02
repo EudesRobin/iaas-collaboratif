@@ -30,10 +30,10 @@ Meteor.startup(function () {
       switch (cmd) {
         // TEST CMD
         case "create_test":
-        command="ssh iaas-client@nodetest 'ssh -p 22000 iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"'";
+        command="ssh -o \"StrictHostKeyChecking no\" iaas-client@nodetest \'ssh -o \"StrictHostKeyChecking no\" -p 22000 iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"\'";
         break;
         case "stop_test":
-        command="ssh iaas-client@nodetest 'ssh -p 22000 iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params+"'";
+        command="ssh -o \"StrictHostKeyChecking no\" iaas-client@nodetest \'ssh -o \"StrictHostKeyChecking no\" -p 22000 iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params+"\'";
         break;
 
         // USER CMD
@@ -42,10 +42,10 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command="echo ssh iaas-client@"+params.dns+" 'ssh iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"'";
+        command="echo ssh -o \"StrictHostKeyChecking no\" iaas-client@"+params.dns+" \'ssh -o "+"\"StrictHostKeyChecking no\" iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"\'";
         break;
         case "create_user":
-        var dns = params.split("-")[0].split(" ");
+        var dns = params.split(" ")[2].split("-")[1];
         var r_split=params.split("-")[1].split(" ");
         var r_split = params.split(" ");
         if(r_split.length!=6){
@@ -87,11 +87,7 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
         }
-        command="echo ssh iaas-client@"+dns+"'ssh iaas-admin@172.17.0.1 /home/iaas/start.sh "+r_split+"'";
-        //command="echo start_user "+params;
-        break;
-        case "remove_user":
-        command="echo remove_user "+params;
+        command="echo ssh -o \"StrictHostKeyChecking no\" iaas-client@"+dns+" \'ssh -o "+"\"StrictHostKeyChecking no\" iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"\'";
         break;
         default:
         throw_error('unknown command','nothing to say');
