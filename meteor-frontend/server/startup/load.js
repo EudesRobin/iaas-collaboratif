@@ -106,12 +106,10 @@ Meteor.startup(function () {
       });
       return future.wait();
     },
-    getRamAndUsableFromRessource: function (ressourceid) {
-      console.log("Here my received parameters", ressourceid)
+    getInfoFromRessource: function (ressourceid) {
       var tmp=Ressources.findOne({_id: ressourceid});
-      console.log("Here my result", tmp)
       if (tmp)
-        return {err: null, ram: tmp.ram.total,usable:tmp.usable};
+        return {err: null, ram: tmp.ram.total, storage: tmp.storage.total,usable:tmp.usable};
       return {err: "No ressource found"};
     }
   });
