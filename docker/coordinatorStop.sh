@@ -18,4 +18,6 @@ docker stop coordinator
 docker rm coordinator
 #========================================================
 
+crontab -l | grep -v '* * * * * /home/iaas/watchdog.sh && sleep 30 && /home/iaas/watchdog.sh' | crontab -
+
 exit 0

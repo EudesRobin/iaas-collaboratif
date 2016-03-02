@@ -18,6 +18,7 @@ else
 fi	
 #====================================
 
+sudo apt-get install cron
 
 #====================================
 # Checking if SSH is already installed
@@ -111,5 +112,10 @@ docker build -t debianssh ./images/debian/
 sudo /home/iaas/initializeCore.sh
 
 docker exec -d coordinator ./publisher/sendInformationAboutContainers.sh
+
+#====================================
+#Create new cron job that will execute watchdog
+(crontab -l 2>/dev/null; echo "* * * * * /home/iaas/watchdog.sh && sleep 30 && /home/iaas/watchdog.sh") | crontab -
+#====================================
 
 exit 0
