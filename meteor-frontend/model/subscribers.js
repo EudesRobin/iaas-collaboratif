@@ -41,54 +41,6 @@ Subscriber.prototype.setFields = function(s) {
   	return Machines.find()
   };
 
-  Subscriber.prototype.reallocate = function(machine, cb) {
-  	Meteor.call("reallocate", Meteor.userId(), machine, function(err, response){
-  		if(err){
-  			var title = "Error reallocation";
-  			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-remove-sign',
-							title: title+"<br>",
-							message: err.details,
-						},{
-							//settings
-							type: 'danger',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
-  		}else{
-  			var title ="Reallocation";
-  			var msg="successful";
-
-  			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-ok-sign',
-							title: title,
-							message: msg,
-						},{
-							//settings
-							type: 'success',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
-  		}
-		return cb(err);
-
-  	})
-};
-
   Subscriber.prototype.allocate = function(machine, cb) {
   	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
   		if(err){
