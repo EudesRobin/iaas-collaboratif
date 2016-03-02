@@ -19,8 +19,8 @@ containerNb=$(docker ps | grep "${1}" | wc -l)
 coreNumber=$(cat /proc/cpuinfo | grep 'core id' | uniq | wc -l)
 
 k=1
-while IFS=, read xx yy zz;do
-	tab[k]=$zz
+while IFS=, read cpu use name sd;do
+	tab[k]=$name
     k=$(($k + 1))
 done < coreFile.data
 

@@ -44,7 +44,7 @@ RUN (crontab -l 2>/dev/null; echo "* * * * * node /publisher/publish.js /publish
 RUN adduser --disabled-password --gecos "" iaas-client && \
     mkdir /home/iaas-client/.ssh/ && \
     touch home/iaas-client/.ssh/authorized_keys && \
-    chown iaas-client:iaas-client /home/iaas-admin/.ssh && \
+    chown iaas-client:iaas-client /home/iaas-client/.ssh && \
     chmod -R 700 /home/iaas-client/.ssh/ && \
     chmod 600 home/iaas-client/.ssh/authorized_keys && \
     chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys

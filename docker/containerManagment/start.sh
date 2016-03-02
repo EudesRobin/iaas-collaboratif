@@ -11,6 +11,7 @@ if [[ "${1}" == "help" ]];then
 	echo 4. Memory of 1 container \(don\'t forget unit\)
 	echo 5. Number of CPU going to be used by 1 container
 	echo 6. Memory available set by the collaborator \(don\'t forget unit\)
+	echo 7. Maximum space disk use by the instance \(don\'t forget unit\)
 	exit 0
 fi
 #========================================================
@@ -51,8 +52,8 @@ do
 	#=====================================================
 	#Checking used proc
 	k=1
-	while IFS=, read xx yy;do
-		tab[k]=$yy
+	while IFS=, read cpu use name sd;do
+		tab[k]=$use
 	     k=$(($k + 1))
 	done < coreFile.data
 	#====================================================
@@ -78,7 +79,7 @@ do
 				# Updating CPU usage in coreFile.data
 				id=$(( $j - $l ))
 				cpu="cpu$id"
-				sed -i 's/\('${cpu}',\).*/\11,'${imgType}'/' ./coreFile.data
+				sed -i 's/\('${cpu}',\).*/\11,'${imgType}','${7}'/' ./coreFile.data
 				#========================================
 			done
 			
