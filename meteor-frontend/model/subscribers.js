@@ -190,42 +190,6 @@ Subscriber.prototype.desallocate = function(machine, cb) {
 };
 
 Meteor.methods({
-	// reallocate: function(userId, machine) {
-	// 	console.log('WAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', this)
-	// 	// if (Meteor.isClient){
-	// 		function realloc(){
-	// 			var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
-	// 			// TRANSACTION-PART 1
-	// 			var ok;
-	// 			ok = Machines.remove( new_machine._id);
-	// 			if (ok)
-	// 			{
-	// 				// TRANSACTION-PART 2
-	// 				ok = Ressources.update({
-	// 					_id: new_machine.ressource_id
-	// 				}, {
-	// 					$inc : {"ram.available": new_machine.ram				,
-	// 					"cpunumber.available": new_machine.cpunumber		,
-	// 					"storage.available": new_machine.storage		,
-	// 					"bandwidth.available": new_machine.bandwidth	},
-	// 					$pull: {"machines_ids": new_machine._id					},
-	// 				}, {
-	// 					"upsert": false,
-	// 					"multi": false
-	// 				});
-
-	// 				throwError(500,"desallocate","Failed to update Ressources database");
-	// 			}
-	// 			else
-	// 			{
-	// 				throwError(500,"desallocate","Failed to update Machine database");
-	// 			}
-	// 			Meteor.call('allocate',userId,machine);
-
-	// 		}
-	// 		setTimeout(realloc,1000);
-	// 	// }
-	// },
 	allocate: function(userId, machine) {
 		machine = machine || {};
 		machine._id = machine._id || Meteor.uuid();
