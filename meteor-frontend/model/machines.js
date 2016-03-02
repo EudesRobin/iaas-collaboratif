@@ -58,10 +58,10 @@ Schemas.Machines = new SimpleSchema({
 Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
 
 	Machines.allow({
-		insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
-    	update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
-    	remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
-    	fetch: []
+		insert: function(userId,doc) {return userId && doc.user_id === userId;},
+    	update: function(userId, doc, fieldNames, modifier) {return userId && doc.user_id === userId;},
+    	remove: function(userId,doc) {return userId && doc.user_id === userId;},
+    	fetch: ["user_id"]
 	})
 
 Machine = function (opts) {
