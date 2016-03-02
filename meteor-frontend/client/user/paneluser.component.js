@@ -214,8 +214,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 
-		this.getRamAndUsableFromRessource = (ressource_id, cb) => {
-			Meteor.call('getRamAndUsableFromRessource',ressource_id, function (err, response) {
+		this.getInfoFromRessource = (ressource_id, cb) => {
+			Meteor.call('getInfoFromRessource',ressource_id, function (err, response) {
 				if(err){
 					self.throw_error('allocate','The provider does not exist anymore.')
 				}
@@ -226,9 +226,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 		this.startMachine = (machine) => {
 			this.save();
 			var self = this;
-			this.getRamAndUsableFromRessource(machine.ressource_id, function (err, resourceRamUsable) {
-				if(err || resourceRamUsable.err) return console.error("An error occured while checking provider state", err)
-				if(! resourceRamUsable.usable)
+			this.getInfoFromRessource(machine.ressource_id, function (err, resourceInfo) {
+				if(err || resourceInfo.err) return console.error("An error occured while checking provider state", err)
+				if(! resourceInfo.usable)
 				{
 					// reallocating the ressource
 					self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
@@ -239,13 +239,13 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						self.currentUser.getSubscriber().allocate(machine, function (err, new_machine) {
 							if (err) return console.error("Failed to reallocate, allocation failed", err);
 
-							self.getRamAndUsableFromRessource(new_machine.machine.ressource_id, function (err, isItAvailable) {
+							self.getInfoFromRessource(new_machine.machine.ressource_id, function (err, isItAvailable) {
 								if(err) return console.error("An error occured while reallocating the machine", err);
 								if(isItAvailable.usable){
 									machine.state='up';
 									Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 										if (error) self.throw_error('create','Unable to start machine');
-										else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+										else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G');
 									});
 								}
 							});	
@@ -256,7 +256,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) self.throw_error('create','Unable to start machine');
-						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
+						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G');
 					});
 				}
 			});

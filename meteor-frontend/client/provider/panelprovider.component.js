@@ -172,13 +172,13 @@ angular.module('iaas-collaboratif')
 
 			this.deleteRessource = (ressource) => {
 				for(i=0;i<ressource.machines_ids.length;i++){
-					Machines.remove({_id: ressource.machines_ids[i]}, (error) => {
-						if (error) this.throw_error('remove','Unable to remove machine');
+					Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
+						if (error) this.throw_error('stop','Unable to make domain offline 1/2');
 					});
 					 //console.log(Machines.find({_id: ressource.machines_ids[i]}.state));
 				}
 				Ressources.remove({_id: ressource._id},(error) => {
-					if (error) this.throw_error('remove','Unable to remove domain');
+					if (error) this.throw_error('remove','Unable to remove domain 2/2');
 					else this.throw_success('remove','Domain is removed !')
 				});
 			};
