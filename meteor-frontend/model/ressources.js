@@ -69,10 +69,10 @@ Schemas.Ressources = new SimpleSchema({
 Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
 
 Ressources.allow({
-	insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
-    update: function(userId, doc, fieldNames, modifier) {return userId && Meteor.userId() === userId;},
-    remove: function(userId,doc) {return userId && Meteor.userId() === userId;},
-    fetch: []
+	insert: function(userId,doc) {return userId && doc.user_id === userId;},
+    update: function(userId, doc, fieldNames, modifier) {console.log("update", "userId", userId, Meteor.userId(), "doc", doc, "fieldNames", fieldNames, "modifier", modifier);return userId && doc.user_id === userId && ! _.contains(fieldNames, 'machines_ids') },
+    remove: function(userId,doc) {console.log("remove", "userId", userId, "doc", doc); return userId && userId === doc.user_id;},
+    fetch: ["user_id"]
 })
 
 Ressource = function (opts) {
@@ -90,3 +90,17 @@ if (Meteor.isServer) {
 if (Meteor.isClient) {
 	Meteor.subscribe("ressources");
 }
+
+Meteor.methods({
+
+	stopRessource: function (ressource_id) {
+		var ressource = Ressources.findOne({_id: ressource_id, user_id: Meteor.userId()})
+		ressource.machines_ids.forEach(function(machine_id){
+			Machines.update({_id: machine_id}, {$set:{state:'down'}});
+		});
+
+		ressource.usable=false;
+		Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}});
+	}
+					
+})

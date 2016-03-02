@@ -164,28 +164,19 @@ angular.module('iaas-collaboratif')
 			};
 
 			this.stopRessource = (ressource) => {
-				ressource.usable=false;
-				for(i=0;i<ressource.machines_ids.length;i++){
-					Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
-						if (error) this.throw_error('stop','Unable to make domain offline 1/2');
-					});
-					 //console.log(Machines.find({_id: ressource.machines_ids[i]}.state));
-				}
-				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
-					if (error) this.throw_error('stop','Unable to make domain offline 2/2');
-					else this.throw_success('stop','Domain is offline 2/2!')
-				});
+				Meteor.call("stopRessource", ressource._id, function(err, res){
+					if (err) return console.error("Failed to stop the ressource", err);
+					console.log("Ressource is stopped and machines set to down")
+				})
 			};
 
 			this.deleteRessource = (ressource) => {
-				for(i=0;i<ressource.machines_ids.length;i++){
-					Machines.update({_id: ressource.machines_ids[i]}, {$set:{state:'down'}}, (error) => {
-						if (error) this.throw_error('stop','Unable to make domain offline 1/2');
-					});
-					 //console.log(Machines.find({_id: ressource.machines_ids[i]}.state));
-				}
+				Meteor.call("stopRessource", ressource._id, function(err, res){
+					if (err) return console.error("Failed to stop the ressource", err);
+					console.log("Ressource is stopped and machines set to down")
+				})
 				Ressources.remove({_id: ressource._id},(error) => {
-					if (error) this.throw_error('remove','Unable to remove domain 2/2');
+					if (error) this.throw_error('remove','Unable to remove domain');
 					else this.throw_success('remove','Domain is removed !')
 				});
 			};

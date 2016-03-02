@@ -28,27 +28,19 @@ Meteor.startup(function () {
       }
 
       switch (cmd) {
-        // TEST CMD
-        case "create_test":
-        command="ssh -o \"StrictHostKeyChecking no\" iaas-client@nodetest \'ssh -o \"StrictHostKeyChecking no\" -p 22000 iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"\'";
-        break;
-        case "stop_test":
-        command="ssh -o \"StrictHostKeyChecking no\" iaas-client@nodetest \'ssh -o \"StrictHostKeyChecking no\" -p 22000 iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params+"\'";
-        break;
-
         // USER CMD
         case "stop_user":
         var r_split = params.machinename.split(" ");
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command="echo ssh -o \"StrictHostKeyChecking no\" iaas-client@"+params.dns+" \'ssh -o "+"\"StrictHostKeyChecking no\" iaas-admin@172.17.0.1 /home/iaas/stop.sh "+params.machinename+"\'";
+        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-client@'+params.dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-admin@172.17.0.1 /home/iaas/stop.sh '+params.machinename+"'";
         break;
         case "create_user":
         var dns = params.split(" ")[2].split("-")[1];
         var r_split=params.split("-")[1].split(" ");
         var r_split = params.split(" ");
-        if(r_split.length!=6){
+        if(r_split.length!=7){
           throw new Meteor.Error(500,r_split.length,'Invalid parameters length');
         }
         // Number of containers to be launched
@@ -87,7 +79,23 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[5],'Invalid memory container parameter - Hardlimit - Invalid unit');
         }
-        command="echo ssh -o \"StrictHostKeyChecking no\" iaas-client@"+dns+" \'ssh -o "+"\"StrictHostKeyChecking no\" iaas-admin@172.17.0.1 /home/iaas/start.sh "+params+"\'";
+
+        // Storage param
+        var sub3_str=r_split[6].split("");
+        var l_sub3_str=sub3_str.length;
+        if(l_sub2_str<2){
+          throw new Meteor.Error(500,r_split[6],'Invalid memory container parameter');
+        }        
+        // check unit
+        if(["b","k","m","g"].indexOf(sub3_str[l_sub3_str-1].toLowerCase())+1){
+          if(!isInt(r_split[6].split(sub3_str[l_sub3_str-1])[0])){
+            throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid limit value');
+          }
+        }else{
+          throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
+        }
+
+        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-client@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=10" iaas-admin@172.17.0.1 /home/iaas/start.sh '+params+"'";
         break;
         default:
         throw_error('unknown command','nothing to say');
