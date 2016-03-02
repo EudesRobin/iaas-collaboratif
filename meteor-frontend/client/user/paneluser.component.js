@@ -224,32 +224,25 @@ angular.module('iaas-collaboratif').directive('user', function () {
 		}
 
 		this.startMachine = (machine) => {
-			console.log("STARTING MACHINE", machine)
-
 			this.save();
 			var self = this;
 			this.getRamAndUsableFromRessource(machine.ressource_id, function (err, resourceRamUsable) {
 				if(err || resourceRamUsable.err) return console.error("An error occured while checking provider state", err)
 				if(! resourceRamUsable.usable)
 				{
-					console.log("Reallocating process shall begin", machine)
 					// reallocating the ressource
 					self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
 					machine.machinename=self.currentUser.username;
 
 					self.currentUser.getSubscriber().desallocate(machine, function (err, resp) {
 						if (err) return console.error("Failed to reallocate, desallocation failed", err);
-						console.log("Desallocating from current ressource", resp)
 						self.currentUser.getSubscriber().allocate(machine, function (err, new_machine) {
 							if (err) return console.error("Failed to reallocate, allocation failed", err);
-							console.log("Allocating a new ressource", new_machine)
 
 							self.getRamAndUsableFromRessource(new_machine.machine.ressource_id, function (err, isItAvailable) {
 								if(err) return console.error("An error occured while reallocating the machine", err);
-								console.log("Cheching that this new ressource is available", isItAvailable)
 								if(isItAvailable.usable){
 									machine.state='up';
-									console.log("Machine going to start --> YESSS", machine)
 									Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 										if (error) self.throw_error('create','Unable to start machine');
 										else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceRamUsable.ram+'G');
@@ -259,9 +252,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						})
 					})
 				}
-				else
-				{
-					console.log("Machine going to start", machine)
+				else{
 					machine.state='up';
 					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 						if (error) self.throw_error('create','Unable to start machine');
