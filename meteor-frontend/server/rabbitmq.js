@@ -2,7 +2,7 @@ Meteor.startup(function () {
 	var amqp = Meteor.npmRequire('amqplib/callback_api')
 	var channel = null
 
-	var url = "amqp://guest:guest@localhost:5672";
+	var url = "amqp://guest:guest@backtobaz.no-ip.org:5672";
 	var queue = "coordinators";
 	amqp.connect(url, function(err, conn) {
 	    if (err != null) return console.error("AMQP - Failed to create a connection", err);
