@@ -109,19 +109,19 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						switch(cmd){
 							case "sendkey":
 							title = "Key sent<br>"
-							msg= response;
+							//msg= response;
 							break;
 							case "create":
 							title = "Creation instance<br>"
-							msg= response;
+							//msg= response;
 							break;
 							case "stop":
 							title = "Kill instance<br>"
-							msg= response;
+							//msg= response;
 							break;
 							case "remove":
 							title = "Remove instance<br>"
-							msg=response;
+							//msg=response;
 							break;
 							default:
 							title = "Unknown command"

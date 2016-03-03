@@ -103,7 +103,6 @@ Meteor.startup(function () {
         var getket = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
         var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@backtobaz.no-ip.org \'/dividePublicKey.sh /home/iaas-client/toto.pub\' 2>/dev/null ; ';
         var create_instance = 'ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/start.sh '+params+" ' ";
-        console.log(create_instance);
         command= getket+addk_instance+create_instance;
         break;
         default:
