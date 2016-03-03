@@ -128,7 +128,7 @@
 						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
 						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
 						<td style="vertical-align:middle">{{machine.ram}} Gb</td>
-						<td style="vertical-align:middle">{{machine.storage}} Gb</td>
+						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} Gb</td>
 						<td style="vertical-align:middle">{{machine.bandwidth}} Mbps</td>
 						<td>
 							<div class="btn-toolbar" role="toolbar">
