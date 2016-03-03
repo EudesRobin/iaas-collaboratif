@@ -23,7 +23,7 @@ Archive content
 
  - containerManagment: *contains all the scripts which are copied to iaas user home and will be used to manage containers*
  - coordinator: *contains Dockerfile and script to initialize coordinator image*
- - docker_shinken: *contains Dockerfiles and scripts to initialize monitoring image*
+ - docker_shinken: *contains Dockerfiles and scripts to initialize monitoring image (note: we now use cAdvisor to monitor our containers)*
  - images: *contains Dockerfiles and scripts to initialize main images (ubuntu, debian, centos)*
 
 How to use the scripts?
@@ -47,7 +47,7 @@ How to use the scripts?
 
 		> ./coordinatorBuild.sh update coordinator
 
-	- Update shinken image
+	- Update shinken image (this is not necessary anymore since we use cAdvisor)
 
 		> ./coordinatorBuild.sh update shinken
 
