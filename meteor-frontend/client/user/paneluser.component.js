@@ -68,9 +68,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					if(err){
 						var title;
 						switch(cmd){
-							case "sendkey":
-							title = "Error sending key"
-							break;
 							case "create":
 							title = "Error creation instance"
 							break;
@@ -104,24 +101,16 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 					if(response){
 						var title;
-						// redef - 4debug
 						var msg="successful";
 						switch(cmd){
-							case "sendkey":
-							title = "Key sent<br>"
-							//msg= response;
-							break;
 							case "create":
 							title = "Creation instance<br>"
-							//msg= response;
 							break;
 							case "stop":
 							title = "Kill instance<br>"
-							//msg= response;
 							break;
 							case "remove":
 							title = "Remove instance<br>"
-							//msg=response;
 							break;
 							default:
 							title = "Unknown command"
@@ -306,16 +295,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			}
 
 			var ssh_string='# Host is an alias , Hostname is the name of the user instance\n';
-			ssh_string+='# We presume that you private key is  ~/.ssh/client_pk\n';
+			ssh_string+='# We presume that you private key is  ~/.ssh/id_rsa\n';
 			ssh_string+='# To ssh your instance : type the following command\n';
 			ssh_string+='# ssh -F iaas-'+machine.machinename+'.config '+machine.machinename+'\n';
 			ssh_string+='Host '+machine.machinename+'\n';
 			ssh_string+='\tHostname '+machine.machinename+'\n';
 			ssh_string+='\tStrictHostKeyChecking no\n';
-			ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
-			ssh_string+='\tUser iaas-client\n';
-			ssh_string+='\tStrictHostKeyChecking no\n';
-			ssh_string+='\tIdentityFile ~/.ssh/client_pk';
+			ssh_string+='\tProxyCommand  ssh -i ~/.ssh/id_rsa iaas-client@'+machine.dns+' netcat %h %p\n';
+			ssh_string+='\tUser root\n';
 
 			downloadURI(makeTextFile(ssh_string),'iaas-'+machine.machinename+'.config');
 		};
@@ -342,7 +329,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 			var ssh_string="";
 			ssh_string+='# Host is an alias , Hostname is the name of the user instance\n';
-			ssh_string+='# We presume that you private key is  ~/.ssh/client_pk\n';
+			ssh_string+='# We presume that you private key is  ~/.ssh/id_rsa\n';
 			ssh_string+='# To ssh your instance :\n';
 			ssh_string+='# ssh -F <config_file> <instance_name>\n';
 
@@ -352,10 +339,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				ssh_string+='Host '+machine.machinename+'\n';
 				ssh_string+='\tHostname '+machine.machinename+'\n';
 				ssh_string+='\tStrictHostKeyChecking no\n';
-				ssh_string+='\tProxyCommand  ssh -o "StrictHostKeyChecking no" -i "~/.ssh/client_pk" iaas-client@'+machine.dns+' netcat -w 120 %h %p\n';
-				ssh_string+='\tUser iaas-client\n';
-				ssh_string+='\tStrictHostKeyChecking no\n';
-				ssh_string+='\tIdentityFile ~/.ssh/client_pk\n';
+				ssh_string+='\tProxyCommand  ssh -i ~/.ssh/id_rsa iaas-client@'+machine.dns+' netcat %h %p\n';
+				ssh_string+='\tUser root\n';
 			}
 
 			downloadURI(makeTextFile(ssh_string),'iaas-'+this.currentUser.username+'.config');
