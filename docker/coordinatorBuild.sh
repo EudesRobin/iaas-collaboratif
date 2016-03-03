@@ -19,7 +19,7 @@ if [[ "${1}" == "update" ]];then
 	fi
 	if [[ "${2}" == "all" ]];then
 		docker build -t coordinator ./coordinator/
-		docker build -t shinken ./docker_shinken/shinken_thruk_graphite/
+		#docker build -t shinken ./docker_shinken/shinken_thruk_graphite/
 	fi
 #========================================================
 else
