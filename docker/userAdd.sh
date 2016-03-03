@@ -31,7 +31,9 @@ existingInitializeScript=$(ls /home/iaas/|grep initializeCore.sh|wc -l)
 existingStartScript=$(ls /home/iaas/|grep start.sh|wc -l)
 existingStopScript=$(ls /home/iaas/|grep stop.sh|wc -l)
 existingWatchDog=$(ls /home/iaas/|grep watchdog.sh|wc -l)
-existingBandwidth=$(ls /home/iaas/|grep limitBandwidth.sh.sh|wc -l)
+existingBandwidth=$(ls /home/iaas/|grep limitBandwidth.sh|wc -l)
+existingcpkey=$(ls /home/iaas/|grep cp_key.sh|wc -l)
+
 if [[ (! $existingInitializeScript == 1) ]];then
 	sudo cp -pr ./containerManagment/initializeCore.sh /home/iaas/
 fi
@@ -46,6 +48,9 @@ if [[ (! $existingWatchDog == 1) ]];then
 fi
 if [[ (! $existingBandwidth == 1) ]];then
 	sudo cp -pr ./containerManagment/limitBandwidth.sh /home/iaas/
+fi
+if [[ (! $existingcpkey == 1) ]];then
+	sudo cp -pr ./containerManagment/cp_key.sh /home/iaas/
 fi
 #===================================
 
