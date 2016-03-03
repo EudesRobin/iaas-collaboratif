@@ -1,7 +1,7 @@
 FROM debian:latest
 
 RUN apt-get update && apt-get install -y openssh-server
-RUN apt-get install -y sshpass curl nano cron
+RUN apt-get install -y sshpass curl nano cron netcat
 RUN mkdir /var/run/sshd
 
 #Install node
