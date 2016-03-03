@@ -22,6 +22,8 @@ if [[ $isAuthorized_keysExisting == 1 ]];then
 	touch /home/iaas-client/.ssh/tmpkeys
 	cat /home/iaas-client/.ssh/authorized_keys | grep -v "$pub_key" > /home/iaas-client/.ssh/tmpkeys
 	mv /home/iaas-client/.ssh/tmpkeys /home/iaas-client/.ssh/authorized_keys
+	chmod 600 home/iaas-client/.ssh/authorized_keys
+    chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys
 	#====================================
 
 	echo "Done"
