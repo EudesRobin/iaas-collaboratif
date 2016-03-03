@@ -28,21 +28,21 @@
     <div id="sidebar-wrapper" >
         <ul class="sidebar-nav">
             <li>
-                <a href="/">Homepage</a>
+                <a href="/" onClick="$('html, body').animate({scrollTop: 0}, 0);">Homepage</a>
             </li>
             <div ng-if="isLoggedIn">
               <li>
-                  <a href="/profile" >Profile</a>
+                  <a href="/profile" onClick="$('html, body').animate({scrollTop: 0}, 0);" >Profile</a>
               </li>
 	            <li>
-	                <a href="/user" >Client</a>
+	                <a href="/user" onClick="$('html, body').animate({scrollTop: 0}, 0);" >Client</a>
 	            </li>
 	            <li>
-	                <a href="/provider">Provider</a>
+	                <a href="/provider" onClick="$('html, body').animate({scrollTop: 0}, 0);">Provider</a>
 	            </li>
             </div>
             <li>
-                <a href="/help">Wiki/Help</a>
+                <a href="/help" onClick="$('html, body').animate({scrollTop: 0}, 0);">Wiki/Help</a>
             </li>
         </ul>
     </div>
@@ -74,59 +74,62 @@
 	 
 		moveFloatMenu();
 	});
+	$(document).ready(function(){
+	    console.log("toto");
+	    $('html, body').animate({
+			scrollTop: 0
+		}, 700);
+	});
 </script>
 
-	<script type="text/javascript">
-		// create the back to top button
-		$('body').prepend('<a href="#" class="back-to-top" title="Back to top">Back to Top</a>');
+</script>
 
-		var amountScrolled = 50;
-
-		$(window).scroll(function() {
-			if ( $(window).scrollTop() > amountScrolled ) {
-				$('a.back-to-top').fadeIn('slow');
-			} else {
-				$('a.back-to-top').fadeOut('slow');
-			}
-		});
-
-		$('a.back-to-top, a.simple-back-to-top').click(function() {
-			$('html, body').animate({
-				scrollTop: 0
-			}, 700);
-			return false;
-		});
-	</script>
-
-	<script type="text/javascript">
-		$(function() {
-		    // Stick the #nav to the top of the window
-		    var nav = $('#nav');
-		    var navHomeY = nav.offset().top;
-		    var isFixed = false;
-		    var $w = $(window);
-		    $w.scroll(function() {
-			var scrollTop = $w.scrollTop();
-			var shouldBeFixed = scrollTop > navHomeY;
-			if (shouldBeFixed && !isFixed) {
-			    nav.css({
-				position: 'fixed',
-				top: 0,
-				left: nav.offset().left,
-				width: nav.width()
-			    });
-			    isFixed = true;
-			}
-			else if (!shouldBeFixed && isFixed)
-			{
-			    nav.css({
-				position: 'static'
-			    });
-			    isFixed = false;
-			}
+<script type="text/javascript">
+	// create the back to top button
+	$('body').prepend('<a href="#" class="back-to-top" title="Back to top">Back to Top</a>');
+	var amountScrolled = 50;
+	$(window).scroll(function() {
+		if ( $(window).scrollTop() > amountScrolled ) {
+			$('a.back-to-top').fadeIn('slow');
+		} else {
+			$('a.back-to-top').fadeOut('slow');
+		}
+	});
+	$('a.back-to-top, a.simple-back-to-top').click(function() {
+		$('html, body').animate({
+			scrollTop: 0
+		}, 1500);
+		return false;
+	});
+</script>
+<script type="text/javascript">
+	$(function() {
+    // Stick the #nav to the top of the window
+	    var nav = $('#nav');
+	    var navHomeY = nav.offset().top;
+	    var isFixed = false;
+	    var $w = $(window);
+	    $w.scroll(function() {
+		var scrollTop = $w.scrollTop();
+		var shouldBeFixed = scrollTop > navHomeY;
+		if (shouldBeFixed && !isFixed) {
+		    nav.css({
+			position: 'fixed',
+			top: 0,
+			left: nav.offset().left,
+			width: nav.width()
 		    });
-		});
-	</script>
-
+		    isFixed = true;
+		}
+		else if (!shouldBeFixed && isFixed)
+		{
+		    nav.css({
+			position: 'static'
+		    });
+		    isFixed = false;
+		}
+	    });
+	});
+</script>
 
 </body>
