@@ -353,7 +353,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				var link = document.createElement("a");
 				link.download = name;
 				link.href = uri;
+				document.body.appendChild(link);
 				link.click();
+				document.body.revokeChild(link);
 			}
 
 			var ssh_string="";
