@@ -59,7 +59,8 @@ Meteor.startup(function () {
     				$set: 
     				{
     					// "storage.availabe": instance.SizeRw / (1000*1000*1000), // Octets / 10^9
-    					"rabbitmq": instance
+    					"rabbitmq": instance,
+                        "state": (instance.State.Status === "running")? "up" : "down",
     				}
     			})
     		}
