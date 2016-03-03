@@ -37,7 +37,9 @@ Meteor.startup(function () {
         command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" -o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" iaas-client@'+params.dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh '+params.machinename+"'";
         break;
         case "create_user":
+
         var dns = params.split(" ")[2].split("-");
+        var name = dns[0];
         dns.splice(0,1);
         dns.splice(dns.length-1,1);
         dns = dns.join("-");
@@ -98,14 +100,17 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
         }
-
-        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-client@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/start.sh '+params+"'";
+        var getket = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
+        var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@backtobaz.no-ip.org \'/dividePublicKey.sh /home/iaas-client/toto.pub\' 2>/dev/null ; ';
+        var create_instance = 'ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/start.sh '+params+" ' ";
+        command= getket+addk_instance+create_instance;
         break;
         default:
         throw_error('unknown command','nothing to say');
       }
 
       exec(command,function(error,stdout,stderr){
+
         if(error){
           future.throw(new Meteor.Error(500,command,error+' '));
         }else{

@@ -62,7 +62,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 
-			this.action_user = (cmd,param) => {
+			this.action_user = (cmd,param,cb) => {
 				cmd_concat=cmd+'_user';
 				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
 					if(err){
@@ -144,7 +144,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							'</div>' ,
 						});
 					}
-				});
+					return cb();
+				});	
 			};
 
 		this.throw_error = (cmd,params) => {
@@ -278,11 +279,12 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					})
 				}
 				else{
-					
-					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-						if (error) self.throw_error('create','Unable to start machine');
-						else self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',function(){
-							machine.state='up';
+					self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',function(){
+						machine.state='up';
+						Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
+							if (error){
+								self.throw_error('create','Unable to start machine');
+							}
 						});
 					});
 				}
@@ -291,11 +293,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 
 		this.stopMachine = (machine) => {
+			machine.state='down';
 			Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
 				if (error) this.throw_error('stop','Unable to stop machine');
-				else this.action_user('stop',machine,function(){
-					machine.state='down';
-				});
+				else this.action_user('stop',machine);
 			});
 		};
 
