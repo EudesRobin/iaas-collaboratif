@@ -320,7 +320,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				var link = document.createElement("a");
 				link.download = name;
 				link.href = uri;
+				document.body.appendChild(link);
 				link.click();
+				document.body.removeChild(link);
 			}
 
 			var ssh_string='# Host is an alias , Hostname is the name of the user instance\n';
@@ -355,7 +357,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				link.href = uri;
 				document.body.appendChild(link);
 				link.click();
-				document.body.revokeChild(link);
+				document.body.removeChild(link);
 			}
 
 			var ssh_string="";
