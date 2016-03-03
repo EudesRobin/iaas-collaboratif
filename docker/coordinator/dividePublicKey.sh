@@ -12,7 +12,7 @@ fi
 #====================================
 # Copy client public key as "authorized_keys" in the iaas user home
 # This file will be automatically copied in every new container run
-scp ${1} iaas@172.17.0.1:./authorized_keys
+scp -P 22000 ${1} iaas@172.17.0.1:./authorized_keys
 #====================================
 
 
