@@ -81,28 +81,6 @@ fi
 #====================================
 
 #====================================
-# Setting instance.data file which will be send by rabbitmq
-containerNumber=$(docker ps|wc -l)
-containerNumber=$(( $containerNumber - 1 ))
-echo "[" >> ./instances.data
-k=0
-docker ps -s | awk '{print $(NF-5),$(NF-4),$(NF-3)}' > ./watchdog.data
-while IFS=' '  read container size unit;do
-	if [[ !($k == 0) ]];then
-		docker inspect --type=container --size --format='{{json .}}' $container >> ./instances.data
-		if [[ !($k == $containerNumber) ]];then
-			echo "," >> ./instances.data
-		fi
-	fi
-	k=$(( $k + 1 ))
-done < ./watchdog.data
-echo "]" >> ./instances.data
-docker cp ./instances.data coordinator:./publisher/
-sudo rm ./instances.data
-sudo rm ./watchdog.data
-#====================================
-
-#====================================
 # Build images
 docker build -t ubuntussh ./images/ubuntu/
 docker build -t centosssh ./images/centos/
@@ -111,11 +89,9 @@ docker build -t debianssh ./images/debian/
 
 sudo /home/iaas/initializeCore.sh
 
-docker exec -d coordinator ./publisher/sendInformationAboutContainers.sh
-
 #====================================
 #Create new cron job that will execute watchdog
-(crontab -l 2>/dev/null; echo "* * * * * /home/iaas/watchdog.sh && sleep 30 && /home/iaas/watchdog.sh") | crontab -
+(crontab -l 2>/dev/null; echo "* * * * * /home/iaas/watchdog.sh && sleep 30 && /home/iaas/watchdog.sh") | sudo crontab -
 #====================================
 
 exit 0
