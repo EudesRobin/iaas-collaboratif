@@ -43,6 +43,7 @@
 	<span class="anchor" id="client"></span>
 	<div class="section">
 		<h1>What is happening on client side?</h1>
+	 	As a client, you just need to get one of your public key and copy it on the client web page. This key will be used in the instance you will get, so you must ensure that you have the private key corresponding to the public one. In our default mode, we presume that you private key is  ~/.ssh/client_pk. You have to generate (on the client page) the all in one ssh config. To ssh your instance : # ssh -F config_file instance_name
 	</div>
 	<span class="anchor" id="docker"></span>
 	<div class="section">
@@ -116,57 +117,5 @@
 	
 
 	</div>
-
-	<script type="text/javascript">
-		// create the back to top button
-		$('body').prepend('<a href="#" class="back-to-top" title="Back to top">Back to Top</a>');
-
-		var amountScrolled = 50;
-
-		$(window).scroll(function() {
-			if ( $(window).scrollTop() > amountScrolled ) {
-				$('a.back-to-top').fadeIn('slow');
-			} else {
-				$('a.back-to-top').fadeOut('slow');
-			}
-		});
-
-		$('a.back-to-top, a.simple-back-to-top').click(function() {
-			$('html, body').animate({
-				scrollTop: 0
-			}, 700);
-			return false;
-		});
-	</script>
-
-	<script type="text/javascript">
-		$(function() {
-		    // Stick the #nav to the top of the window
-		    var nav = $('#nav');
-		    var navHomeY = nav.offset().top;
-		    var isFixed = false;
-		    var $w = $(window);
-		    $w.scroll(function() {
-			var scrollTop = $w.scrollTop();
-			var shouldBeFixed = scrollTop > navHomeY;
-			if (shouldBeFixed && !isFixed) {
-			    nav.css({
-				position: 'fixed',
-				top: 0,
-				left: nav.offset().left,
-				width: nav.width()
-			    });
-			    isFixed = true;
-			}
-			else if (!shouldBeFixed && isFixed)
-			{
-			    nav.css({
-				position: 'static'
-			    });
-			    isFixed = false;
-			}
-		    });
-		});
-	</script>
 	
 </div>
