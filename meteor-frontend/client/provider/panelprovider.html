@@ -49,24 +49,24 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" max="100000" name="cpuNumber" required/></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">CPU (unit: Ghz)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpu" step="0.1" min="0.1" max="1000" name="cpu" required/></td>
+											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.cpu" step="1" min="1" max="1000" name="cpu" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">RAM (unit: GB)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.ram.total" step="0.1" min="0.1" max="1000" name="ram" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.ram.total" step="1" min="1" max="1000" name="ram" required/></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Storage(unit: GB)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.storage.total" step="0.1" min="0.1" max="1000" name="storage" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.storage.total" step="1" min="1" max="1000" name="storage" required/></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="0.1" min="0.1" max="1000" name="bandwidth" required/></td>
+											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
+											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="1" min="1" max="1000" name="bandwidth" required/></td>
 										</tr>
 									</table>
 									
-									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 0.1 ; max value : 1000<br>Domain name must be (at least) like this : *.* </div>
+									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 1000<br>Domain name must be (at least) like this : {1}.{2} </div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
 											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -103,24 +103,24 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" id="cpuNumber" ng-model="ressource.cpunumber.total" placeholder="" step="1" min="1" max="100000" name="cpuNumber" /></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">CPU (unit: Ghz)</label></td>
-											<td><input type="number" id="cpu" ng-model="ressource.cpu" placeholder="" step="0.1" min="0.1" max="1000" name="cpu" /></td>
+											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
+											<td><input type="number" id="cpu" ng-model="ressource.cpu" placeholder="" step="1" min="1" max="1000" name="cpu" /></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">RAM (unit: GB)</label></td>
-											<td><input type="number" id="ram" placeholder="" ng-model="ressource.ram.total" step="0.1" min="0.1" max="1000" name="ram" /></td>
+											<td><input type="number" id="ram" placeholder="" ng-model="ressource.ram.total" step="1" min="1" max="1000" name="ram" /></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Storage(unit: GB)</label></td>
-											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="0.1" min="0.1" max="1000" name="storage" /></td>
+											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="1" min="1" max="1000" name="storage" /></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
-											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="0.1" min="0.1" max="1000" name="bandwidth" /></td>
+											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
+											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="1" min="1" max="1000" name="bandwidth" /></td>
 										</tr>
 									</table>
 									<input name= "rid" id="rid" ng-model="ridid" hidden/>
-									<div ng-if="ModifyMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 0.1 ; max value : 1000<br>Domain name must be (at least) like this : *.* </div>
+									<div ng-if="ModifyMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 1000<br>Domain name must be (at least) like this : {1}.{2} </div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
 											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -162,13 +162,13 @@ $(document).on("click", ".modifprovider", function () {
 						<td>
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
-									<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="false" style="margin: 0 auto;display: block;">Start</button>
+									<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="ressource.usable" style="margin: 0 auto;display: block;">Start</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="false" style="margin: 0 auto;display: block;">Stop</button>
+									<button ng-click="provider.stopRessource(ressource)" class="btn btn-warning centered" ng-disabled="!ressource.usable" style="margin: 0 auto;display: block;">Stop</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Delete</button>
+									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Delete</button>
 								</div>
 								<div class="btn-group">
 									<button class="btn btn-primary centered modifprovider" ng-disabled="provider.isUsable(ressource)"

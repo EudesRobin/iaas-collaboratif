@@ -103,6 +103,7 @@ Meteor.methods({
 
 		ressource.usable=false;
 		Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}});
+
 	}
 					
 })

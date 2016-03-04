@@ -8,6 +8,10 @@
 	background-color: #c7c7c5;
 }
 
+#mchusr thead tr th {
+	text-align: center;
+}
+
 /* Help page styles */
 
 .anchor{
