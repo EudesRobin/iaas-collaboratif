@@ -31,10 +31,26 @@ Meteor.startup(function () {
         // USER CMD
         case "stop_user":
         var r_split = params.machinename.split(" ");
+
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        command='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" -o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" iaas-admin@'+params.dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/stop.sh '+params.machinename+"'";
+        call_stop='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params.dns+' '+
+                  "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                      '-p 22000 iaas@172.17.0.1 /home/iaas/stop.sh '+params.machinename+" ' ";
+
+        rm_key='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params.dns+' '+
+                  "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                      '-p 22000 iaas@172.17.0.1 \'docker exec -i coordinator "/deletePublicKey.sh"\''+" ' ";
+
+        command=call_stop+' ; '+rm_key;
+
         break;
         case "create_user":
 
@@ -100,17 +116,27 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
         }
-        var getket = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
-        var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@backtobaz.no-ip.org \'/dividePublicKey.sh /home/iaas-client/toto.pub\' 2>/dev/null ; ';
-        var create_instance = 'ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  iaas-admin@'+dns+" 'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 iaas@172.17.0.1 /home/iaas/start.sh '+params+" ' ";
-        command= getket+addk_instance+create_instance;
+
+        var getkey = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
+
+        var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"'+
+                              '  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  '+
+                                'iaas-admin@'+dns+' \'/dividePublicKey.sh /home/iaas-client/toto.pub\' ; ';
+
+        var create_instance = 'ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                                  ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                                  '  iaas-admin@'+dns+' '+
+                            "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                                ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  -p 22000 '+
+                                ' iaas@172.17.0.1 /home/iaas/start.sh '+params+" ' ";
+
+        command= getkey+addk_instance+create_instance;
         break;
         default:
-        throw_error('unknown command','nothing to say');
+          throw_error('unknown command','nothing to say');
       }
 
       exec(command,function(error,stdout,stderr){
-
         if(error){
           future.throw(new Meteor.Error(500,command,error+' '));
         }else{
@@ -119,6 +145,7 @@ Meteor.startup(function () {
       });
       return future.wait();
     },
+    
     getInfoFromRessource: function (ressourceid) {
       var tmp=Ressources.findOne({_id: ressourceid});
       if (tmp)

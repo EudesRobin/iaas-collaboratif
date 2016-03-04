@@ -271,7 +271,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 		this.deleteMachine = (machine) => {
 			this.save();
 			this.currentUser.getSubscriber().desallocate(machine, function(){});
-			// notif done in subscriber.js --> should be done on the client side and not in the model side reserved for databases and modeling
+			// notif done in subscriber.js
+			// --> should be done on the client side and not in the model side reserved for databases and modeling
 		};		
 
 		this.generate = (machine) => {
