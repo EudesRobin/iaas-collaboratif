@@ -9,10 +9,19 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 			this.subscribe('users');
 
 			this.helpers({
+				/**
+				 * @return {Object} current user
+				 */
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
 				}
 			});
+
+			/**
+			 * Makes an error notification
+			 * @param {String} cmd		Type of command: update
+			 * @param {String} params	Message of the notification
+			 */
 			this.throw_error = (cmd,params) => {
 				var title;
 				switch(cmd){
@@ -41,6 +50,11 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 				});
 			};
 
+			/**
+			 * Makes a success notification
+			 * @param {String} cmd		Type of command: update
+			 * @param {String} params	Message of the notification
+			 */
 			this.throw_success = (cmd,params) => {
 				var title;
 				var message = "successful"
@@ -70,6 +84,9 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 				});
 			};
 
+			/**
+			 * Update the email and the username of the user in thhe database
+			 */
 			this.save = () => {
 				Meteor.users.update({_id: Meteor.userId()}, {
 					$set: {

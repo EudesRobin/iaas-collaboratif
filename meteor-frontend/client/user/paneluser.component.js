@@ -9,27 +9,50 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.subscribe('users');
 
 			this.helpers({
+				/**
+				 * @return user database (only what is published)
+				  */
 				users: () => {
 					return Meteor.users.find({});
 				},
+				/**
+				 * @return {Boolean} true if the user is connected
+				 */
 				isLoggedIn: () => {
 					return Meteor.userId() !== null;
 				},
+				/**
+				 * @return {String} Id of the user
+				 */
 				currentUserId: () => {
 					return Meteor.userId();
 				},
+				/**
+				 * @return {Object} current user
+				 */
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
 				},
+				/**
+				 * @return {Object} Machines of the user
+				 */
 				machines: () => {
 					return Machines.find({user_id: Meteor.userId()});
 				}
 			});
 
+			/**
+			 * @return {Boolean} true if there are no machines for the current user
+			 */
 			this.machinesIsEmpty = () => {
 				return Machines.find({user_id: Meteor.userId()}).fetch().length == 0;
 			}
 
+			/**
+			 * Get the table line class (in order to change its color) in function of the field state of the machine
+			 * @param {Object} machine	machine associated to the row
+			 * @return {String}	success if state is up (green), else if state is providerdown warning (yellow), else danger (red)
+			 */
 			this.getRowClass = (machine) => {
 				if(machine.state==="up"){
 					return "success";
@@ -42,28 +65,23 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			}
 
+			/**
+			 * Update the subscriber fields for the user
+			 */
 			this.save = () => {
 				this.currentUser.getSubscriber().setFields(this.currentUser.subscriber);
 			};
 
-			this.insertMachine = () => {
-				this.save();
-				if(this.machinetypeSelect!='other')
-					this.newMachine.machinetype=this.machinetypeSelect;
-				else
-					this.newMachine.machinetype=this.machinetypeInput;
-				this.newMachine.machinename=this.currentUser.username;
-				for(i=0;i<this.machineNumber;i++)
-					this.currentUser.getSubscriber().allocate(this.newMachine, function(){});
-				// reset form
-				document.getElementById("machineType").value = "";
-				document.getElementById("nbmch").value = "";
-				this.newMachine={};
-			};
-
-
+			/**
+			 * Call the meteor method exec_cmd and sends a callback when it is done
+			 * @param {String} cmd		Type of the command: create: start/stop/remove
+			 * @param {String} param	Parameters to send to the exec_cmd method
+			 * @param {function()} cb	Callback
+			 * @return {notification}	Notifies at the end of action_user
+			 */
 			this.action_user = (cmd,param,cb) => {
 				cmd_concat=cmd+'_user';
+				// Call the exec_cmd function (server/startup/load.js)
 				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
 					if(err){
 						var title;
@@ -137,6 +155,45 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				});
 			};
 
+			/**
+			 * Makes a success notification
+			 * @param {String} cmd		Type of command: reallocate
+			 * @param {String} params	Message of the notification
+			 */
+			this.throw_success = (cmd,param) => {
+				var title;
+				var msg=param;
+				switch(cmd){
+					case "reallocate":
+					title = "Reallocate try<br>"
+					break;
+					default:
+					title = "Unknown command"
+				}
+				$.notify({
+					// options
+					icon: 'glyphicon glyphicon-ok-sign',
+					title: title,
+					message: msg,
+					},{
+					//settings
+					type: 'success',
+					newest_on_top: true,
+					allow_dismiss: true,
+					template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+					'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+					'<span data-notify="icon"></span> ' +
+					'<span data-notify="title">{1}</span> ' +
+					'<span data-notify="message">{2}</span>' +
+					'</div>' ,
+				});
+			};
+
+			/**
+			 * Makes an error notification
+			 * @param {String} cmd		Type of command: allocate/create/stop/remove/reallocate/desallocate
+			 * @param {String} params	Message of the notification
+			 */
 			this.throw_error = (cmd,params) => {
 				var title;
 				switch(cmd){
@@ -180,35 +237,12 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				});
 			};
 
-			this.throw_success = (cmd,param) => {
-				var title;
-				var msg=param;
-				switch(cmd){
-					case "reallocate":
-					title = "Reallocate try<br>"
-					break;
-					default:
-					title = "Unknown command"
-				}
-				$.notify({
-					// options
-					icon: 'glyphicon glyphicon-ok-sign',
-					title: title,
-					message: msg,
-					},{
-					//settings
-					type: 'success',
-					newest_on_top: true,
-					allow_dismiss: true,
-					template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-					'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-					'<span data-notify="icon"></span> ' +
-					'<span data-notify="title">{1}</span> ' +
-					'<span data-notify="message">{2}</span>' +
-					'</div>' ,
-				});
-			};
-
+			/**
+			 * Calls the getInfoFromRessource method (server/startup/load.js) with the resource id in parameter
+			 * @param {String} ressource_id		Id of the resource to get the informations
+			 * @param {function(err,response)}	Return callback from the meteor call
+			 * @return {notification}			Notifies what the meteor call sent
+			 */
 			this.getInfoFromRessource = (ressource_id, cb) => {
 				Meteor.call('getInfoFromRessource',ressource_id, function (err, response) {
 					if(err){
@@ -234,10 +268,40 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				})
 			}
 
+			/**
+			 * Insert one or several machines according to what is put in the form in the database
+			 */
+			this.insertMachine = () => {
+				this.save();
+				// If we selected the "other" option, we get what the user wrote, else we choose the option (ubuntussh,...)
+				if(this.machinetypeSelect!='other')
+					this.newMachine.machinetype=this.machinetypeSelect;
+				else
+					this.newMachine.machinetype=this.machinetypeInput;
+				// Later, we add to the machinename other informations. It will begin with the username
+				this.newMachine.machinename=this.currentUser.username;
+				// We try to allocate n times the machine that we put in the form
+				for(i=0;i<this.machineNumber;i++)
+					this.currentUser.getSubscriber().allocate(this.newMachine, function(){});
+				// reset form
+				document.getElementById("machineType").value = "";
+				document.getElementById("nbmch").value = "";
+				this.newMachine={};
+			};
+
+			/**
+			 * Check if the resource allocated is available, if it is not we allocate another one
+			 * If it is correctly reallocated or if it is available,
+			 * we call action_user('create') with parameters to create and be able to connect to the machine
+			 * @param {Object} machine	Machine to start
+			 */
 			this.startMachine = (machine) => {
+				// Save the ssh key, can be necessary
 				this.save();
 				var self = this;
+				// We check if the resource is available and we get infos for action_user parameters
 				this.getInfoFromRessource(machine.ressource_id, function (err, resourceInfo) {
+					// Case when the resource is not in the database anymore: we allocate the machine
 					if(err || resourceInfo.err){
 						// reallocating the ressource
 						self.throw_success('reallocate',
@@ -252,6 +316,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						self.allocate(machine);
 						return;
 					}
+					// Case when the resource is not usable: we desallocate then allocate the machine
 					if(! resourceInfo.usable)
 					{
 						// reallocating the ressource
@@ -263,6 +328,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							self.allocate(machine);
 						})
 					}
+					// Case when the initial resource is available
 					else{
 						self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+
 												machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',
@@ -271,24 +337,38 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				});
 			};
 
-
+			/**
+			 * Call action_user with stop for the machine in parameter
+			 * @param {Object} machine	Machine to stop
+			 * @param {function()} cb	Callback when the update of the database is done
+			 * @return {notification}	Notifies when the update is done
+			 */
 			this.stopMachine = (machine,cb) => {
-				machine.state='down';
-				Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
-					if (error) this.throw_error('stop','Unable to stop machine');
-					else this.action_user('stop',machine,function(){return cb();});
+				var self = this;
+				this.action_user('stop',machine,function(){
+					machine.state='down';
+					Machines.update({_id: machine._id}, {$set:{state:machine.state}}, (error) => {
+						if (error) self.throw_error('stop','Unable to stop machine');
+						return cb();
+					});
 				});
 			};
 
+			/**
+			 * Stop the machine then desallocate it in the database
+			 * @param {Object} machine	Machine to delete
+			 */
 			this.deleteMachine = (machine) => {
 				var self = this;
 				this.stopMachine(machine,function(){
 					self.currentUser.getSubscriber().desallocate(machine, function(){});
 				});
-				// notif done in subscriber.js
-				// --> should be done on the client side and not in the model side reserved for databases and modeling
 			};		
 
+			/**
+			 * Generate a text file to download for the user that contains the ssh configuration
+			 * @param {Object} machine
+			 */
 			this.generate = (machine) => {
 
 				makeTextFile = function (text) {
@@ -322,6 +402,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				downloadURI(makeTextFile(ssh_string),'iaas-'+machine.machinename+'.config');
 			};
 
+			/**
+			 * Generate a text file to download for the user that contains the ssh configuration for every machine
+			 */
 			this.generate_all = () => {
 
 				makeTextFile = function (text) {

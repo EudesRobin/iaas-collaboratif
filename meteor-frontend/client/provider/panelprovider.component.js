@@ -11,37 +11,81 @@ angular.module('iaas-collaboratif')
 			this.subscribe('users');
 
 			this.helpers({
+				/**
+				 * @return user database (only what is published)
+				  */
 				users: () => {
 					return Meteor.users.find({});
 				},
+				/**
+				 * @return {Boolean} true if the user is connected
+				 */
 				isLoggedIn: () => {
 					return Meteor.userId() !== null;
 				},
+				/**
+				 * @return {String} Id of the user
+				 */
 				currentUserId: () => {
 					return Meteor.userId();
 				},
+				/**
+				 * @return {Object} current user
+				 */
 				currentUser: () => {
 					return Meteor.users.findOne(Meteor.userId());
 				},
+				/**
+				 * @return {Object} Ressources of the user
+				 */
 				ressources: () => {
 					return Ressources.find({user_id: Meteor.userId()});
 				}
 			});
 
+			/**
+			 * @return {Boolean} true if there are no ressources for the current user
+			 */
 			this.ressourcesIsEmpty = () => {
 				return Ressources.find({user_id: Meteor.userId()}).fetch().length == 0;
 			}
 
-			// needed to get id for the modify form ressource provider
-			// I think there is a better way to do this...
-			this.getid = () => {
+			/**
+			 * Get the table line class (in order to change its color) in function of the field usable of the resource
+			 * @param {Boolean} usable	Field usable of the resource
+			 * @return {String}	success if usable (green), else danger (red)
+			 */
+			this.getRowClass = (usable) => {
+				return usable ? "success" : "danger";
+			}
+
+			/**
+			 * Update the provider fields for the user
+			 */
+			this.save = () => {
+				this.currentUser.getProvider().setFields(this.currentUser.provider);
+			};
+
+			/**
+			 * @return {String} Id of the ressource to update
+			 */
+			this.getRessourceId = () => {
 				return document.getElementById("rid").value;
 			}
 
-			this.Isusable=(ressource)=>{
-				return ressource.usable===true;
+			/**
+			 * Says if a resource is usable or not
+			 * @param {Object} resource
+			 * @return {Boolean} resource.usable
+			 */
+			this.isUsable=(ressource)=>{
+				return ressource.usable;
 			}
 
+			/**
+			 * Update a resource with the modified fields of the form
+			 * @param {String} rid	id of the resource to update
+			 */
 			this.updateRessource=(rid) => {
 				var ressource = Ressources.find({_id:rid}).fetch()[0];
 				if (dns.value!=""||cpuNumber.value!=""||cpu.value!=""||ram.value!=""||bandwidth.value!=""||storage.value!=""){
@@ -69,6 +113,10 @@ angular.module('iaas-collaboratif')
 
 			}
 
+			/**
+			 * After setting its available sets, the object newRessource is inserted in the Ressources database
+			 * The form is then cleaned
+			 */
 			this.insertRessource = () => {
 				this.newRessource.cpunumber.available = this.newRessource.cpunumber.total;
 				this.newRessource.ram.available = this.newRessource.ram.total;
@@ -82,6 +130,11 @@ angular.module('iaas-collaboratif')
 				$('#add').modal('hide');
 			};
 
+			/**
+			 * Makes a success notification
+			 * @param {String} cmd		Type of command: start/stop/remove/modify
+			 * @param {String} params	Message of the notification
+			 */
 			this.throw_success = (cmd,param) => {
 				var title;
 				var msg="successful";
@@ -120,6 +173,11 @@ angular.module('iaas-collaboratif')
 				});
 			};
 
+			/**
+			 * Makes an error notification
+			 * @param {String} cmd		Type of command: insert/start/stop/remove/modify
+			 * @param {String} params	Message of the notification
+			 */
 			this.throw_error = (cmd,params) => {
 				var title;
 				switch(cmd){
@@ -160,6 +218,11 @@ angular.module('iaas-collaboratif')
 				});
 			};
 
+
+			/**
+			 * Set the usable field of the resource in database at true
+			 * @param {Object} ressource	Resource to start
+			 */
 			this.startRessource = (ressource) => {
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
@@ -168,6 +231,10 @@ angular.module('iaas-collaboratif')
 				});
 			};
 
+			/**
+			 * Call the stopRessource on the server for the resource given (model/ressources.js)
+			 * @param {Object} ressource	Resource to stop
+			 */
 			this.stopRessource = (ressource) => {
 				Meteor.call("stopRessource", ressource._id, function(err, res){
 					if (err) this.throw_error("stop","Failed to stop the ressource");
@@ -175,6 +242,10 @@ angular.module('iaas-collaboratif')
 				})
 			};
 
+			/**
+			 * Stop the resource given then remove it from the database
+			 * @param {Object} ressource	Resource to delete
+			 */
 			this.deleteRessource = (ressource) => {
 				Meteor.call("stopRessource", ressource._id, function(err, res){
 					if (err) this.throw_error("stop","Failed to stop the ressource");
@@ -184,18 +255,6 @@ angular.module('iaas-collaboratif')
 					else this.throw_success('remove','Domain is removed !')
 				});
 			};
-
-			this.save = () => {
-				this.currentUser.getProvider().setFields(this.currentUser.provider);
-			};
-
-			this.getRowClass = (usable) => {
-				return usable ? "success" : "danger";
-			}
-
-			this.SaveProviderRessources=()=>{
-				Meteor.users
-			}
 		}
 	}
 });

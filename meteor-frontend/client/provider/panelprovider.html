@@ -127,7 +127,7 @@ $(document).on("click", ".modifprovider", function () {
 										</div>
 
 										<div class="btn-group">
-											<button ng-click="provider.updateRessource(provider.getid())" class="btn btn-success" ng-disabled="ModifyMachineForm.$invalid" >Save</button>
+											<button ng-click="provider.updateRessource(provider.getRessourceId())" class="btn btn-success" ng-disabled="ModifyMachineForm.$invalid" >Save</button>
 										</div>
 									</div>
 								</form>
@@ -171,7 +171,7 @@ $(document).on("click", ".modifprovider", function () {
 									<button ng-click="provider.deleteRessource(ressource)" class="btn btn-danger centered" ng-disabled="false" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Delete</button>
 								</div>
 								<div class="btn-group">
-									<button class="btn btn-primary centered modifprovider" ng-disabled="provider.Isusable(ressource)"
+									<button class="btn btn-primary centered modifprovider" ng-disabled="provider.isUsable(ressource)"
 									data-toggle="modal" data-rsc='{{ressource}}' data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
 								</div>
 							</div>
