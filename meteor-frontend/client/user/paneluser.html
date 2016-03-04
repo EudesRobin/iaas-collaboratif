@@ -9,13 +9,13 @@
 			<div class="text-center" style="margin-bottom:30px;padding-left: 5%;padding-right:5%" >
 			<h3>Machine list</h3>
 			</div>
-			<table class="table">
+			<table id="mchusr" class="table text-center">
 				<thead>
 					<tr>
 						<th>Machine name</th>
 						<th>Machine type</th>
 						<th>Number of CPU</th>
-						<th>CPU</th>
+						<th>Clock speed</th>
 						<th>RAM</th>
 						<th>Storage</th>
 						<th>Bandwidth</th>
@@ -28,9 +28,9 @@
 						<td style="vertical-align:middle">{{machine.machinetype}}</td>
 						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
 						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
-						<td style="vertical-align:middle">{{machine.ram}} Gb</td>
-						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} Gb</td>
-						<td style="vertical-align:middle">{{machine.bandwidth}} Mbps</td>
+						<td style="vertical-align:middle">{{machine.ram}} GB</td>
+						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} GB</td>
+						<td style="vertical-align:middle">{{machine.bandwidth}} MBps</td>
 						<td>
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
@@ -123,7 +123,7 @@
 								</div>
 							</div></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">CPU (unit: Ghz)</label></td>
+								<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
 								<div class="col-sm-10">
 									<td><input type="number" ng-model="user.newMachine.cpu" step="1" min="1" max="1000" name="cpu" required/>
 									</td>
@@ -154,7 +154,7 @@
 						<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">You must enter a valid SSH public key first !</div>
 							<div ng-if="!user.currentUser.username" class="alert alert-danger">You must define your username first (see Profile section)</div>
-							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 0,1 ; max value : 1000</div>
+							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 1 ; max value : 1000</div>
 							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || !user.currentUser.subscriber.sshKey || !user.currentUser.username" style="margin: 0 auto;display: block;">Register</button>
 						</p>
 					</form>

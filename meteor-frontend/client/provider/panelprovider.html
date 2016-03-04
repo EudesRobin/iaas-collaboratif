@@ -49,7 +49,7 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" max="100000" name="cpuNumber" required/></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">CPU (unit: Ghz)</label></td>
+											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
 											<td><input type="number" ng-model="provider.newRessource.cpu" step="1" min="1" max="1000" name="cpu" required/></td>
 										</tr>
 										<tr>
@@ -61,7 +61,7 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" ng-model="provider.newRessource.storage.total" step="1" min="1" max="1000" name="storage" required/></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
+											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
 											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="1" min="1" max="1000" name="bandwidth" required/></td>
 										</tr>
 									</table>
@@ -103,7 +103,7 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" id="cpuNumber" ng-model="ressource.cpunumber.total" placeholder="" step="1" min="1" max="100000" name="cpuNumber" /></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">CPU (unit: Ghz)</label></td>
+											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
 											<td><input type="number" id="cpu" ng-model="ressource.cpu" placeholder="" step="1" min="1" max="1000" name="cpu" /></td>
 										</tr>
 										<tr>
@@ -115,7 +115,7 @@ $(document).on("click", ".modifprovider", function () {
 											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="1" min="1" max="1000" name="storage" /></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: Mbps)</label></td>
+											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
 											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="1" min="1" max="1000" name="bandwidth" /></td>
 										</tr>
 									</table>
