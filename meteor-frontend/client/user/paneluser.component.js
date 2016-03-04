@@ -151,7 +151,13 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					break;
 					case "remove":
 					title = "Error remove instance"
-					break;						
+					break;
+					case "reallocate":
+					title = "Error reallocate instance"
+					break;
+					case "desallocate":
+					title = "Error reallocate instance"
+					break;							
 					default:
 					title = "Error Unknown command"
 				}
@@ -215,12 +221,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			this.allocate = (machine) => {
 				var self = this;
 				this.currentUser.getSubscriber().allocate(machine, function (err, new_machine) {
-					if (err) return console.error("Failed to reallocate, allocation failed", err);
+					if (err) self.throw_error("allocate","Failed to reallocate, allocation failed");
 					self.getInfoFromRessource(new_machine.machine.ressource_id, function (err, isItAvailable) {
-						if(err) return console.error("An error occured while reallocating the machine", err);
+						if(err) self.throw_error("reallocate","An error occured while reallocating the machine");
 						if(isItAvailable.usable){
 							machine=Machines.findOne({_id:machine._id});
-							self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+isItAvailable.ram+'G '+isItAvailable.storage+'G',function(){});
+							self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+
+														machine.cpunumber+' '+isItAvailable.ram+'G '+isItAvailable.storage+'G',
+														function(){});
 						}
 					});	
 				})
@@ -232,11 +240,13 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				this.getInfoFromRessource(machine.ressource_id, function (err, resourceInfo) {
 					if(err || resourceInfo.err){
 						// reallocating the ressource
-						self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
+						self.throw_success('reallocate',
+											'The machine that you are trying to start could be removed'+
+											'or deplaced since the current provider is not accessible.')
 						machine.machinename=self.currentUser.username;
 
 						Machines.remove({_id: machine._id},(error) => {
-							if (error) this.throw_error('remove','Unable to remove machine')
+							if (error) self.throw_error('remove','Unable to remove machine')
 						});
 
 						self.allocate(machine);
@@ -245,15 +255,18 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					if(! resourceInfo.usable)
 					{
 						// reallocating the ressource
-						self.throw_success('reallocate','The machine that you are trying to start could be removed or deplaced since the current provider is not accessible.')
+						self.throw_success('reallocate','The machine that you are trying to start could be removed'+
+											' or deplaced since the current provider is not accessible.')
 						machine.machinename=self.currentUser.username;
 						self.currentUser.getSubscriber().desallocate(machine, function (err, resp) {
-							if (err) return console.error("Failed to reallocate, desallocation failed", err);
+							if (err) return self.throw_error("desallocate", "desallocation failed");
 							self.allocate(machine);
 						})
 					}
 					else{
-						self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',function(){});
+						self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+
+												machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',
+												function(){});
 					}
 				});
 			};
