@@ -5,6 +5,52 @@
 	</div>
 
 	<div ng-if="isLoggedIn">
+		<div ng-hide="user.machinesIsEmpty()">
+			<div class="text-center" style="margin-bottom:30px;padding-left: 5%;padding-right:5%" >
+			<h3>Machine list</h3>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Machine name</th>
+						<th>Machine type</th>
+						<th>Number of CPU</th>
+						<th>CPU</th>
+						<th>RAM</th>
+						<th>Storage</th>
+						<th>Bandwidth</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
+						<td style="vertical-align:middle">{{machine.machinename}}</td>
+						<td style="vertical-align:middle">{{machine.machinetype}}</td>
+						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
+						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
+						<td style="vertical-align:middle">{{machine.ram}} Gb</td>
+						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} Gb</td>
+						<td style="vertical-align:middle">{{machine.bandwidth}} Mbps</td>
+						<td>
+							<div class="btn-toolbar" role="toolbar">
+								<div class="btn-group">
+									<button ng-click="user.startMachine(machine)" class="btn btn-success centered" ng-disabled="keyForm.$invalid" style="margin: 0 auto;display: block;">Start</button>
+								</div>
+								<div class="btn-group">
+									<button ng-click="user.stopMachine(machine)" class="btn btn-warning centered" style="margin: 0 auto;display: block;">Stop</button>
+								</div>
+								<div class="btn-group">
+									<button ng-click="user.deleteMachine(machine,'params remove todo')" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Remove</button>
+								</div>
+								<div class="btn-group">
+									<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Generate SSH config file</button>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
@@ -105,50 +151,6 @@
 					</form>
 				</div>
 			</div>
-		</div>
-
-		<div ng-hide="user.machinesIsEmpty()">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Machine name</th>
-						<th>Machine type</th>
-						<th>Number of CPU</th>
-						<th>CPU</th>
-						<th>RAM</th>
-						<th>Storage</th>
-						<th>Bandwidth</th>
-						<th>Actions</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
-						<td style="vertical-align:middle">{{machine.machinename}}</td>
-						<td style="vertical-align:middle">{{machine.machinetype}}</td>
-						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
-						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
-						<td style="vertical-align:middle">{{machine.ram}} Gb</td>
-						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} Gb</td>
-						<td style="vertical-align:middle">{{machine.bandwidth}} Mbps</td>
-						<td>
-							<div class="btn-toolbar" role="toolbar">
-								<div class="btn-group">
-									<button ng-click="user.startMachine(machine)" class="btn btn-success centered" ng-disabled="keyForm.$invalid" style="margin: 0 auto;display: block;">Start</button>
-								</div>
-								<div class="btn-group">
-									<button ng-click="user.stopMachine(machine)" class="btn btn-warning centered" style="margin: 0 auto;display: block;">Stop</button>
-								</div>
-								<div class="btn-group">
-									<button ng-click="user.deleteMachine(machine,'params remove todo')" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm delete">Remove</button>
-								</div>
-								<div class="btn-group">
-									<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Generate SSH config file</button>
-								</div>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 	</div>
 </div>
