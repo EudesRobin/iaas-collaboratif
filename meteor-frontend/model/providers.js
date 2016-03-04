@@ -36,9 +36,11 @@ Provider.prototype.getRessources = function() {
 	return Ressources.find({user_id:self._id});
 };
 
-Provider.prototype.addRessource = function(r) {
+Provider.prototype.addRessource = function(r,cb) {
 	if (! r) return null;
 	r.user_id = this._id;
 	check(r, Schemas.Ressources);
-	var id = Ressources.insert(r, {});
+	var id = Ressources.insert(r, function(err){
+		if(err) return cb(err);
+	});
 };

@@ -75,7 +75,10 @@ angular.module('iaas-collaboratif')
 				this.newRessource.ram.available = this.newRessource.ram.total;
 				this.newRessource.storage.available = this.newRessource.storage.total;
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
-				this.currentUser.getProvider().addRessource(this.newRessource);
+				var self = this;
+				this.currentUser.getProvider().addRessource(this.newRessource, function(err){
+					if(err) self.throw_error('insert',err);
+				});
 				this.newRessource ={};
 				$('#add').modal('hide');
 			};
@@ -121,6 +124,9 @@ angular.module('iaas-collaboratif')
 			this.throw_error = (cmd,params) => {
 				var title;
 				switch(cmd){
+					case "insert":
+					title = "Error - Insert failure"
+					break;
 					case "start":
 					title = "Error - Domain not online"
 					break;
