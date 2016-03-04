@@ -80,6 +80,7 @@ fi
 ./coordinatorStart.sh
 #====================================
 
+
 #====================================
 # Build images
 docker build -t ubuntussh ./images/ubuntu/
@@ -87,7 +88,6 @@ docker build -t centosssh ./images/centos/
 docker build -t debianssh ./images/debian/
 #====================================
 
-sudo /home/iaas/initializeCore.sh
 
 #====================================
 #Create new cron job that will execute watchdog
