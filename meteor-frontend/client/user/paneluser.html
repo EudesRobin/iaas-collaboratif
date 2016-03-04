@@ -85,6 +85,10 @@
 						<p>
 							<div class="alert alert-info" >Of course, if you choose a custom docker image, it must run a SSH server on port 22.</div>
 						</p>
+						<p>
+							<div class="alert alert-info" >To make a service accessible externally, use ssh remote port forwarding:
+								<br># ssh -R [remote port]:localhost:[local port] user@example.com<br>and don't forget to set "GatewayPorts yes" in sshd_config on your remote server</div>
+						</p>
 					</div>
 				</div>
 				<div class="col-md-5 details text-center" style="margin-left:30px;margin-bottom:30px;" >
