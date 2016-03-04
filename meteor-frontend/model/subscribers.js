@@ -178,7 +178,7 @@ Meteor.methods({
 				var cpt=0;
 				var userid = Meteor.userId();
 				// loop machines_ids on provider
-				for(i=0;i<providerdns.machines_ids.length;i++){
+				for(var i=0;i<providerdns.machines_ids.length;i++){
 					if(Machines.find({_id: providerdns.machines_ids[i]}).fetch().length>0){
 						if(Machines.find({_id: providerdns.machines_ids[i]}).fetch()[0].user_id===userid) cpt++;
 					}
