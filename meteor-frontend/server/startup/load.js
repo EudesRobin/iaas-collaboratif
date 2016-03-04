@@ -1,6 +1,5 @@
 
 //http://eureka.ykyuen.info/2015/02/26/meteor-run-shell-command-at-server-side/
-
 Meteor.startup(function () {
   // Load future from fibers
   var Future = Npm.require("fibers/future");
@@ -145,7 +144,7 @@ Meteor.startup(function () {
       });
       return future.wait();
     },
-    
+
     getInfoFromRessource: function (ressourceid) {
       var tmp=Ressources.findOne({_id: ressourceid});
       if (tmp)

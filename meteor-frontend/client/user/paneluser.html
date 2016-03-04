@@ -64,23 +64,26 @@
 							</p>
 						</form>
 					</div>
-					<div class="details text-center" style="margin-bottom:30px;">
-						<h3>Actions [TESTING]</h3>
-						<p>
-							<div class="btn-group">
-								<button type="button" class="btn btn-primary" ng-click="action_test('create','ubuntussh 1 test 512M 1 1G')">Create test</button>
-							</div>
-							<div class="btn-group">
-								<button type="button" class="btn btn-danger" ng-click="action_test('stop','test0')">Stop test</button>
-							</div>
-						</p>
-					</div>
-					<div class="details text-center" >
+					<div class="details text-center" style="margin-bottom:30px;padding-left: 2%;padding-right:2%">
 						<h3>Actions</h3>
 						<p>
 							<div class="btn-group">
 								<button type="button" class="btn btn-primary" ng-click="user.generate_all()">Generate all-in-one SSH config</button>
 							</div>
+						</p>
+						<p>
+							<div class="alert alert-info" >Generated ssh config files suppose that your private key is ~/.ssh/id_rsa</div>
+						</p>
+
+					</div>
+					<div class="details text-center" style="padding-left: 2%;padding-right:2%">
+						<h3>Infos</h3>
+						<p>
+							<div class="alert alert-info" >When you start an instance, she will be seen online at least 30 seconds
+								later, but recheable via SSH as soon as the success notification pop-up.</div>
+						</p>
+						<p>
+							<div class="alert alert-info" >Of course, if you choose a custom docker image, it must run a SSH server on port 22.</div>
 						</p>
 					</div>
 				</div>
@@ -93,6 +96,8 @@
 								<div class="col-sm-10">
 									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType">
 										<option  ng-selected="$first">ubuntussh</option>
+										<option>centosssh</option>
+										<option>debianssh</option>
 										<option value="" hidden></option>
 										<option>other</option>
 										<input ng-show="user.machinetypeSelect=='other'" type="text" ng-model="user.machinetypeInput" ng-required="user.machinetypeSelect=='other'"/>
