@@ -178,11 +178,23 @@ Meteor.methods({
 				var cpt=0;
 				var userid = Meteor.userId();
 				// loop machines_ids on provider
+				var names_nb = [];
 				for(var i=0;i<providerdns.machines_ids.length;i++){
 					if(Machines.find({_id: providerdns.machines_ids[i]}).fetch().length>0){
-						if(Machines.find({_id: providerdns.machines_ids[i]}).fetch()[0].user_id===userid) cpt++;
+						var mch = Machines.find({_id: providerdns.machines_ids[i]}).fetch()[0];
+						if(mch.user_id===userid){
+							cpt++;
+							var tmp = mch.machinename.split('-');
+							names_nb.push(tmp[tmp.length-1]);
+						} 
 					}
 				}
+				// if there is an no contriguous numerotation , we will return the missing id
+				// and not cpt witch represent how many others instances of this user are running on the provider
+				for(var i=0;i<names_nb.length;i++){
+					if(names_nb.indexOf(''+i)===(-1)) return i;
+				}
+				
 				return cpt;
 			};
 			// var tmp = machine.machinename;
