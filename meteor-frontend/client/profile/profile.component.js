@@ -23,22 +23,22 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 					title = "Error Unknown command"
 				}
 				$.notify({
-										// options
-										icon: 'glyphicon glyphicon-remove-sign',
-										title: title+"<br>",
-										message: params,
-									},{
-										//settings
-										type: 'danger',
-										newest_on_top: true,
-										allow_dismiss: true,
-										template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-										'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-										'<span data-notify="icon"></span> ' +
-										'<span data-notify="title">{1}</span> ' +
-										'<span data-notify="message">{2}</span>' +
-										'</div>' ,
-									});
+					// options
+					icon: 'glyphicon glyphicon-remove-sign',
+					title: title+"<br>",
+					message: params,
+				},{
+					//settings
+					type: 'danger',
+					newest_on_top: true,
+					allow_dismiss: true,
+					template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+					'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+					'<span data-notify="icon"></span> ' +
+					'<span data-notify="title">{1}</span> ' +
+					'<span data-notify="message">{2}</span>' +
+					'</div>' ,
+				});
 			};
 
 			this.throw_success = (cmd,params) => {
@@ -52,22 +52,22 @@ angular.module('iaas-collaboratif').directive('profile', function () {
 					title = "Unknown command"
 				}
 				$.notify({
-										// options
-										icon: 'glyphicon glyphicon-ok-sign',
-										title: title+"<br>",
-										message: message,
-									},{
-										//settings
-										type: 'success',
-										newest_on_top: true,
-										allow_dismiss: true,
-										template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-										'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-										'<span data-notify="icon"></span> ' +
-										'<span data-notify="title">{1}</span> ' +
-										'<span data-notify="message">{2}</span>' +
-										'</div>' ,
-									});
+					// options
+					icon: 'glyphicon glyphicon-ok-sign',
+					title: title+"<br>",
+					message: message,
+				},{
+					//settings
+					type: 'success',
+					newest_on_top: true,
+					allow_dismiss: true,
+					template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+					'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+					'<span data-notify="icon"></span> ' +
+					'<span data-notify="title">{1}</span> ' +
+					'<span data-notify="message">{2}</span>' +
+					'</div>' ,
+				});
 			};
 
 			this.save = () => {

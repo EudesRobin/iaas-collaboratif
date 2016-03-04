@@ -3,11 +3,6 @@ Schemas.Subscribers = new SimpleSchema({
 		type: String,
 		optional: true
 	}
-	// machines : {
-	// 	type: [Schemas.Machines],
-	// 	optional: true,
-	// 	defaultValue: []
-	// },
 });
 
 Subscriber = function (opts) {
@@ -46,22 +41,22 @@ Subscriber.prototype.setFields = function(s) {
   		if(err){
   			var title = "Error allocation";
   			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-remove-sign',
-							title: title+"<br>",
-							message: err.details,
-						},{
-							//settings
-							type: 'danger',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
+				// options
+				icon: 'glyphicon glyphicon-remove-sign',
+				title: title+"<br>",
+				message: err.details,
+			},{
+				//settings
+				type: 'danger',
+				newest_on_top: true,
+				allow_dismiss: true,
+				template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				'<span data-notify="icon"></span> ' +
+				'<span data-notify="title">{1}</span> ' +
+				'<span data-notify="message">{2}</span>' +
+				'</div>' ,
+			});
   		}
   		else
   		{
@@ -69,22 +64,22 @@ Subscriber.prototype.setFields = function(s) {
   			var msg="successful";
 
   			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-ok-sign',
-							title: title,
-							message: msg,
-						},{
-							//settings
-							type: 'success',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
+				// options
+				icon: 'glyphicon glyphicon-ok-sign',
+				title: title,
+				message: msg,
+			},{
+				//settings
+				type: 'success',
+				newest_on_top: true,
+				allow_dismiss: true,
+				template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				'<span data-notify="icon"></span> ' +
+				'<span data-notify="title">{1}</span> ' +
+				'<span data-notify="message">{2}</span>' +
+				'</div>' ,
+			});
   		}
   		return cb(err, response);
   	})
@@ -97,22 +92,22 @@ Subscriber.prototype.desallocate = function(machine, cb) {
   		{
   			var title = "Error desallocation";
   			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-remove-sign',
-							title: title+"<br>",
-							message: err.details,
-						},{
-							//settings
-							type: 'danger',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
+				// options
+				icon: 'glyphicon glyphicon-remove-sign',
+				title: title+"<br>",
+				message: err.details,
+			},{
+				//settings
+				type: 'danger',
+				newest_on_top: true,
+				allow_dismiss: true,
+				template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				'<span data-notify="icon"></span> ' +
+				'<span data-notify="title">{1}</span> ' +
+				'<span data-notify="message">{2}</span>' +
+				'</div>' ,
+			});
   		}
   		else 
   		{
@@ -120,22 +115,22 @@ Subscriber.prototype.desallocate = function(machine, cb) {
   			var msg="successful";
 
   			$.notify({
-							// options
-							icon: 'glyphicon glyphicon-ok-sign',
-							title: title,
-							message: msg,
-						},{
-							//settings
-							type: 'success',
-							newest_on_top: true,
-							allow_dismiss: true,
-							template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-							'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-							'<span data-notify="icon"></span> ' +
-							'<span data-notify="title">{1}</span> ' +
-							'<span data-notify="message">{2}</span>' +
-							'</div>' ,
-						});
+				// options
+				icon: 'glyphicon glyphicon-ok-sign',
+				title: title,
+				message: msg,
+			},{
+				//settings
+				type: 'success',
+				newest_on_top: true,
+				allow_dismiss: true,
+				template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+				'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+				'<span data-notify="icon"></span> ' +
+				'<span data-notify="title">{1}</span> ' +
+				'<span data-notify="message">{2}</span>' +
+				'</div>' ,
+			});
   		}
   		return cb(err, response);
 	})
@@ -194,8 +189,10 @@ Meteor.methods({
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
-			machine = {_id:machine._id,cpunumber: machine.cpunumber,cpu: machine.cpu, ram: machine.ram, storage: machine.storage, bandwidth:machine.bandwidth, machinetype:machine.machinetype,
-				machinename:machine.machinename, user_id:machine.user_id, ressource_id:machine.ressource_id, dns:machine.dns, state:machine.state};
+			machine = {_id:machine._id,cpunumber: machine.cpunumber,cpu: machine.cpu, ram: machine.ram,
+				storage: machine.storage, bandwidth:machine.bandwidth, machinetype:machine.machinetype,
+				machinename:machine.machinename, user_id:machine.user_id, ressource_id:machine.ressource_id,
+				dns:machine.dns, state:machine.state};
 			Machines.insert(machine); 
 			return {err: null, machine: machine};
 		}
@@ -233,7 +230,8 @@ Meteor.methods({
 				throwError(500,"desallocate","Failed to update Ressources database");
 				return {err: "Failed to update Ressources database"}
 			}
-			return {err: null, ok_ressource:Ressources.find({machines_ids: machine._id}).fetch().length == 0 , ok_machine: Machines.find({_id: machine._id, user_id: userId}).fetch().length == 0}
+			return {err: null, ok_ressource:Ressources.find({machines_ids: machine._id}).fetch().length == 0 ,
+					ok_machine: Machines.find({_id: machine._id, user_id: userId}).fetch().length == 0}
 
 		}
 		else

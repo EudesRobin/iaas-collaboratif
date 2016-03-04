@@ -24,7 +24,6 @@ angular.module('iaas-collaboratif')
 					return Meteor.users.findOne(Meteor.userId());
 				},
 				ressources: () => {
-					// return (Meteor.users.findOne(Meteor.userId())!=null) ? Meteor.users.findOne(Meteor.userId()).getProvider().getRessources() : null;
 					return Ressources.find({user_id: Meteor.userId()});
 				}
 			});
@@ -103,22 +102,22 @@ angular.module('iaas-collaboratif')
 					title = "Unknown command"
 				}
 				$.notify({
-				            // options
-				            icon: 'glyphicon glyphicon-ok-sign',
-				            title: title,
-				            message: msg,
-				        },{
-				            //settings
-				            type: 'success',
-				            newest_on_top: true,
-				            allow_dismiss: true,
-				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				            '<span data-notify="icon"></span> ' +
-				            '<span data-notify="title">{1}</span> ' +
-				            '<span data-notify="message">{2}</span>' +
-				            '</div>' ,
-				        });
+					// options
+					icon: 'glyphicon glyphicon-ok-sign',
+					title: title,
+					message: msg,
+					},{
+			        //settings
+			        type: 'success',
+			        newest_on_top: true,
+			        allow_dismiss: true,
+			        template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+		            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+		            '<span data-notify="icon"></span> ' +
+		            '<span data-notify="title">{1}</span> ' +
+		            '<span data-notify="message">{2}</span>' +
+		            '</div>' ,
+				});
 			};
 
 			this.throw_error = (cmd,params) => {
@@ -143,22 +142,22 @@ angular.module('iaas-collaboratif')
 					title = "Error Unknown command"
 				}
 				$.notify({
-				            // options
-				            icon: 'glyphicon glyphicon-remove-sign',
-				            title: title+"<br>",
-				            message: params,
-				        },{
-				            //settings
-				            type: 'danger',
-				            newest_on_top: true,
-				            allow_dismiss: true,
-				            template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
-				            '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-				            '<span data-notify="icon"></span> ' +
-				            '<span data-notify="title">{1}</span> ' +
-				            '<span data-notify="message">{2}</span>' +
-				            '</div>' ,
-				        });
+				    // options
+				    icon: 'glyphicon glyphicon-remove-sign',
+				    title: title+"<br>",
+				    message: params,
+				    },{
+			        //settings
+			        type: 'danger',
+			        newest_on_top: true,
+			        allow_dismiss: true,
+			        template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+			        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+			        '<span data-notify="icon"></span> ' +
+			        '<span data-notify="title">{1}</span> ' +
+			        '<span data-notify="message">{2}</span>' +
+			        '</div>' ,
+				});
 			};
 
 			this.startRessource = (ressource) => {
@@ -171,15 +170,14 @@ angular.module('iaas-collaboratif')
 
 			this.stopRessource = (ressource) => {
 				Meteor.call("stopRessource", ressource._id, function(err, res){
-					if (err) return console.error("Failed to stop the ressource", err);
-					console.log("Ressource is stopped and machines set to down")
+					if (err) this.throw_error("stop","Failed to stop the ressource");
+					this.throw_success("stop","Ressource is stopped and machines set to down")
 				})
 			};
 
 			this.deleteRessource = (ressource) => {
 				Meteor.call("stopRessource", ressource._id, function(err, res){
-					if (err) return console.error("Failed to stop the ressource", err);
-					console.log("Ressource is stopped and machines set to down")
+					if (err) this.throw_error("stop","Failed to stop the ressource");
 				})
 				Ressources.remove({_id: ressource._id},(error) => {
 					if (error) this.throw_error('remove','Unable to remove domain');
