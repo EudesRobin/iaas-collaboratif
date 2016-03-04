@@ -169,19 +169,21 @@ angular.module('iaas-collaboratif')
 			};
 
 			this.stopRessource = (ressource) => {
-				Meteor.call("stopRessource", ressource._id, function(err, res){
-					if (err) this.throw_error("stop","Failed to stop the ressource");
-					this.throw_success("stop","Ressource is stopped and machines set to down")
+				var self = this;
+				Meteor.call("stopRessource", ressource._id, function(err){
+					if (err) self.throw_error("stop","Failed to stop the ressource");
+					self.throw_success("stop","Ressource is stopped and machines set to down")
 				})
 			};
 
 			this.deleteRessource = (ressource) => {
+				var self =this;
 				Meteor.call("stopRessource", ressource._id, function(err, res){
-					if (err) this.throw_error("stop","Failed to stop the ressource");
+					if (err) self.throw_error("stop","Failed to stop the ressource");
 				})
 				Ressources.remove({_id: ressource._id},(error) => {
-					if (error) this.throw_error('remove','Unable to remove domain');
-					else this.throw_success('remove','Domain is removed !')
+					if (error) self.throw_error('remove','Unable to remove domain');
+					else self.throw_success('remove','Domain is removed !')
 				});
 			};
 
