@@ -17,10 +17,14 @@ if [[ $isAuthorized_keysExisting == 1 ]];then
 
 	echo "Removing client public key in authorized_keys file"
 
+	numberOfClientKey=$(cat /home/iaas-client/.ssh/authorized_keys|grep "$pub_key"|wc -l)
+	numberOfKeyToKeep=$(( $numberOfClientKey - 1 ))
+
 	#====================================
 	# Remove public key existing in coordinator authorized key file
 	touch /home/iaas-client/.ssh/tmpkeys
 	cat /home/iaas-client/.ssh/authorized_keys | grep -v "$pub_key" > /home/iaas-client/.ssh/tmpkeys
+	cat /home/iaas-client/.ssh/authorized_keys | grep -m $numberOfKeyToKeep "$pub_key" >> /home/iaas-client/.ssh/tmpkeys
 	mv /home/iaas-client/.ssh/tmpkeys /home/iaas-client/.ssh/authorized_keys
 	chmod 600 home/iaas-client/.ssh/authorized_keys
     chown iaas-client:iaas-client /home/iaas-client/.ssh/authorized_keys
