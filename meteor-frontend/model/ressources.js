@@ -48,7 +48,8 @@ Schemas.Ressources = new SimpleSchema({
 	},
 	dns : { 
 		type: String,
-		regEx: SimpleSchema.RegEx.Domain
+		regEx: SimpleSchema.RegEx.Domain,
+		unique: true
 	},
 	elapse_time : {   // in seconds
 		type: Number, 
