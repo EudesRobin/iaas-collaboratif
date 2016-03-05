@@ -189,7 +189,7 @@ Meteor.methods({
 						} 
 					}
 				}
-				// if there is an no contriguous numerotation , we will return the missing id
+				// if there is an no contiguous numerotation , we will return the missing id
 				// and not cpt witch represent how many others instances of this user are running on the provider
 				for(var i=0;i<names_nb.length;i++){
 					if(names_nb.indexOf(''+i)===(-1)) return i;
