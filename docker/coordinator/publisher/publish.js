@@ -20,6 +20,7 @@
 
 var amqp = require('amqplib');
 var fs = require('fs');
+var settings = require('./settings.json')
 
 // Assemble the SSL options; for verification we need at least
 // * a certificate to present to the server ('cert', in PEM format)
@@ -45,7 +46,7 @@ var fs = require('fs');
 // };
 
 var opts = {
-  url: 'amqp://guest:guest@localhost:5672'
+  url: "amqp://"+settings.rabbitmq.user+":"+settings.rabbitmq.password+"@"+settings.rabbitmq.host+":"+settings.rabbitmq.port,
 };
 
 // var opts = {
