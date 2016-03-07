@@ -15,6 +15,9 @@ var resValue = new SimpleSchema({
 	}
 })
 
+/**
+ * The machines inserted in the database will have to follow the schema described
+ */
 Schemas.Machines = new SimpleSchema({
 	user_id : {
 		type: String,
@@ -61,8 +64,16 @@ Schemas.Machines = new SimpleSchema({
 		allowedValues: ["providerdown", "up", "down"],
 		optional: true	
 	},
+	rabbitmq: {
+      type: [Object], 
+      optional: true,
+      blackbox: true 
+	}
 });
 
+/**
+ * Set the restrictions for Machines database modifications
+ */
 Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
 
 	Machines.allow({
@@ -72,6 +83,9 @@ Machines.attachSchema(Schemas.Machines,  {transform: true, replace:true});
     	fetch: ["user_id"]
 	})
 
+/**
+ * Machines obtained from the database contains all the Machine functions
+ */
 Machine = function (opts) {
 	_.extend(this, opts);
 }
@@ -85,6 +99,7 @@ if (Meteor.isServer) {
   });
 }
 
+// The client gets the machines published
 if (Meteor.isClient) {
 	Meteor.subscribe("machines");
 }

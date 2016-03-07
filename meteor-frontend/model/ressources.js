@@ -3,6 +3,9 @@ Ressources = new Mongo.Collection("Ressources", {
   transform: function (doc) { return new Ressource(doc); }
 });
 
+/**
+ * Type used to specifie fields that can give a limited amount of resources (can be decimal)
+ */
 var resValue = new SimpleSchema({
 	available : {
 		type: Number,
@@ -29,6 +32,9 @@ var cpuValue = new SimpleSchema({
 	}
 })
 
+/**
+ * Type used to specifie fields that can give a limited amount of resources (cannot be decimal)
+ */
 var resValueInt = new SimpleSchema({
 	available : {
 		type: Number,
@@ -40,6 +46,9 @@ var resValueInt = new SimpleSchema({
 	},
 })
 
+/**
+ * The resources inserted in the database will have to follow the schema described
+ */
 Schemas.Ressources = new SimpleSchema({
 	// for ensuring that a ressource is associated to a provider
 	user_id : {
@@ -82,6 +91,9 @@ Schemas.Ressources = new SimpleSchema({
 	},
 });
 
+/**
+ * Set the restrictions for Ressources database modifications
+ */
 Ressources.attachSchema(Schemas.Ressources,  {transform: true, replace:true});
 
 Ressources.allow({
@@ -92,6 +104,9 @@ Ressources.allow({
     fetch: ["user_id"]
 })
 
+/**
+ * Ressources obtained from the database contains all the Machine functions
+ */
 Ressource = function (opts) {
 	_.extend(this, opts);
 }
@@ -104,12 +119,17 @@ if (Meteor.isServer) {
   });
 }
 
+// The client gets the resources published
 if (Meteor.isClient) {
 	Meteor.subscribe("ressources");
 }
 
 Meteor.methods({
 
+	/**
+	 * Modify the state of machines using the resource to down, then put the field usable to false
+	 * @param {String} ressource_id	Id of the resource to stop
+	 */
 	stopRessource: function (ressource_id) {
 		var ressource = Ressources.findOne({_id: ressource_id, user_id: Meteor.userId()})
 		ressource.machines_ids.forEach(function(machine_id){
