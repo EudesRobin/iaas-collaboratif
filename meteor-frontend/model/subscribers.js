@@ -1,3 +1,6 @@
+/**
+ * The Subscribers inserted in the database will have to follow the schema described
+ */
 Schemas.Subscribers = new SimpleSchema({
 	sshKey : {
 		type: String,
@@ -5,10 +8,17 @@ Schemas.Subscribers = new SimpleSchema({
 	}
 });
 
+/**
+ * Subscribers obtained from the database contains all the Machine functions
+ */
 Subscriber = function (opts) {
 	_.extend(this, opts);
 };
 
+/**
+ * If we are on the server, we throw an error
+ * @params	Error's parameters
+ */
 throwError = function(error, reason, details) {  
   var meteorError = new Meteor.Error(error, reason, details);
 
@@ -21,6 +31,10 @@ throwError = function(error, reason, details) {
   }
 };
 
+/**
+ * The field "subscriber" associated to the user in the database
+ * @param {Object} s	Subscriber to associate to the current user
+ */
 Subscriber.prototype.setFields = function(s) {
 	if (! s) return null;
 	s = _.extend(this.subscriber || {}, s);
@@ -32,10 +46,19 @@ Subscriber.prototype.setFields = function(s) {
   	});
   };
 
+/**
+ * @return [{Object}]	Machines from the current user in the database
+ */
   Subscriber.prototype.getMachines = function() {
   	return Machines.find()
   };
 
+/**
+ * Calls the allocate method, then returns a callback with the Meteor method response
+ * @param {Object} machine	Machine to allocate
+ * @param {function()} cb	Callback methtod
+ * @return {Notification}	Notifies the client after the allocation is done
+ */
   Subscriber.prototype.allocate = function(machine, cb) {
   	Meteor.call("allocate", Meteor.userId(), machine, function(err, response){
   		if(err){
@@ -85,7 +108,13 @@ Subscriber.prototype.setFields = function(s) {
   	})
 };
 
-//At server end, it's not authorised to run an operation related to client, here Machines so replace it to object machine
+/**
+ * Calls the desallocate method, then returns a callback with the Meteor method response
+ * At server end, it's not authorised to run an operation related to client, here Machines so replace it to object machine
+ * @param {Object} machine	Machine to desallocate
+ * @param {function()} cb	Callback methtod
+ * @return {Notification}	Notifies the client after the desallocation is done
+ */
 Subscriber.prototype.desallocate = function(machine, cb) {
 	Meteor.call("desallocate", Meteor.userId(), machine, function(err, response){
   		if(err)
@@ -137,6 +166,14 @@ Subscriber.prototype.desallocate = function(machine, cb) {
 };
 
 Meteor.methods({
+	/**
+	 * Check in the resources the fields where what is available is greater or equal to those asked in the machine
+	 * Then, the available fields are decremented, and the machine is associated to the resource
+	 * If everything went well, the machine fields are updated then it is inserted in the database
+	 * @param {String} userId	id of the user that wants to allocate the machine
+	 * @param {Object} machine	machine to insert
+	 * @return {Object}			If something went wrong, returns an error, else returns the machine and the err field at null
+	 */
 	allocate: function(userId, machine) {
 		machine = machine || {};
 		machine._id = machine._id || Meteor.uuid();
@@ -165,6 +202,7 @@ Meteor.methods({
 
 		if (ok) 
 		{
+			// Finds the resource associated to the machine
 			var myRessource = Ressources.find({machines_ids: machine._id}).fetch();
 			if (myRessource.length !== 1) throwError(500,"allocate","Could not allocate a machine. Something went wrong");
 			machine.user_id = userId;
@@ -185,10 +223,12 @@ Meteor.methods({
 				}
 				return cpt;
 			};
-			// var tmp = machine.machinename;
+			// The username is already present in the machinename, we have to add the dns and the number of other machines on this
 			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
+			// A hashkey is in the fields when you try to use an already existing machine, so we create a new one
+			// with the interesting fields
 			machine = {_id:machine._id,cpunumber: machine.cpunumber,cpu: machine.cpu, ram: machine.ram,
 				storage: machine.storage, bandwidth:machine.bandwidth, machinetype:machine.machinetype,
 				machinename:machine.machinename, user_id:machine.user_id, ressource_id:machine.ressource_id,
@@ -204,6 +244,13 @@ Meteor.methods({
 
 	},
 
+	/**
+	 * If the resource associated to the machine still exists, the available fields are incremented and the machine id retired
+	 * @param {String} userId	id of the user that wants to desallocate the machine
+	 * @param {Object} machine	machine to remove
+	 * @return {Object}			Returns an error if something went wrong,
+	 * 							else err is null and it says if the machine is deleted correctly
+	 */
 	desallocate: function(userId, machine) {
 
 		var new_machine = Machines.findOne({_id: machine._id, user_id: userId});
@@ -217,9 +264,9 @@ Meteor.methods({
 				_id: new_machine.ressource_id
 			}, {
 				$inc : {"ram.available": new_machine.ram				,
-				"cpunumber.available": new_machine.cpunumber		,
-				"storage.available": new_machine.storage		,
-				"bandwidth.available": new_machine.bandwidth	},
+				"cpunumber.available": new_machine.cpunumber			,
+				"storage.available": new_machine.storage				,
+				"bandwidth.available": new_machine.bandwidth			},
 				$pull: {"machines_ids": new_machine._id					},
 			}, {
 				"upsert": false,

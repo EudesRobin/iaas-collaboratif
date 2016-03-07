@@ -1,6 +1,9 @@
 Users = Meteor.users;
 
 // SCHEMA
+/**
+ * The users inserted in the database will have to follow the schema described
+ */
 Schemas.Users = new SimpleSchema({
   username: {
       type: String,
@@ -56,6 +59,9 @@ Schemas.Users = new SimpleSchema({
   }
 });
 
+/**
+ * Set the restrictions for Users database modifications
+ */
 Users.attachSchema(Schemas.Users,  {transform: true, replace:true});
 Users.allow({
     insert: function(userId,doc) {return userId && Meteor.userId() === userId;},
@@ -64,6 +70,7 @@ Users.allow({
     fetch: []
 })
 
+// The client gets the users published
 if (Meteor.isClient) {
   Meteor.subscribe("users");
 }
