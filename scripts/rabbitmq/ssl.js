@@ -20,6 +20,7 @@
 
 var amqp = require('amqplib');
 var fs = require('fs');
+var settings = require('./settings.json')
 
 // Assemble the SSL options; for verification we need at least
 // * a certificate to present to the server ('cert', in PEM format)
@@ -35,6 +36,8 @@ var fs = require('fs');
 
 // Options for full client and server verification:
 var opts = {
+  url: "amqp://"+settings.user+":"+settings.password+"@"+settings.host+":"+settings.port,
+  // url: 'amqps://localhost',
   cert: fs.readFileSync('./client/cert.pem'),
   key: fs.readFileSync('./client/key.pem'),
   // cert and key or
@@ -63,14 +66,14 @@ var opts = {
 // Option to use the SSL client certificate for authentication
 // opts.credentials = amqp.credentials.external();
 
-var open = amqp.connect('amqps://localhost', opts);
+var open = amqp.connect(opts.url);
 
 open.then(function(conn) {
-  // process.on('SIGINT', conn.close.bind(conn));
+  process.on('SIGINT', conn.close.bind(conn));
   return conn.createChannel().then(function(ch) {
-    console.log("sending message", process.argv[2])
-    ch.sendToQueue('coordinators', new Buffer(process.argv[2]));
+    console.log("sending file", process.argv[2])
+    var file = fs.readFileSync(process.argv[2])
+    ch.sendToQueue('coordinators', new Buffer(file));
     conn.close.bind(conn);
-    // conn.close();
   });
 }).then(null, console.warn);

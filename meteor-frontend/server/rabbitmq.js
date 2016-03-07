@@ -1,8 +1,8 @@
 Meteor.startup(function () {
 	var amqp = Meteor.npmRequire('amqplib/callback_api')
 	var channel = null
-
-	var url = "amqp://guest:guest@backtobaz.no-ip.org:5672";
+    
+	var url = "amqp://"+Meteor.settings.rabbitmq.user+":"+Meteor.settings.rabbitmq.password+"@"+Meteor.settings.rabbitmq.host+":"+Meteor.settings.rabbitmq.port;
 	var queue = "coordinators";
 	amqp.connect(url, function(err, conn) {
 	    if (err != null) return console.error("AMQP - Failed to create a connection", err);
@@ -16,9 +16,14 @@ Meteor.startup(function () {
 			    ch.consume(queue, function(msg) {
 			      	if (msg) 
 			      	{
-			      		data = (msg.content.toString());
     					console.log(msg);
-			        	doWork(data)
+                        try 
+                        {
+                            data = JSON.parse(msg.content.toString());
+			        	    doWork(data)
+                        } catch (e) {
+                            console.error("This is not JSON you son of a bitch !");
+                        }
 			        	ch.ack(msg);
 			      	}
 			    });
@@ -27,9 +32,7 @@ Meteor.startup(function () {
 		});
 	});
 
-	function doWork (data) {
-    	console.log(data);
-		instances = JSON.parse(data);
+	function doWork (instances) {
     	instances.forEach(function (instance) {
     		if (instance.Name === "/coordinator")
     		{
