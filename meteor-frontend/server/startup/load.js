@@ -126,7 +126,7 @@ Meteor.startup(function () {
 
         var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"'+
                               '  -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null"  '+
-                                'iaas-admin@'+dns+' \'/dividePublicKey.sh /home/iaas-client/toto.pub\' ; ';
+                                'iaas-admin@'+dns+' \'/dividePublicKey.sh /home/iaas-client/'+name+'.pub\' ; ';
 
         var create_instance = 'ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
                                   ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
