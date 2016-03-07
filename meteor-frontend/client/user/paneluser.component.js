@@ -281,8 +281,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				// Later, we add to the machinename other informations. It will begin with the username
 				this.newMachine.machinename=this.currentUser.username;
 				// We try to allocate n times the machine that we put in the form
-				for(i=0;i<this.machineNumber;i++)
+				for(var i=0;i<this.machineNumber;i++){
 					this.currentUser.getSubscriber().allocate(this.newMachine, function(){});
+				}
 				// reset form
 				document.getElementById("machineType").value = "";
 				document.getElementById("nbmch").value = "";
@@ -360,9 +361,15 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			 */
 			this.deleteMachine = (machine) => {
 				var self = this;
-				this.stopMachine(machine,function(){
+				// on kill instance if it's running, then desallocate
+				if(machine.state==='up'){
+					this.stopMachine(machine,function(){
+						self.currentUser.getSubscriber().desallocate(machine, function(){});
+					});
+				}else{
+					// instance is not up, we can desallocate
 					self.currentUser.getSubscriber().desallocate(machine, function(){});
-				});
+				}
 			};		
 
 			/**
@@ -431,7 +438,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				ssh_string+='# To ssh your instance :\n';
 				ssh_string+='# ssh -F <config_file> <instance_name>\n';
 
-				for(i=0;i<this.machines.length;i++){
+				for(var i=0;i<this.machines.length;i++){
 					var machine = this.machines[i];
 					ssh_string+='#Instance '+machine.machinename+'\n';
 					ssh_string+='Host '+machine.machinename+'\n';
