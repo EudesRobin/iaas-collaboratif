@@ -3,6 +3,18 @@ Machines = new Mongo.Collection("Machines", {
   transform: function (doc) { return new Machine(doc); }
 });
 
+
+var resValue = new SimpleSchema({
+	myvalue : {
+		type: Number,
+		decimal: true
+	},
+	unit: {
+		type : String,
+		allowedValues: ["K", "M", "G"]
+	}
+})
+
 Schemas.Machines = new SimpleSchema({
 	user_id : {
 		type: String,
@@ -20,24 +32,20 @@ Schemas.Machines = new SimpleSchema({
 		optional : true
 	},
 	cpu : {
-		type: Number, // in GHz
-		decimal: true
+		type: resValue
 	},
 	cpunumber : {
 		type: Number,
 		decimal: false
 	},
 	ram : {
-		type: Number, // in Gb
-		decimal: true
+		type: resValue
 	},
 	storage :{
-		type: Number, // in Gb
-		decimal: true
+		type: resValue
 	},
 	bandwidth:{
-		type: Number, // in Gbit/s
-		decimal: true
+		type: resValue
 	},
 	dns : { 
 		type: String,

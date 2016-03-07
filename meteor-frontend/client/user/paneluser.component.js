@@ -260,12 +260,43 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						if(err) self.throw_error("reallocate","An error occured while reallocating the machine");
 						if(isItAvailable.usable){
 							machine=Machines.findOne({_id:machine._id});
-							self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+
-														machine.cpunumber+' '+isItAvailable.ram+'G '+isItAvailable.storage+'G',
+							self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram.myvalue+'k '+
+														machine.cpunumber+' '+isItAvailable.ram+'k '+isItAvailable.storage+'k',
 														function(){});
 						}
 					});	
 				})
+			}
+			this.set_myvalue=(value,unit)=>{
+				switch(unit){
+					case "K":
+					return value;
+					break;
+					case "M":
+					return value*1024;
+					break;
+					case "G":
+					return value*1024*1024;
+					break;
+					default:
+					break;
+				}
+			}
+
+			this.convert = (value,unit) => {
+					switch(unit){
+						case "K":
+							return value;
+						break;
+						case "M":
+							return value/1024;
+						break;
+						case "G":
+							return value/1024/1024;
+						break;
+						default:
+						break;
+					}	
 			}
 
 			/**
@@ -280,6 +311,14 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					this.newMachine.machinetype=this.machinetypeInput;
 				// Later, we add to the machinename other informations. It will begin with the username
 				this.newMachine.machinename=this.currentUser.username;
+				this.newMachine.cpu.myvalue = this.set_myvalue(this.newMachine.cpu.myvalue,this.cpuunit);
+				this.newMachine.cpu.unit=this.cpuunit;
+				this.newMachine.ram.myvalue = this.set_myvalue(this.newMachine.ram.myvalue,this.ramunit);
+				this.newMachine.ram.unit=this.ramunit;
+				this.newMachine.storage.myvalue = this.set_myvalue(this.newMachine.storage.myvalue,this.storageunit);
+				this.newMachine.storage.unit=this.storageunit;
+				this.newMachine.bandwidth.myvalue = this.set_myvalue(this.newMachine.bandwidth.myvalue,this.bandwidthunit);
+				this.newMachine.bandwidth.unit=this.bandwidthunit;
 				// We try to allocate n times the machine that we put in the form
 				for(var i=0;i<this.machineNumber;i++){
 					this.currentUser.getSubscriber().allocate(this.newMachine, function(){});
@@ -331,8 +370,8 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					}
 					// Case when the initial resource is available
 					else{
-						self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram+'G '+
-												machine.cpunumber+' '+resourceInfo.ram+'G '+resourceInfo.storage+'G',
+						self.action_user('create',machine.machinetype+' 1 '+machine.machinename+' '+machine.ram.myvalue+'k '+
+												machine.cpunumber+' '+resourceInfo.ram+'k '+resourceInfo.storage+'k',
 												function(){});
 					}
 				});

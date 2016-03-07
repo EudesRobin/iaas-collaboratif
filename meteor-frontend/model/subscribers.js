@@ -142,21 +142,21 @@ Meteor.methods({
 		machine._id = machine._id || Meteor.uuid();
 
 		var query = {
-			"cpu" : 		{$gte: machine.cpu			}, 
+			"cpu.speed" : 		{$gte: machine.cpu.myvalue			}, 
 			"cpunumber.available" : {$gte: machine.cpunumber	}, 
-			"ram.available" :		{$gte: machine.ram			}, 
-			"storage.available" : 	{$gte: machine.storage		}, 
-			"bandwidth.available" :	{$gte: machine.bandwidth	},
+			"ram.available" :		{$gte: machine.ram.myvalue			}, 
+			"storage.available" : 	{$gte: machine.storage.myvalue		}, 
+			"bandwidth.available" :	{$gte: machine.bandwidth.myvalue	},
 			"usable" : true
 		}
 
 		// TRANSACTION-PART 1
 		// an atomic operation in mongoDB since it applies to only one document
 		var ok = Ressources.update(query, {
-			$inc : {"ram.available": -machine.ram				, 
+			$inc : {"ram.available": -machine.ram.myvalue				, 
 			"cpunumber.available": -machine.cpunumber		, 
-			"storage.available": -machine.storage		, 
-			"bandwidth.available": -machine.bandwidth	},
+			"storage.available": -machine.storage.myvalue		, 
+			"bandwidth.available": -machine.bandwidth.myvalue	},
 			$push: {"machines_ids": machine._id			},
 		}, {
 			"upsert": false,
@@ -228,10 +228,10 @@ Meteor.methods({
 			ok = Ressources.update({
 				_id: new_machine.ressource_id
 			}, {
-				$inc : {"ram.available": new_machine.ram				,
+				$inc : {"ram.available": new_machine.ram.myvalue				,
 				"cpunumber.available": new_machine.cpunumber		,
-				"storage.available": new_machine.storage		,
-				"bandwidth.available": new_machine.bandwidth	},
+				"storage.available": new_machine.storage.myvalue		,
+				"bandwidth.available": new_machine.bandwidth.myvalue	},
 				$pull: {"machines_ids": new_machine._id					},
 			}, {
 				"upsert": false,

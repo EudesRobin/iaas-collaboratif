@@ -1,13 +1,33 @@
 <script>
+function convert(value,unit){
+	switch(unit){
+		case "K":
+		return value;
+		break;
+		case "M":
+		return value/1024;
+		break;
+		case "G":
+		return value/1024/1024;
+		break;
+		default:
+		break;
+	}	
+}
+
 $(document).on("click", ".modifprovider", function () {
 	var rsc = $(this).data('rsc');
 	$(".modal-body #rid").val(rsc._id);
 	$(".modal-body #dns").attr("placeholder",rsc.dns);
 	$(".modal-body #cpuNumber").attr("placeholder", rsc.cpunumber.total );
-	$(".modal-body #cpu").attr("placeholder", rsc.cpu );
-	$(".modal-body #storage").attr("placeholder", rsc.storage.total );
-	$(".modal-body #ram").attr("placeholder",rsc.ram.total );
-	$(".modal-body #bandwidth").attr("placeholder",rsc.bandwidth.total );
+	$(".modal-body #cpu").attr("placeholder", convert(rsc.cpu.speed,rsc.cpu.unit));
+	$(".modal-body #storage").attr("placeholder", convert(rsc.storage.total,rsc.storage.unit));
+	$(".modal-body #ram").attr("placeholder",convert(rsc.ram.total,rsc.ram.unit));
+	$(".modal-body #bandwidth").attr("placeholder",convert(rsc.bandwidth.total,rsc.bandwidth.unit));
+	$(".modal-body #unitcpu").val(rsc.cpu.unit);
+	$(".modal-body #unitram").val(rsc.ram.unit);
+	$(".modal-body #unitstorage").val(rsc.storage.unit);
+	$(".modal-body #unitbandwidth").val(rsc.bandwidth.unit);
 });
 </script>
 
@@ -42,31 +62,60 @@ $(document).on("click", ".modifprovider", function () {
 									<table class="table table-hover">
 										<tr>
 											<td><label class="control-label">Domain name</label></td>
-											<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])" required/></td>
+											<td><input type="text" ng-model="provider.newRessource.dns" name="dns" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])" required/></td><td></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Number of CPU</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" max="100000" name="cpuNumber" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.cpunumber.total" step="1" min="1" max="100000" name="cpuNumber" required/></td><td></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpu" step="1" min="1" max="1000" name="cpu" required/></td>
+											<td><label class="control-label">Clock speed</label></td>
+											<td><input type="number" ng-model="provider.newRessource.cpu.speed" step="1" min="1" max="1000" name="cpu" required/></td>
+											<td>Unit : 
+											<select ng-model="provider.cpuunit" id="unitcpu">
+												<option value="G" >GHz </option>
+												<option value="M">MHz </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">RAM (unit: GB)</label></td>
+											<td><label class="control-label">RAM</label></td>
 											<td><input type="number" ng-model="provider.newRessource.ram.total" step="1" min="1" max="1000" name="ram" required/></td>
+											<td>Unit : 
+											<select ng-model="provider.ramunit" id="unitram">
+												<option value="G" >GB  </option>
+												<option value="M">MB  </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Storage(unit: GB)</label></td>
+											<td><label class="control-label">Storage</label></td>
 											<td><input type="number" ng-model="provider.newRessource.storage.total" step="1" min="1" max="1000" name="storage" required/></td>
+											<td>Unit : 
+											<select ng-model="provider.storageunit" id="unitstorage">
+												<option value="G" >GB  </option>
+												<option value="M">MB  </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
+											<td><label class="control-label">Bandwidth</label></td>
 											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="1" min="1" max="1000" name="bandwidth" required/></td>
+											<td>Unit : 
+											<select ng-model="provider.bandwidthunit" id="unitbandwidth">
+												<option value="G" >GBps</option>
+												<option value="M">MBps</option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 									</table>
 									
 									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 1000<br>Domain name must be (at least) like this : {1}.{2} </div>
+									<div class="alert alert-info">Don't forget to specify a unit when required...</div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
 											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -96,27 +145,55 @@ $(document).on("click", ".modifprovider", function () {
 									<table class="table table-hover">
 										<tr>
 											<td><label class="control-label">Domain name</label></td>
-											<td><input type="text" id="dns" ng-model="ressource.dns" name="dns" placeholder="" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])"/></td>
+											<td><input type="text" id="dns" ng-model="ressource.dns" name="dns" placeholder="" pattern="(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z](?:[a-z-]*[a-z])"/></td><td></td>
 										</tr>
 										<tr>
 											<td><label class="control-label">Number of CPU</label></td>
-											<td><input type="number" id="cpuNumber" ng-model="ressource.cpunumber.total" placeholder="" step="1" min="1" max="100000" name="cpuNumber" /></td>
+											<td><input type="number" id="cpuNumber" ng-model="ressource.cpunumber.total" placeholder="" step="1" min="1" max="100000" name="cpuNumber" /></td><td></td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
-											<td><input type="number" id="cpu" ng-model="ressource.cpu" placeholder="" step="1" min="1" max="1000" name="cpu" /></td>
+											<td><label class="control-label">Clock speed</label></td>
+											<td><input type="number" id="cpu" ng-model="ressource.cpu.speed" placeholder="" step="1" min="1" max="1000" name="cpu" /></td>
+											<td>Unit : 
+											<select ng-model="provider.cpuunit" id="unitcpu">
+												<option value="G" >GHz </option>
+												<option value="M">MHz </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">RAM (unit: GB)</label></td>
+											<td><label class="control-label">RAM</label></td>
 											<td><input type="number" id="ram" placeholder="" ng-model="ressource.ram.total" step="1" min="1" max="1000" name="ram" /></td>
+											<td>Unit : 
+											<select ng-model="provider.ramunit" id="unitram">
+												<option value="G" >GB  </option>
+												<option value="M">MB  </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Storage(unit: GB)</label></td>
+											<td><label class="control-label">Storage</label></td>
 											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="1" min="1" max="1000" name="storage" /></td>
+											<td>Unit : 
+											<select ng-model="provider.storageunit" id="unitstorage">
+												<option value="G" >GB  </option>
+												<option value="M">MB  </option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 										<tr>
-											<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
+											<td><label class="control-label">Bandwidth</label></td>
 											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="1" min="1" max="1000" name="bandwidth" /></td>
+											<td>Unit : 
+											<select ng-model="provider.bandwidthunit" id="unitbandwidth">
+												<option value="G" >GBps</option>
+												<option value="M">MBps</option>
+												<option value="" hidden></option>
+											</select>
+											</td>
 										</tr>
 									</table>
 									<input name= "rid" id="rid" ng-model="ridid" hidden/>
@@ -155,10 +232,10 @@ $(document).on("click", ".modifprovider", function () {
 					<tr ng-repeat="ressource in provider.ressources" ng-class="provider.getRowClass(ressource.usable)">
 						<td style="vertical-align:middle">{{ressource.dns}}</td>
 						<td style="vertical-align:middle">{{ressource.cpunumber.total}}</td>
-						<td style="vertical-align:middle">{{ressource.cpu}} Ghz</td>
-						<td style="vertical-align:middle">{{ressource.ram.total}} GB</td>
-						<td style="vertical-align:middle">{{ressource.storage.total}} GB</td>
-						<td style="vertical-align:middle">{{ressource.bandwidth.total}} MBps</td>
+						<td style="vertical-align:middle">{{provider.convert(ressource.cpu.speed,ressource.cpu.unit)}} {{ressource.cpu.unit}}Hz</td>
+						<td style="vertical-align:middle">{{provider.convert(ressource.ram.total,ressource.ram.unit)}} {{ressource.ram.unit}}B</td>
+						<td style="vertical-align:middle">{{provider.convert(ressource.storage.total,ressource.storage.unit)}} {{ressource.storage.unit}}B</td>
+						<td style="vertical-align:middle">{{provider.convert(ressource.bandwidth.total,ressource.bandwidth.unit)}} {{ressource.bandwidth.unit}}Bps</td>
 						<td>
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
@@ -172,7 +249,7 @@ $(document).on("click", ".modifprovider", function () {
 								</div>
 								<div class="btn-group">
 									<button class="btn btn-primary centered modifprovider" ng-disabled="provider.isUsable(ressource)"
-									data-toggle="modal" data-rsc='{{ressource}}' data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
+									data-toggle="modal" data-rsc='{{provider.getRessource(ressource._id)}}' data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
 								</div>
 							</div>
 						</td>

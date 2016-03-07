@@ -73,6 +73,11 @@ angular.module('iaas-collaboratif')
 				return document.getElementById("rid").value;
 			}
 
+
+			this.getRessource = (rid) => {
+				return Ressources.findOne({_id: rid});
+			}
+
 			/**
 			 * Says if a resource is usable or not
 			 * @param {Object} resource
@@ -88,20 +93,48 @@ angular.module('iaas-collaboratif')
 			 */
 			this.updateRessource=(rid) => {
 				var ressource = Ressources.find({_id:rid}).fetch()[0];
-				if (dns.value!=""||cpuNumber.value!=""||cpu.value!=""||ram.value!=""||bandwidth.value!=""||storage.value!=""){
+				if (dns.value!==""||cpuNumber.value!=""||cpu.value!=""||ram.value!=""||bandwidth.value!=""||storage.value!=""){
 					dns.value = dns.value==""? ressource.dns:dns.value;
 					cpuNumber.value = cpuNumber.value==""? ressource.cpunumber.total:cpuNumber.value;
-					cpu.value = cpu.value==""? ressource.cpu:cpu.value;
-					ram.value = ram.value==""? ressource.ram.total:ram.value;
-					bandwidth.value = bandwidth.value==""? ressource.bandwidth.total:bandwidth.value;
-					storage.value = storage.value==""? ressource.storage.total:storage.value;
+					var cpu_val;
+					var ram_val;
+					var storage_val;
+					var bandwidth_val;
+					var cpu_unit = document.getElementById('unitcpu').value;
+					var ram_unit = document.getElementById('unitram').value;
+					var bandwidth_unit = document.getElementById('unitbandwidth').value;
+					var storage_unit = document.getElementById('unitstorage').value;
+
+					if(cpu.value===""){
+						cpu_val = ressource.cpu.speed;
+					}else{
+						cpu_val = this.set_myvalue(cpu.value,cpu_unit);
+					}
+					if(ram.value===""){
+						ram_val = ressource.ram.total;
+					}else{
+						ram_val = this.set_myvalue(ram.value,ram_unit);
+					}
+					if(storage.value===""){
+						storage_val = ressource.storage.total;
+					}else{
+						storage_val = this.set_myvalue(storage.value,storage_unit);
+					}
+					if(bandwidth.value===""){
+						bandwidth_val = ressource.bandwidth.total;
+					}else{
+						bandwidth_val = this.set_myvalue(bandwidth.value,bandwidth_unit);
+					}
+
+
+
 					Ressources.update({_id: ressource._id}, {$set:{
 						dns:dns.value,
 						cpunumber:{total:Number(cpuNumber.value),available:Number(cpuNumber.value)},
-						cpu:Number(cpu.value),
-						ram:{total:Number(ram.value),available:Number(ram.value)},
-						bandwidth:{total:Number(bandwidth.value),available:Number(bandwidth.value)},
-						storage:{total:Number(storage.value),available:Number(storage.value)}
+						cpu:{speed:Number(cpu_val),unit:cpu_unit},
+						ram:{total:Number(ram_val),available:Number(ram_val),unit:ram_unit},
+						bandwidth:{total:Number(bandwidth_val),available:Number(bandwidth_val),unit:bandwidth_unit},
+						storage:{total:Number(storage_val),available:Number(storage_val),unit:storage_unit}
 					}},(error) => {
 						if (error)this.throw_error('modify','Unable to modify properties');
 				else this.throw_success('modify','Domain properties modified');
@@ -113,20 +146,70 @@ angular.module('iaas-collaboratif')
 
 			}
 
+			this.convert = (value,unit) => {
+					switch(unit){
+						case "K":
+							return value;
+						break;
+						case "M":
+							return value/1024;
+						break;
+						case "G":
+							return value/1024/1024;
+						break;
+						default:
+						break;
+					}	
+			}
+
+			this.set_myvalue=(value,unit)=>{
+				switch(unit){
+					case "K":
+					return value;
+					break;
+					case "M":
+					return value*1024;
+					break;
+					case "G":
+					return value*1024*1024;
+					break;
+					default:
+					break;
+				}
+			}
+
 			/**
 			 * After setting its available sets, the object newRessource is inserted in the Ressources database
 			 * The form is then cleaned
 			 */
 			this.insertRessource = () => {
+
 				this.newRessource.cpunumber.available = this.newRessource.cpunumber.total;
+
+				this.newRessource.cpu.unit=this.cpuunit;
+				this.newRessource.cpu.speed=this.set_myvalue(this.newRessource.cpu.speed,this.cpuunit);
+
+				this.newRessource.ram.unit=this.ramunit;
+				this.newRessource.ram.total=this.set_myvalue(this.newRessource.ram.total,this.ramunit);
 				this.newRessource.ram.available = this.newRessource.ram.total;
+
+				this.newRessource.storage.unit=this.storageunit;
+				this.newRessource.storage.total=this.set_myvalue(this.newRessource.storage.total,this.storageunit);
 				this.newRessource.storage.available = this.newRessource.storage.total;
+
+				this.newRessource.bandwidth.unit=this.bandwidthunit;
+				this.newRessource.bandwidth.total=this.set_myvalue(this.newRessource.bandwidth.total,this.bandwidthunit);
 				this.newRessource.bandwidth.available = this.newRessource.bandwidth.total;
 				var self = this;
 				this.currentUser.getProvider().addRessource(this.newRessource, function(err){
 					if(err) self.throw_error('insert',err);
 				});
 				this.newRessource ={};
+				this.bandwidthunit="";
+				this.cpuunit="";
+				this.ramunit="";
+				this.storageunit="";
+
 				$('#add').modal('hide');
 			};
 

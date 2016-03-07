@@ -27,10 +27,10 @@
 						<td style="vertical-align:middle">{{machine.machinename}}</td>
 						<td style="vertical-align:middle">{{machine.machinetype}}</td>
 						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
-						<td style="vertical-align:middle">{{machine.cpu}} Ghz</td>
-						<td style="vertical-align:middle">{{machine.ram}} GB</td>
-						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1000*1000*1000) / machine.storage) : 0}} % of {{machine.storage}} GB</td>
-						<td style="vertical-align:middle">{{machine.bandwidth}} MBps</td>
+						<td style="vertical-align:middle">{{user.convert(machine.cpu.myvalue,machine.cpu.unit)}} {{machine.cpu.unit}}hz</td>
+						<td style="vertical-align:middle">{{user.convert(machine.ram.myvalue,machine.ram.unit)}} {{machine.ram.unit}}B</td>
+						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1024) / machine.storage) : 0}} % of {{user.convert(machine.storage.myvalue,machine.storage.unit)}} {{machine.storage.unit}}B</td>
+						<td style="vertical-align:middle">{{user.convert(machine.bandwidth.myvalue,machine.bandwidth.unit)}} {{machine.bandwidth.unit}}Bps</td>
 						<td>
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
@@ -98,8 +98,8 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Machine type</label></td>
 								<div class="col-sm-10">
-									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType">
-										<option  ng-selected="$first">ubuntussh</option>
+									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType" >
+										<option selected="selected">ubuntussh</option>
 										<option>centosssh</option>
 										<option>debianssh</option>
 										<option value="" hidden></option>
@@ -114,42 +114,66 @@
 									<td><input id="nbmch" type="number" ng-model="user.machineNumber" step="1" min="1" max="10" name="machineNumber" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div><td></td></tr>
 							<tr><div class="form-group">
 								<td><label class="control-label">Number of cpu</label></td>
 								<div class="col-sm-10">
 									<td><input type="number" ng-model="user.newMachine.cpunumber" step="1" min="1" max="100000" name="cpuNumber" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div><td></td></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">Clock speed (unit: Ghz)</label></td>
+								<td><label class="control-label">Clock speed</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.cpu" step="1" min="1" max="1000" name="cpu" required/>
+									<td><input type="number" ng-model="user.newMachine.cpu.myvalue" step="1" min="1" max="1000" name="cpu" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div>
+							<td><select ng-model="user.cpuunit" id="unitcpu">
+								<option value="G" >GHz </option>
+								<option value="M">MHz </option>
+								<option value="" hidden></option>
+							</select></td>
+						</tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">RAM (unit: GB)</label></td>
+								<td><label class="control-label">RAM</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.ram" step="1" min="1" max="1000" name="ram" required/>
+									<td><input type="number" ng-model="user.newMachine.ram.myvalue" step="1" min="1" max="1000" name="ram" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div>
+							<td><select ng-model="user.ramunit" id="unitram">
+								<option value="G" >GB  </option>
+								<option value="M">MB  </option>
+								<option value="" hidden></option>
+							</select></td>
+						</tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">Storage (unit: GB)</label></td>
+								<td><label class="control-label">Storage</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.storage" step="1" min="1" max="1000" name="storage" required/>
+									<td><input type="number" ng-model="user.newMachine.storage.myvalue" step="1" min="1" max="1000" name="storage" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div>
+							<td><select ng-model="user.storageunit" id="unitstorage">
+								<option value="G" >GB  </option>
+								<option value="M">MB  </option>
+								<option value="" hidden></option>
+							</select></td>
+						</tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">Bandwidth (unit: MBps)</label></td>
+								<td><label class="control-label">Bandwidth</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.bandwidth" step="1" min="1" max="1000" name="bandwidth" required/>
+									<td><input type="number" ng-model="user.newMachine.bandwidth.myvalue" step="1" min="1" max="1000" name="bandwidth" required/>
 									</td>
 								</div>
-							</div></tr>
+							</div>
+							<td><select ng-model="user.bandwidthunit" id="unitbandwidth">
+								<option value="K" >KBps</option>
+								<option value="M">MBps</option>
+								<option value="" hidden></option>
+							</select></td>
+						</tr>
 						</table>
 						<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">You must enter a valid SSH public key first !</div>

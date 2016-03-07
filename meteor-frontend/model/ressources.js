@@ -12,6 +12,21 @@ var resValue = new SimpleSchema({
 		type: Number,
 		decimal: true
 	},
+	unit: {
+		type : String,
+		allowedValues: ["K", "M", "G"]
+	}
+})
+
+var cpuValue = new SimpleSchema({
+	speed : {
+		type: Number,
+		decimal: true
+	},
+	unit: {
+		type : String,
+		allowedValues: ["M", "G"]
+	}
 })
 
 var resValueInt = new SimpleSchema({
@@ -32,10 +47,10 @@ Schemas.Ressources = new SimpleSchema({
 		regEx : SimpleSchema.RegEx.Id
 	},
 	cpu : {
-		type: Number,
+		type: cpuValue
 	},
 	cpunumber : {
-		type: resValueInt,
+		type: resValueInt
 	},
 	ram : {
 		type: resValue
