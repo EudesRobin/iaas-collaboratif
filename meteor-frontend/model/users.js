@@ -70,6 +70,13 @@ Users.allow({
     fetch: []
 })
 
+if(Meteor.isServer){
+  //The user published is the current user
+  Meteor.publish("users", function () {
+    return Users.find({_id: this.userId});
+  });
+}
+
 // The client gets the users published
 if (Meteor.isClient) {
   Meteor.subscribe("users");

@@ -210,8 +210,12 @@ Meteor.methods({
 			machine.dns = myRessource[0].dns;
 			machine.state = "down";
 
-			// return how many other instances userid are running at providerdns
-			function howmanyothers(machineid){
+			/**
+			 * Returns the number to associate to the instance of the machine that will be in the machinename
+			 * @param {String} machineid	Id of the machine in order to get the resource associated
+			 * @return {Number}				Number to put in the machinename
+			 */
+			function instanceNumber(machineid){
 				var providerdns = Ressources.findOne({machines_ids: machineid});
 				var cpt=0;
 				var userid = Meteor.userId();
@@ -236,7 +240,7 @@ Meteor.methods({
 				return cpt;
 			};
 			// The username is already present in the machinename, we have to add the dns and the number of other machines on this
-			machine.machinename+='-'+machine.dns+'-'+howmanyothers(machine._id);
+			machine.machinename+='-'+machine.dns+'-'+instanceNumber(machine._id);
 			// TRANSACTION-PART 2
 			// this second query should be a transaction-like operation. We let it this way for now
 			// A hashkey is in the fields when you try to use an already existing machine, so we create a new one

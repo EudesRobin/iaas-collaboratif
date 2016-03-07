@@ -8,6 +8,12 @@ Meteor.startup(function () {
   
   // Server methods
   Meteor.methods({
+  	/**
+  	 * Method called from the client side when we want to make a command on the server side among the possible ones
+  	 * @param {String} cmd		Command to execute
+  	 * @param {String} params	Parameters of the command
+  	 * @return 					Result of the executed command
+  	 */
     exec_cmd: function (cmd, params) {
       // This method call won't return immediately, it will wait for the
       // asynchronous code to finish, so we call unblock to allow this client
@@ -145,6 +151,12 @@ Meteor.startup(function () {
       return future.wait();
     },
 
+    /**
+     * If the resource exists, returns its ram.total/storage.total/usable fields
+     * Else, returns an error
+     * @param {String} ressourceid  Id of the resource which we want infos
+     * @return {Object}							Error or required informations
+     */
     getInfoFromRessource: function (ressourceid) {
       var tmp=Ressources.findOne({_id: ressourceid});
       if (tmp)
