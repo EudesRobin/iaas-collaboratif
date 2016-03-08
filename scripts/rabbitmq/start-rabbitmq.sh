@@ -1,1 +1,0 @@
-sudo RABBITMQ_CONFIG_FILE=`pwd`/rabbitmq rabbitmq-server
