@@ -28,7 +28,7 @@
 									<button ng-click="user.startMachine(machine)" class="btn btn-success" ng-disabled="keyForm.$invalid||machine.state==='up'" >Start</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="user.stopMachine(machine)" class="btn btn-warning" ng-disabled="machine.state!=='up'||machine.state!=='providerdown'">Stop</button>
+									<button ng-click="user.stopMachine(machine)" class="btn btn-warning" ng-disabled="machine.state!=='up'">Stop</button>
 								</div>
 								<div class="btn-group">
 									<button ng-click="user.deleteMachine(machine)" class="btn btn-danger" ng-confirm-click="Confirm remove">Remove</button>
