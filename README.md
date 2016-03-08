@@ -33,9 +33,6 @@ Descriptions of branches
 **[FrontendWebui branch](https://github.com/EudesRobin/iaas-collaboratif/tree/frontendWebui):**
  Frontend side
 
-**[rabbitmq branch](https://github.com/EudesRobin/iaas-collaboratif/tree/rabbitmq):**
- RabbitMQ will be used to monitore provider status (and users instances running)
-
 Links
 -------
 [Documentation](http://air.imag.fr/index.php/Projets-2015-2016-IaaS_Docker)
