@@ -55,7 +55,7 @@ Meteor.startup(function () {
     		{
     			// do something
     		} 
-    		else if (instance.Name === "/shinken")
+    		else if (instance.Name === "/cadvisor")
     		{
     			// do something
     		}
@@ -63,10 +63,12 @@ Meteor.startup(function () {
     		{
     			var name = instance.Name.split("-");
     			var username = name[0];
-    			var dns = name[1];
-    			var nb_machine = name[2];
+    			name.splice(0,1);
+                name.splice(dns.length-1,1);
+                var dns = name.join("-");
+    			var nb_machine = name[name.length-1];
 
-                console.log("wAZAAAAAAA oUIIIIIIIIIIIi")
+                console.log(dns +' '+username+' '+nb_machine);
                 var ressource = Ressources.find({dns: dns}).fetch();
                 if (ressource != 1) return console.error("Either more than one and no ressoure was found !")
 
