@@ -64,7 +64,7 @@ Meteor.startup(function () {
     			var name = instance.Name.split("-");
     			var username = name[0];
     			name.splice(0,1);
-                name.splice(dns.length-1,1);
+                name.splice(name.length-1,1);
                 var dns = name.join("-");
     			var nb_machine = name[name.length-1];
 
