@@ -3,11 +3,11 @@ Meteor.startup(function () {
 	var channel = null
     
 	var url = "amqp://"+Meteor.settings.rabbitmq.user+":"+Meteor.settings.rabbitmq.password+"@"+Meteor.settings.rabbitmq.host+":"+Meteor.settings.rabbitmq.port;
-	var queue = "";
 
     var variables = {
-        'exchange': 'frontend',
-        'keys': ["coordinator"]
+        'exchange': 'coordinators',
+        'type': 'fanout',
+        'queue': '',
     }
     // connecting to amqp
 	amqp.connect(url, function(err, conn) {
@@ -17,19 +17,17 @@ Meteor.startup(function () {
 		    if (err) return console.error("AMQP - Failed to create a channel", err);
 		    channel = ch;
             // creating a exchange
-            ch.assertExchange(variables.exchange, 'topic', {durable: true});
+            ch.assertExchange(variables.exchange, variables.type, {durable: false});
             // creating a random queue
-		    ch.assertQueue(queue, {}, function(err, ok){
+		    ch.assertQueue(variables.queue, {exclusive: true}, function(err, ok){
 		    	if (err) return console.error("AMQP - Failed to create a queue", err)
                 // attaching a consumer to the queue
-			    ch.consume(queue, handler, {noAck: true}, function (err) {
-                    if (err) console.error("AMQP - Failed to attach a consumer", err)
-                    // binding the queue to the keys of interests
-                    variables.keys.forEach(function (key) {
-                        ch.bindQueue(queue, variables.exchange, "", {}, function (err) {
-                            if (err) return console.error("AMQP - Failed to bind the queue to the exchange", err)
-                        });
-                    })
+			    ch.consume(ok.queue, handler, {noAck: true}, function (err) {
+                    if (err) return console.error("AMQP - Failed to attach a consumer", err)
+                    // // binding the queue to the keys of interests
+                    ch.bindQueue(ok.queue, variables.exchange, "", {}, function (err) {
+                        if (err) return console.error("AMQP - Failed to bind the queue to the exchange", err)
+                    });
                 });
                 // a handler for each published message
                 function handler (msg) {
