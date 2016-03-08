@@ -31,15 +31,17 @@ Meteor.startup(function () {
                 });
                 // a handler for each published message
                 function handler (msg) {
+                    console.log(msg)
                     if (msg) 
                     {
                         try 
                         {
                             data = JSON.parse(msg.content.toString());
-                            doWork(data)
                         } catch (e) {
-                            console.error("This is not JSON you son of a bitch !", msg.content.toString(), e);
+                            console.error("This is not JSON you son of a bitch !", e);
+                            return;
                         }
+                        doWork(data);
                     }
                 }
 		    });
@@ -47,7 +49,7 @@ Meteor.startup(function () {
 		});
 	});
 
-	function doWork (instances) {
+	var doWork = Meteor.bindEnvironment(function (instances) {
     	instances.forEach(function (instance) {
     		if (instance.Name === "/coordinator")
     		{
@@ -64,9 +66,10 @@ Meteor.startup(function () {
     			var dns = name[1];
     			var nb_machine = name[2];
 
-    			var ressource = Ressources.find({dns: dns}).fetch();
-    			if (ressource.length > 1) throw new Error("More than one DNS per ressource");
-    			
+                console.log("wAZAAAAAAA oUIIIIIIIIIIIi")
+                var ressource = Ressources.find({dns: dns}).fetch();
+                if (ressource != 1) return console.error("Either more than one and no ressoure was found !")
+
     			// updating the ressource state to USABLE
     			Ressources.update({ressource: ressource._id}, {
     				$set:{usable: true}
@@ -83,5 +86,6 @@ Meteor.startup(function () {
     			})
     		}
     	})
-	}
+	})
+
 });
