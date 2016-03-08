@@ -62,16 +62,14 @@ Meteor.startup(function () {
     		else
     		{
                 var instance_name = instance.Name.split('/')[1];
-    			var name = instance.Name.split("-");
-    			var username = name[0].split('/')[1];
-    			name.splice(0,1);
-                	name.splice(name.length-1,1);
-                	name = name.join("-");
-			var dns = name;
-
-                console.log(dns +' '+username+' ' + instance.Name);
+                var name = instance.Name.split("-");
+                var username = name[0].split('/')[1];
+                name.splice(0,1);
+                name.splice(name.length-1,1);
+                name = name.join("-");
+                var dns = name;
                 var ressource = Ressources.find({dns: dns}).fetch();
-                console.log(ressource);
+                
 		if (ressource.length != 1) return console.error("Either more than one and no ressoure was found !")
 
     			// updating the ressource state to USABLE
