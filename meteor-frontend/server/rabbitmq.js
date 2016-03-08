@@ -61,6 +61,7 @@ Meteor.startup(function () {
     		}
     		else
     		{
+                var instance_name = instance.Name.split('/')[1];
     			var name = instance.Name.split("-");
     			var username = name[0].split('/')[1];
     			name.splice(0,1);
@@ -79,7 +80,7 @@ Meteor.startup(function () {
     			})
 
     			// updating machine infos
-    			Machines.update({machinename: instance.Name}, {
+    			Machines.update({machinename: instance_name}, {
     				$set: 
     				{
     					// "storage.availabe": instance.SizeRw / (1000*1000*1000), // Octets / 10^9
