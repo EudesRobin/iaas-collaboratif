@@ -252,7 +252,11 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				});
 			}
 
-			this.allocate = (machine) => {
+			/**
+			 * Allocate the machine into the database, then start it with action_user
+			 * @param {Object} machine	Machine to start
+			 */
+			this.allocateStart = (machine) => {
 				var self = this;
 				this.currentUser.getSubscriber().allocate(machine, function (err, new_machine) {
 					if (err) self.throw_error("allocate","Failed to reallocate, allocation failed");
@@ -267,6 +271,13 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					});	
 				})
 			}
+
+			/**
+			 * Return the value to put in the database in function of the initial value and its unit
+			 * @param {Number} value	Value got from the form
+			 * @param {String} unit		Unit associated to the value
+			 * @return {Number}			Value to put in thte database
+			 */
 			this.set_myvalue=(value,unit)=>{
 				switch(unit){
 					case "K":
@@ -283,20 +294,26 @@ angular.module('iaas-collaboratif').directive('user', function () {
 				}
 			}
 
+			/**
+			 * Transform the value in parameter in function on the unit, since everything in the database is in K
+			 * @param {Number} value	Value to convert that was previously in the database
+			 * @param {String} unit		Unit associated to the value
+			 * @return {Number}			Converted value
+			 */
 			this.convert = (value,unit) => {
-					switch(unit){
-						case "K":
-							return value;
-						break;
-						case "M":
-							return value/1024;
-						break;
-						case "G":
-							return value/1024/1024;
-						break;
-						default:
-						break;
-					}	
+				switch(unit){
+					case "K":
+						return value;
+					break;
+					case "M":
+						return value/1024;
+					break;
+					case "G":
+						return value/1024/1024;
+					break;
+					default:
+					break;
+				}	
 			}
 
 			/**
@@ -353,7 +370,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							if (error) self.throw_error('remove','Unable to remove machine')
 						});
 
-						self.allocate(machine);
+						self.allocateStart(machine);
 						return;
 					}
 					// Case when the resource is not usable: we desallocate then allocate the machine
@@ -365,7 +382,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						machine.machinename=self.currentUser.username;
 						self.currentUser.getSubscriber().desallocate(machine, function (err, resp) {
 							if (err) return self.throw_error("desallocate", "desallocation failed");
-							self.allocate(machine);
+							self.allocateStart(machine);
 						})
 					}
 					// Case when the initial resource is available

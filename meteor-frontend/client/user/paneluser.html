@@ -125,7 +125,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Clock speed</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.cpu.myvalue" step="1" min="1" max="1000" name="cpu" required/>
+									<td><input type="number" ng-model="user.newMachine.cpu.myvalue" step="1" min="1" max="999" name="cpu" required/>
 									</td>
 								</div>
 							</div>
@@ -138,7 +138,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">RAM</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.ram.myvalue" step="1" min="1" max="1000" name="ram" required/>
+									<td><input type="number" ng-model="user.newMachine.ram.myvalue" step="1" min="1" max="999" name="ram" required/>
 									</td>
 								</div>
 							</div>
@@ -151,7 +151,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Storage</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.storage.myvalue" step="1" min="1" max="1000" name="storage" required/>
+									<td><input type="number" ng-model="user.newMachine.storage.myvalue" step="1" min="1" max="999" name="storage" required/>
 									</td>
 								</div>
 							</div>
@@ -164,7 +164,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Bandwidth</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.bandwidth.myvalue" step="1" min="1" max="1000" name="bandwidth" required/>
+									<td><input type="number" ng-model="user.newMachine.bandwidth.myvalue" step="1" min="1" max="999" name="bandwidth" required/>
 									</td>
 								</div>
 							</div>
@@ -178,7 +178,7 @@
 						<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">You must enter a valid SSH public key first !</div>
 							<div ng-if="!user.currentUser.username" class="alert alert-danger">You must define your username first (see Profile section)</div>
-							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 1 ; max value : 1000</div>
+							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 1 ; max value : 999</div>
 							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || !user.currentUser.subscriber.sshKey || !user.currentUser.username" style="margin: 0 auto;display: block;">Register</button>
 						</p>
 					</form>

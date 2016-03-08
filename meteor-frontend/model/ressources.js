@@ -21,6 +21,9 @@ var resValue = new SimpleSchema({
 	}
 })
 
+/**
+ * cpu type
+ */
 var cpuValue = new SimpleSchema({
 	speed : {
 		type: Number,
