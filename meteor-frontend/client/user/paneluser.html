@@ -21,7 +21,7 @@
 				<tbody>
 					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
 						<td style="vertical-align:middle">{{machine.machinename}}<br><b>type:</b> {{machine.machinetype}}</td>
-						<td style="vertical-align:middle"><b>cpu:</b> {{machine.cpunumber}} x {{user.convert(machine.cpu.myvalue,machine.cpu.unit)}} {{machine.cpu.unit}}hz  <b>ram: </b>{{user.convert(machine.ram.myvalue,machine.ram.unit)}} {{machine.ram.unit}}B<br><b>storage:</b> {{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1024) / machine.storage.myvalue) : 0}} % of {{user.convert(machine.storage.myvalue,machine.storage.unit)}} {{machine.storage.unit}}B<br><b>bandwidth:</b> {{user.convert(machine.bandwidth.myvalue,machine.bandwidth.unit)}} {{machine.bandwidth.unit}}Bps</td>
+						<td style="vertical-align:middle"><b>cpu:</b> {{machine.cpunumber}} x {{user.convert(machine.cpu.myvalue,machine.cpu.unit)}} {{machine.cpu.unit}}hz  <b>ram: </b>{{user.convert(machine.ram.myvalue,machine.ram.unit)}} {{machine.ram.unit}}B<br><b>storage:</b> {{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1024) / machine.storage.myvalue).toFixed(1) : 0}} % of {{user.convert(machine.storage.myvalue,machine.storage.unit)}} {{machine.storage.unit}}B<br><b>bandwidth:</b> {{user.convert(machine.bandwidth.myvalue,machine.bandwidth.unit)}} {{machine.bandwidth.unit}}Bps</td>
 						<td style="vertical-align:middle">
 							<div class="text-center" role="toolbar">
 								<div class="btn-group">
