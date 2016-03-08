@@ -70,7 +70,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Clock speed</label></td>
-											<td><input type="number" ng-model="provider.newRessource.cpu.speed" step="1" min="1" max="1000" name="cpu" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.cpu.speed" step="1" min="1" max="999" name="cpu" required/></td>
 											<td>Unit : 
 											<select ng-model="provider.cpuunit" id="unitcpu">
 												<option value="G" >GHz </option>
@@ -81,7 +81,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">RAM</label></td>
-											<td><input type="number" ng-model="provider.newRessource.ram.total" step="1" min="1" max="1000" name="ram" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.ram.total" step="1" min="1" max="999" name="ram" required/></td>
 											<td>Unit : 
 											<select ng-model="provider.ramunit" id="unitram">
 												<option value="G" >GB  </option>
@@ -92,7 +92,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Storage</label></td>
-											<td><input type="number" ng-model="provider.newRessource.storage.total" step="1" min="1" max="1000" name="storage" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.storage.total" step="1" min="1" max="999" name="storage" required/></td>
 											<td>Unit : 
 											<select ng-model="provider.storageunit" id="unitstorage">
 												<option value="G" >GB  </option>
@@ -103,18 +103,18 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Bandwidth</label></td>
-											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="1" min="1" max="1000" name="bandwidth" required/></td>
+											<td><input type="number" ng-model="provider.newRessource.bandwidth.total" step="1" min="1" max="999" name="bandwidth" required/></td>
 											<td>Unit : 
 											<select ng-model="provider.bandwidthunit" id="unitbandwidth">
-												<option value="G" >GBps</option>
-												<option value="M">MBps</option>
+												<option value="M" >MBps</option>
+												<option value="K">KBps</option>
 												<option value="" hidden></option>
 											</select>
 											</td>
 										</tr>
 									</table>
 									
-									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 1000<br>Domain name must be (at least) like this : {1}.{2} </div>
+									<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 999<br>Domain name must be (at least) like this : {1}.{2} </div>
 									<div class="alert alert-info">Don't forget to specify a unit when required...</div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
@@ -153,7 +153,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Clock speed</label></td>
-											<td><input type="number" id="cpu" ng-model="ressource.cpu.speed" placeholder="" step="1" min="1" max="1000" name="cpu" /></td>
+											<td><input type="number" id="cpu" ng-model="ressource.cpu.speed" placeholder="" step="1" min="1" max="999" name="cpu" /></td>
 											<td>Unit : 
 											<select ng-model="provider.cpuunit" id="unitcpu">
 												<option value="G" >GHz </option>
@@ -164,7 +164,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">RAM</label></td>
-											<td><input type="number" id="ram" placeholder="" ng-model="ressource.ram.total" step="1" min="1" max="1000" name="ram" /></td>
+											<td><input type="number" id="ram" placeholder="" ng-model="ressource.ram.total" step="1" min="1" max="999" name="ram" /></td>
 											<td>Unit : 
 											<select ng-model="provider.ramunit" id="unitram">
 												<option value="G" >GB  </option>
@@ -175,7 +175,7 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Storage</label></td>
-											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="1" min="1" max="1000" name="storage" /></td>
+											<td><input type="number" id="storage" placeholder="" ng-model="ressource.storage" step="1" min="1" max="999" name="storage" /></td>
 											<td>Unit : 
 											<select ng-model="provider.storageunit" id="unitstorage">
 												<option value="G" >GB  </option>
@@ -186,18 +186,18 @@ $(document).on("click", ".modifprovider", function () {
 										</tr>
 										<tr>
 											<td><label class="control-label">Bandwidth</label></td>
-											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="1" min="1" max="1000" name="bandwidth" /></td>
+											<td><input type="number" id="bandwidth" placeholder="" ng-model="ressource.bandwidth" step="1" min="1" max="999" name="bandwidth" /></td>
 											<td>Unit : 
 											<select ng-model="provider.bandwidthunit" id="unitbandwidth">
-												<option value="G" >GBps</option>
-												<option value="M">MBps</option>
+												<option value="M" >MBps</option>
+												<option value="K">KBps</option>
 												<option value="" hidden></option>
 											</select>
 											</td>
 										</tr>
 									</table>
 									<input name= "rid" id="rid" ng-model="ridid" hidden/>
-									<div ng-if="ModifyMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 1000<br>Domain name must be (at least) like this : {1}.{2} </div>
+									<div ng-if="ModifyMachineForm.$invalid" class="alert alert-danger">At least one input have invalid value<br> min value : 1 ; max value : 999<br>Domain name must be (at least) like this : {1}.{2} </div>
 									<div class="col-sm-offset-3 col-sm-6 text-center">
 										<div class="btn-group">
 											<button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>

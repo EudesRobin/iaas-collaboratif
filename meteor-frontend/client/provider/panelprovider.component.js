@@ -74,6 +74,10 @@ angular.module('iaas-collaboratif')
 			}
 
 
+			/**
+			 * @param {String} rid	Id of the resource
+			 * @return {Object}		Resource object associated to the id
+			 */
 			this.getRessource = (rid) => {
 				return Ressources.findOne({_id: rid});
 			}
@@ -146,22 +150,34 @@ angular.module('iaas-collaboratif')
 
 			}
 
+			/**
+			 * Transform the value in parameter in function on the unit, since everything in the database is in K
+			 * @param {Number} value	Value to convert that was previously in the database
+			 * @param {String} unit		Unit associated to the value
+			 * @return {Number}			Converted value
+			 */
 			this.convert = (value,unit) => {
-					switch(unit){
-						case "K":
-							return value;
-						break;
-						case "M":
-							return value/1024;
-						break;
-						case "G":
-							return value/1024/1024;
-						break;
-						default:
-						break;
-					}	
+				switch(unit){
+					case "K":
+						return value;
+					break;
+					case "M":
+						return value/1024;
+					break;
+					case "G":
+						return value/1024/1024;
+					break;
+					default:
+					break;
+				}	
 			}
 
+			/**
+			 * Return the value to put in the database in function of the initial value and its unit
+			 * @param {Number} value	Value got from the form
+			 * @param {String} unit		Unit associated to the value
+			 * @return {Number}			Value to put in thte database
+			 */
 			this.set_myvalue=(value,unit)=>{
 				switch(unit){
 					case "K":
@@ -179,7 +195,7 @@ angular.module('iaas-collaboratif')
 			}
 
 			/**
-			 * After setting its available sets, the object newRessource is inserted in the Ressources database
+			 * Converts values got from the form into K, set the available field and add the resource into the database
 			 * The form is then cleaned
 			 */
 			this.insertRessource = () => {
