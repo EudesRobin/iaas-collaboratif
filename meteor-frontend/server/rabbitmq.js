@@ -3,30 +3,45 @@ Meteor.startup(function () {
 	var channel = null
     
 	var url = "amqp://"+Meteor.settings.rabbitmq.user+":"+Meteor.settings.rabbitmq.password+"@"+Meteor.settings.rabbitmq.host+":"+Meteor.settings.rabbitmq.port;
-	var queue = "coordinators";
+
+    var variables = {
+        'exchange': 'coordinators',
+        'type': 'fanout',
+        'queue': '',
+    }
+    // connecting to amqp
 	amqp.connect(url, function(err, conn) {
 	    if (err != null) return console.error("AMQP - Failed to create a connection", err);
+        // creating a channel
 		conn.createChannel(function (err, ch) {
 		    if (err) return console.error("AMQP - Failed to create a channel", err);
 		    channel = ch;
-
-		    ch.assertQueue(queue, {}, function(err, ok){
+            // creating a exchange
+            ch.assertExchange(variables.exchange, variables.type, {durable: false});
+            // creating a random queue
+		    ch.assertQueue(variables.queue, {exclusive: true}, function(err, ok){
 		    	if (err) return console.error("AMQP - Failed to create a queue", err)
-
-			    ch.consume(queue, function(msg) {
-			      	if (msg) 
-			      	{
-    					console.log(msg);
+                // attaching a consumer to the queue
+			    ch.consume(ok.queue, handler, {noAck: true}, function (err) {
+                    if (err) return console.error("AMQP - Failed to attach a consumer", err)
+                    // // binding the queue to the keys of interests
+                    ch.bindQueue(ok.queue, variables.exchange, "", {}, function (err) {
+                        if (err) return console.error("AMQP - Failed to bind the queue to the exchange", err)
+                    });
+                });
+                // a handler for each published message
+                function handler (msg) {
+                    if (msg) 
+                    {
                         try 
                         {
                             data = JSON.parse(msg.content.toString());
-			        	    doWork(data)
+                            doWork(data)
                         } catch (e) {
-                            console.error("This is not JSON you son of a bitch !");
+                            console.error("This is not JSON you son of a bitch !", msg.content.toString(), e);
                         }
-			        	ch.ack(msg);
-			      	}
-			    });
+                    }
+                }
 		    });
 
 		});
