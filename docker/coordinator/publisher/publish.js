@@ -1,4 +1,4 @@
-
+#!/usr/bin/env node
 
 var amqp = require('amqplib/callback_api');
 var fs = require('fs');
@@ -17,7 +17,7 @@ amqp.connect(opts.url, function(err, conn) {
 
     ch.publish(ex, '', file);
     console.log(" [x] Sent %s", process.argv[2]);
+  	setTimeout(function() { conn.close(); process.exit(0) }, 500);
   });
 
-  setTimeout(function() { conn.close(); process.exit(0) }, 500);
 });
