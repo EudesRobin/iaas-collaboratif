@@ -55,20 +55,23 @@ Meteor.startup(function () {
     		{
     			// do something
     		} 
-    		else if (instance.Name === "/shinken")
+    		else if (instance.Name === "/cadvisor")
     		{
     			// do something
     		}
     		else
     		{
     			var name = instance.Name.split("-");
-    			var username = name[0];
-    			var dns = name[1];
-    			var nb_machine = name[2];
+    			var username = name[0].split('/')[1];
+    			name.splice(0,1);
+                	name.splice(name.length-1,1);
+                	name = name.join("-");
+			var dns = name;
 
-                console.log("wAZAAAAAAA oUIIIIIIIIIIIi")
+                console.log(dns +' '+username+' ' + instance.Name);
                 var ressource = Ressources.find({dns: dns}).fetch();
-                if (ressource != 1) return console.error("Either more than one and no ressoure was found !")
+                console.log(ressource);
+		if (ressource.length != 1) return console.error("Either more than one and no ressoure was found !")
 
     			// updating the ressource state to USABLE
     			Ressources.update({ressource: ressource._id}, {
