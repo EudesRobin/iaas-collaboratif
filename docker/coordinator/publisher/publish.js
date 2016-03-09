@@ -86,7 +86,7 @@ function closeOnErr(err) {
 
 start();
 
-var sched = later.parse.text('every 1 seconds');
+var sched = later.parse.text('every 30 seconds');
 later.setInterval(function () {
 	var file = fs.readFileSync(process.argv[2])
 	publish(ex, '', file);
