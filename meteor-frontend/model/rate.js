@@ -48,7 +48,11 @@ if (Meteor.isServer) {
   	for(var i = 0;i<resources.length;i++){
   		dnsTab.push(resources[i].dns);
   	}
-    return Rates.find({$or:[{ username: this.user.username },{providerdns:{ $in: dnsTab }}]});
+  	var username = Users.findOne({_id:this.userId}).username;
+  	if(username)
+    	return Rates.find({$or:[{ username: username },{providerdns:{ $in: dnsTab }}]});
+    else
+    	return Rates.find({providerdns:{ $in: dnsTab }});
   });
 }
 
