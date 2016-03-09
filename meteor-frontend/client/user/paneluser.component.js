@@ -506,6 +506,22 @@ angular.module('iaas-collaboratif').directive('user', function () {
 
 				downloadURI(makeTextFile(ssh_string),'iaas-'+this.currentUser.username+'.config');
 			};
+
+			/**
+			 * Get the rate of the provider if it exists
+			 * @param {String} machineid	Id of the machine associated to the rate
+			 */
+			this.get_rate = (machineid) => {
+
+			};
+
+			/**
+			 * Save the rate for the provider
+			 * @param {String} machineid	Id of the machine associated to the provider to rate
+			 */
+			this.save_rate = (machineid) => {
+				console.log(machineid);
+			};
 		}
 	}
 });
