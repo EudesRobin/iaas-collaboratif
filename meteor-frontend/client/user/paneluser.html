@@ -39,8 +39,8 @@
 							</div>
 						</td>
 						<td style="vertical-align:middle">
-							<!-- <select ng-model="user.{{machine.dns}}" id="machine.dns">
-								<option value="mes couilles">1</option>
+							<select ng-model="machine.rate">
+								<option>1</option>
 								<option>2</option>
 								<option>3</option>
 								<option>4</option>
@@ -48,12 +48,13 @@
 								<option value="" hidden></option>
 							</select>
 							<div class="btn-group">
-								<button ng-click="user.save_rate(machine._id)" class="btn btn-primary">Rate</button>
-							</div> -->
+								<button ng-disabled="!user.currentUser.username" ng-click="user.save_rate(machine)" class="btn btn-primary">Rate</button>
+							</div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div ng-if="!user.currentUser.username" class="alert alert-danger">You must define your username if you want to rate</div>
 		</div>
 		<div class="container">
 			<div class="row">
@@ -102,7 +103,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Machine type</label></td>
 								<div class="col-sm-10">
-									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType" >
+									<td><select ng-hide="user.machinetypeSelect=='other'" ng-model="user.machinetypeSelect" class="form-control" id="machineType" ng-required="user.machinetypeSelect!='other'">
 										<option selected="selected">ubuntussh</option>
 										<option>centosssh</option>
 										<option>debianssh</option>
@@ -133,7 +134,7 @@
 									</td>
 								</div>
 							</div>
-							<td><select ng-model="user.cpuunit" id="unitcpu">
+							<td><select ng-model="user.cpuunit" id="unitcpu" required>
 								<option value="G" >GHz </option>
 								<option value="M">MHz </option>
 								<option value="" hidden></option>
@@ -146,7 +147,7 @@
 									</td>
 								</div>
 							</div>
-							<td><select ng-model="user.ramunit" id="unitram">
+							<td><select ng-model="user.ramunit" id="unitram" required>
 								<option value="G" >GB  </option>
 								<option value="M">MB  </option>
 								<option value="" hidden></option>
@@ -159,7 +160,7 @@
 									</td>
 								</div>
 							</div>
-							<td><select ng-model="user.storageunit" id="unitstorage">
+							<td><select ng-model="user.storageunit" id="unitstorage" required>
 								<option value="G" >GB  </option>
 								<option value="M">MB  </option>
 								<option value="" hidden></option>
@@ -172,7 +173,7 @@
 									</td>
 								</div>
 							</div>
-							<td><select ng-model="user.bandwidthunit" id="unitbandwidth">
+							<td><select ng-model="user.bandwidthunit" id="unitbandwidth" required>
 								<option value="K" >KBps</option>
 								<option value="M">MBps</option>
 								<option value="" hidden></option>

@@ -1,16 +1,5 @@
 // SCHEMA
-Schemas.Providers = new SimpleSchema({
-	dns : { 
-		type: String,
-		optional: true,
-		regEx: SimpleSchema.RegEx.Domain
-	},
-	hostname : {
-		type: String,
-		optional: true,
-		regEx: SimpleSchema.RegEx.IPv4
-	},
-});
+Schemas.Providers = new SimpleSchema({});
 
 /**
  * Providers obtained from the database contains all the Machine functions
