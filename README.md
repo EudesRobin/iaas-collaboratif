@@ -5,7 +5,7 @@ Collaborative IaaS with Docker
 [![Throughput Graph](https://graphs.waffle.io/EudesRobin/iaas-collaboratif/throughput.svg)](https://waffle.io/EudesRobin/iaas-collaboratif/metrics)
 
 **Authors :** 
-Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Loïc, CAPERAN Théo
+Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO
 
 ----------
 
