@@ -63,7 +63,6 @@ while IFS=' '  read container size unit;do
 done < /home/iaas/watchdog.data
 echo "]" >> /home/iaas/instances.data
 
-coordinatorName=$(docker ps -a| grep "coordinator*"|awk '{print $(NF)}')
 docker cp /home/iaas/instances.data $coordinatorName:./publisher/
 
 exit 0
