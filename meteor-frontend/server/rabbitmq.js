@@ -55,8 +55,7 @@ var doWork = Meteor.bindEnvironment(function (instances) {
             var coord_find = instance.Name.match(re);
         if (coord_find!=null)
         {
-                var coord_name = instance.Name.split('/')[1];
-                var dns = name[0].split('coordinator-')[1];
+                var dns = instance.Name.split('/coordinator-')[1];
                 var ressource = Ressources.find({dns: dns}).fetch();
                 if (ressource.length != 1) return console.error("Either more than one and no ressoure was found !")
                 // updating the ressource state to USABLE
