@@ -3,7 +3,9 @@ Machines = new Mongo.Collection("Machines", {
   transform: function (doc) { return new Machine(doc); }
 });
 
-
+/**
+ * Type of values with an unit associated
+ */
 var resValue = new SimpleSchema({
 	myvalue : {
 		type: Number,
@@ -65,7 +67,7 @@ Schemas.Machines = new SimpleSchema({
 		optional: true	
 	},
 	rabbitmq: {
-      type: [Object], 
+      type: Object, 
       optional: true,
       blackbox: true 
 	}

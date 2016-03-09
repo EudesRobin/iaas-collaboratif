@@ -12,40 +12,44 @@
 			<table id="mchusr" class="table text-center">
 				<thead>
 					<tr>
-						<th>Machine name</th>
-						<th>Machine type</th>
-						<th>Number of CPU</th>
-						<th>Clock speed</th>
-						<th>RAM</th>
-						<th>Storage</th>
-						<th>Bandwidth</th>
-						<th>Actions</th>
+						<th>Machine</th>
+						<th>Informations<br></th>
+						<th>Actions<br></th>
+						<th>Provider Rate</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="machine in user.machines" ng-class="user.getRowClass(machine)">
-						<td style="vertical-align:middle">{{machine.machinename}}</td>
-						<td style="vertical-align:middle">{{machine.machinetype}}</td>
-						<td style="vertical-align:middle">{{machine.cpunumber}}</td>
-						<td style="vertical-align:middle">{{user.convert(machine.cpu.myvalue,machine.cpu.unit)}} {{machine.cpu.unit}}hz</td>
-						<td style="vertical-align:middle">{{user.convert(machine.ram.myvalue,machine.ram.unit)}} {{machine.ram.unit}}B</td>
-						<td style="vertical-align:middle">{{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1024) / machine.storage) : 0}} % of {{user.convert(machine.storage.myvalue,machine.storage.unit)}} {{machine.storage.unit}}B</td>
-						<td style="vertical-align:middle">{{user.convert(machine.bandwidth.myvalue,machine.bandwidth.unit)}} {{machine.bandwidth.unit}}Bps</td>
-						<td>
-							<div class="btn-toolbar" role="toolbar">
+						<td style="vertical-align:middle">{{machine.machinename}}<br><b>type:</b> {{machine.machinetype}}</td>
+						<td style="vertical-align:middle"><b>cpu:</b> {{machine.cpunumber}} x {{user.convert(machine.cpu.myvalue,machine.cpu.unit)}} {{machine.cpu.unit}}hz  <b>ram: </b>{{user.convert(machine.ram.myvalue,machine.ram.unit)}} {{machine.ram.unit}}B<br><b>storage:</b> {{machine.rabbitmq? ((machine.rabbitmq.SizeRw / 1024) / machine.storage.myvalue).toFixed(1) : 0}} % of {{user.convert(machine.storage.myvalue,machine.storage.unit)}} {{machine.storage.unit}}B<br><b>bandwidth:</b> {{user.convert(machine.bandwidth.myvalue,machine.bandwidth.unit)}} {{machine.bandwidth.unit}}Bps</td>
+						<td style="vertical-align:middle">
+							<div class="text-center" role="toolbar">
 								<div class="btn-group">
-									<button ng-click="user.startMachine(machine)" class="btn btn-success centered" ng-disabled="keyForm.$invalid||machine.state==='up'" style="margin: 0 auto;display: block;">Start</button>
+									<button ng-click="user.startMachine(machine)" class="btn btn-success" ng-disabled="keyForm.$invalid||machine.state==='up'" >Start</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="user.stopMachine(machine)" class="btn btn-warning centered" style="margin: 0 auto;display: block;" ng-disabled="machine.state!=='up'||machine.state!=='providerdown'">Stop</button>
+									<button ng-click="user.stopMachine(machine)" class="btn btn-warning" ng-disabled="machine.state!=='up'">Stop</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="user.deleteMachine(machine)" class="btn btn-danger centered" style="margin: 0 auto;display: block;" ng-confirm-click="Confirm remove">Remove</button>
+									<button ng-click="user.deleteMachine(machine)" class="btn btn-danger" ng-confirm-click="Confirm remove">Remove</button>
 								</div>
 								<div class="btn-group">
-									<button ng-click="user.generate(machine)" class="btn btn-primary centered" style="margin: 0 auto;display: block;">Generate SSH config file</button>
+									<button ng-click="user.generate(machine)" class="btn btn-primary">Generate SSH config file</button>
 								</div>
 							</div>
+						</td>
+						<td style="vertical-align:middle">
+							<!-- <select ng-model="user.{{machine.dns}}" id="machine.dns">
+								<option value="mes couilles">1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+								<option>5</option>
+								<option value="" hidden></option>
+							</select>
+							<div class="btn-group">
+								<button ng-click="user.save_rate(machine._id)" class="btn btn-primary">Rate</button>
+							</div> -->
 						</td>
 					</tr>
 				</tbody>
@@ -123,9 +127,9 @@
 								</div>
 							</div><td></td></tr>
 							<tr><div class="form-group">
-								<td><label class="control-label">Clock speed</label></td>
+								<td><label class="control-label">Clock rate</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.cpu.myvalue" step="1" min="1" max="1000" name="cpu" required/>
+									<td><input type="number" ng-model="user.newMachine.cpu.myvalue" step="1" min="1" max="999" name="cpu" required/>
 									</td>
 								</div>
 							</div>
@@ -138,7 +142,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">RAM</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.ram.myvalue" step="1" min="1" max="1000" name="ram" required/>
+									<td><input type="number" ng-model="user.newMachine.ram.myvalue" step="1" min="1" max="999" name="ram" required/>
 									</td>
 								</div>
 							</div>
@@ -151,7 +155,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Storage</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.storage.myvalue" step="1" min="1" max="1000" name="storage" required/>
+									<td><input type="number" ng-model="user.newMachine.storage.myvalue" step="1" min="1" max="999" name="storage" required/>
 									</td>
 								</div>
 							</div>
@@ -164,7 +168,7 @@
 							<tr><div class="form-group">
 								<td><label class="control-label">Bandwidth</label></td>
 								<div class="col-sm-10">
-									<td><input type="number" ng-model="user.newMachine.bandwidth.myvalue" step="1" min="1" max="1000" name="bandwidth" required/>
+									<td><input type="number" ng-model="user.newMachine.bandwidth.myvalue" step="1" min="1" max="999" name="bandwidth" required/>
 									</td>
 								</div>
 							</div>
@@ -178,7 +182,7 @@
 						<p>
 							<div ng-if="keyForm.$invalid" class="alert alert-danger">You must enter a valid SSH public key first !</div>
 							<div ng-if="!user.currentUser.username" class="alert alert-danger">You must define your username first (see Profile section)</div>
-							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 1 ; max value : 1000</div>
+							<div ng-if="newMachineForm.$invalid" class="alert alert-danger">At least one input is incomplete have invalid value<br> Numbers: min value : 1 ; max value : 999</div>
 							<button ng-click="user.insertMachine()" class="btn btn-primary centered" ng-disabled="newMachineForm.$invalid || !user.currentUser.subscriber.sshKey || !user.currentUser.username" style="margin: 0 auto;display: block;">Register</button>
 						</p>
 					</form>
