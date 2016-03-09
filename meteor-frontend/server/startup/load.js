@@ -33,6 +33,22 @@ Meteor.startup(function () {
       }
 
       switch (cmd) {
+        // PROVIDER CMD
+        case "coordinator_provider":
+        var r_split = params.dns.split(" ");
+
+        if(r_split.length!=1){
+          throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
+        }
+        var rename ='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params.dns+' '+
+                  "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                      '-p 22000 iaas@172.17.0.1 docker rename coordinator coordinator-'+params.dns+" ' ";
+        command=rename;
+
+        break;
         // USER CMD
         case "stop_user":
         var r_split = params.machinename.split(" ");
@@ -40,14 +56,14 @@ Meteor.startup(function () {
         if(r_split.length!=1){
           throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
         }
-        call_stop='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+        var call_stop='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
                       '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
                       'iaas-admin@'+params.dns+' '+
                   "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
                       ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
                       '-p 22000 iaas@172.17.0.1 /home/iaas/stop.sh '+params.machinename+" ' ";
 
-        rm_key='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+        var rm_key='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
                       '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
                       'iaas-admin@'+params.dns+' '+
                   "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
@@ -121,8 +137,6 @@ Meteor.startup(function () {
         }else{
           throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
         }
-
-        console.log(dns);
 
         var getkey = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
 
