@@ -294,7 +294,7 @@ angular.module('iaas-collaboratif')
 					if(err) self.throw_error('insert',err);
 				});
 				this.action_provider('coordinator',this.newRessource,function(){self.throw_success('coordinator','Domain is confirmed online !')});
-				
+
 				this.newRessource ={};
 				this.bandwidthunit="";
 				this.cpuunit="";
@@ -326,6 +326,9 @@ angular.module('iaas-collaboratif')
 					break;
 					case "modify":
 					title = "Domain properties update<br>"
+					break;
+					case "coordinator":
+					title="Update coordinator name"
 					break;
 					default:
 					title = "Unknown command"
