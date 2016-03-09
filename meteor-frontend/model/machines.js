@@ -67,7 +67,7 @@ Schemas.Machines = new SimpleSchema({
 		optional: true	
 	},
 	rabbitmq: {
-      type: [Object], 
+      type: Object, 
       optional: true,
       blackbox: true 
 	}

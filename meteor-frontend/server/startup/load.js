@@ -122,6 +122,8 @@ Meteor.startup(function () {
           throw new Meteor.Error(500,r_split[6],'Invalid storage container parameter - Invalid unit');
         }
 
+        console.log(dns);
+
         var getkey = 'bash ~/iaas-collaboratif/scripts/createKey.sh '+name+' '+dns+ ' ; '
 
         var addk_instance ='ssh  -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5"'+
