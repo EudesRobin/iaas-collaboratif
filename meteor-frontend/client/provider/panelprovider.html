@@ -29,6 +29,32 @@ $(document).on("click", ".modifprovider", function () {
 	$(".modal-body #unitstorage").val(rsc.storage.unit);
 	$(".modal-body #unitbandwidth").val(rsc.bandwidth.unit);
 });
+
+$(document).on("click", ".rateprovider", function () {
+	var rsc = $(this).data('rsc');
+	var table = "<table class=\"table\">\n";
+	table += "<thead>\n";
+	table += "<tr>\n";
+	table += "<th style=\"text-align:center\">Username</th>\n";
+	table += "<th style=\"text-align:center\">Rate</th>\n";
+	table += "</tr>\n";
+	table += "</thead>\n";
+	table += "<tbody>\n";
+	for(var i = 0;i<rsc.length;i++){
+		table += "<tr>\n";
+		table += "<td>\n";
+		table += rsc[i].username;
+		table += "</td>\n";
+		table += "<td>\n";
+		table += rsc[i].rate;
+		table += "</td>\n";
+		table += "</tr>\n";
+	}
+	table += "</tbody>\n";
+	table += "</table>\n";
+	$(".modal-body #ratetable").html(table);
+	
+});
 </script>
 
 <div class="container-fluid">
@@ -214,6 +240,21 @@ $(document).on("click", ".modifprovider", function () {
 				</div>
 			</div>
 		</div>
+		<!-- Rate details  -->
+		<div class="modal fade text-center" id="rate" tabindex="-1" role="dialog" aria-labelledby="modalmodify">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="modalmodify">Rates details</h4>
+						<div class="modal-body">
+							<div class="row" id="ratetable">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<!-- Table ressources provider -->
 		<div ng-hide="provider.ressourcesIsEmpty()">
 			<table class="table">
@@ -226,6 +267,7 @@ $(document).on("click", ".modifprovider", function () {
 						<th>Storage</th>
 						<th>Bandwidth</th>
 						<th>Actions</th>
+						<th>Rate</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -236,7 +278,7 @@ $(document).on("click", ".modifprovider", function () {
 						<td style="vertical-align:middle">{{provider.convert(ressource.ram.total,ressource.ram.unit)}} {{ressource.ram.unit}}B</td>
 						<td style="vertical-align:middle">{{provider.convert(ressource.storage.total,ressource.storage.unit)}} {{ressource.storage.unit}}B</td>
 						<td style="vertical-align:middle">{{provider.convert(ressource.bandwidth.total,ressource.bandwidth.unit)}} {{ressource.bandwidth.unit}}Bps</td>
-						<td>
+						<td style="vertical-align:middle">
 							<div class="btn-toolbar" role="toolbar">
 								<div class="btn-group">
 									<button ng-click="provider.startRessource(ressource)" class="btn btn-success centered" ng-disabled="ressource.usable" style="margin: 0 auto;display: block;">Start</button>
@@ -251,6 +293,13 @@ $(document).on("click", ".modifprovider", function () {
 									<button class="btn btn-primary centered modifprovider" ng-disabled="provider.isUsable(ressource)"
 									data-toggle="modal" data-rsc='{{provider.getRessource(ressource._id)}}' data-target="#modify_machine"  style="margin: 0 auto;display: block;">Modify</button>
 								</div>
+							</div>
+						</td>
+						<td style="vertical-align:middle">
+							{{provider.getResourceRate(ressource)}}
+							<div class="btn-group">
+								<button class="btn btn-primary centered rateprovider" ng-disabled="provider.isUsable(ressource)"
+								data-toggle="modal" data-rsc='{{provider.getRates(ressource._id)}}' data-target="#rate"  style="margin: 0 auto;display: block;">Details</button>
 							</div>
 						</td>
 					</tr>

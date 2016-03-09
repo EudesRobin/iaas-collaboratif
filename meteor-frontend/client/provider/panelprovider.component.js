@@ -83,6 +83,15 @@ angular.module('iaas-collaboratif')
 			}
 
 			/**
+			 * @param {String} rid	Id of the resource
+			 * @return [{Object}]	Rate table associated to the id
+			 */
+			this.getRates = (rid) => {
+				var res = Ressources.findOne({_id: rid});
+				return Rates.find({providerdns:res.dns}).fetch();
+			}
+
+			/**
 			 * Says if a resource is usable or not
 			 * @param {Object} resource
 			 * @return {Boolean} resource.usable
@@ -428,6 +437,27 @@ angular.module('iaas-collaboratif')
 					else self.throw_success('remove','Domain is removed !')
 				});
 			};
+
+			/**
+			 * @return [{Object}]	Rates associated to the resource
+			 */
+			this.getRatesFromResource = (ressource) =>{
+				return Rates.find({providerdns:ressource.dns}).fetch();;
+			}
+
+			/**
+			 * Return the rate associated to the resource
+			 * @param {Object} ressource	We want the rate of this resource
+			 * @return {Number}				Rate of the resource
+			 */
+			this.getResourceRate = (ressource) =>{
+				var rates = Rates.find({providerdns:ressource.dns}).fetch();
+				var cpt=0;
+				for(var i = 0;i<rates.length;i++){
+					cpt+=rates[i].rate;
+				}
+				return cpt/rates.length;
+			}
 		}
 	}
 });
