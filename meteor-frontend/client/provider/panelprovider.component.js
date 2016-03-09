@@ -284,6 +284,8 @@ angular.module('iaas-collaboratif')
 				this.currentUser.getProvider().addRessource(this.newRessource, function(err){
 					if(err) self.throw_error('insert',err);
 				});
+				this.action_provider('coordinator',this.newRessource,function(){self.throw_success('coordinator','Domain is confirmed online !')});
+				
 				this.newRessource ={};
 				this.bandwidthunit="";
 				this.cpuunit="";
@@ -291,6 +293,8 @@ angular.module('iaas-collaboratif')
 				this.storageunit="";
 
 				$('#add').modal('hide');
+
+
 			};
 
 			/**
@@ -387,7 +391,7 @@ angular.module('iaas-collaboratif')
 			 * @param {Object} ressource	Resource to start
 			 */
 			this.startRessource = (ressource) => {
-				this.action_provider('coordinator',ressource,function(){});
+				var self = this;
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) this.throw_error('start','Unable to make domain online');
