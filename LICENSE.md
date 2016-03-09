@@ -632,7 +632,7 @@ state the exclusion of warranty; and each file should have at least
 the "copyright" line and a pointer to where the full notice is found.
 
     Collaborative IaaS with Docker
-    Copyright (C) 2016  Robin Eudes, Malek Mammar, Romain Barthelemy, Alan Damotte, Kai Guo, Loïc Bonnard, Théo Caperan
+    Copyright (C) 2016  Robin Eudes, Malek Mammar, Romain Barthelemy, Alan Damotte, Kai Guo
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
