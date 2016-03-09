@@ -46,7 +46,10 @@ Meteor.startup(function () {
                   "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
                       ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
                       '-p 22000 iaas@172.17.0.1 docker rename coordinator coordinator-'+params.dns+" ' ";
-        command=rename;
+        var publish  ='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params.dns+' '+"'/publisher/publish.sh &'"
+        command=rename+' ; '+publish;
 
         break;
         // USER CMD
