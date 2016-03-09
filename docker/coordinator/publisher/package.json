@@ -9,6 +9,7 @@
   "author": "Malek Mammar",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.4.1"
+    "amqplib": "^0.4.1",
+    "later": "^1.2.0",
   }
 }
