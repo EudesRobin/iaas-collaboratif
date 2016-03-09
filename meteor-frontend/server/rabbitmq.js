@@ -31,7 +31,7 @@ Meteor.startup(function () {
             });
                 // a handler for each published message
                 function handler (msg) {
-                    console.log(msg)
+                  console.log("call handler");
                     if (msg) 
                     {
                         try 
