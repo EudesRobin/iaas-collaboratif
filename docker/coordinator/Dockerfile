@@ -34,7 +34,8 @@ RUN mkdir /home/iaas-admin/.ssh/ && \
 ADD ./dividePublicKey.sh ./
 ADD ./deletePublicKey.sh ./
 
-RUN (crontab -l 2>/dev/null; echo "* * * * * node /publisher/publish.js /publisher/instances.data && sleep 30 && node /publisher/publish.js /publisher/instances.data") | crontab -
+
+RUN (crontab -l 2>/dev/null; echo "* * * * * /publisher/publish.sh && sleep 30 && /publisher/publish.sh") | crontab -
 
 RUN adduser --disabled-password --gecos "" iaas-client && \
     mkdir /home/iaas-client/.ssh/ && \
