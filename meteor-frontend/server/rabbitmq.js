@@ -51,15 +51,28 @@ Meteor.startup(function () {
 
 var doWork = Meteor.bindEnvironment(function (instances) {
  instances.forEach(function (instance) {
-
-    if (instance.Name === "/coordinator")
-    {
-    			// do something
+            var re = e = /(\/coordinator-)/;
+            var coord_find = instance.Name.match(re);
+        if (coord_find!=null)
+        {
+                var coord_name = instance.Name.split('/')[1];
+                var dns = name[0].split('coordinator-')[1];
+                var ressource = Ressources.find({dns: dns}).fetch();
+                if (ressource.length != 1) return console.error("Either more than one and no ressoure was found !")
+                // updating the ressource state to USABLE
+            Ressources.update({ressource: ressource._id}, {
+                $set:{usable: true}
+            })
+    		
     		} 
     		else if (instance.Name === "/cadvisor")
     		{
-    			// do something
+    			// do nothing
     		}
+            else if (instance.Name === "/coordinator")
+            {
+                // do nothing
+            }
     		else
     		{
                 var instance_name = instance.Name.split('/')[1];
@@ -69,14 +82,6 @@ var doWork = Meteor.bindEnvironment(function (instances) {
                 name.splice(name.length-1,1);
                 name = name.join("-");
                 var dns = name;
-                var ressource = Ressources.find({dns: dns}).fetch();
-                if (ressource.length != 1) return console.error("Either more than one and no ressoure was found !")
-
-                // updating the ressource state to USABLE
-            Ressources.update({ressource: ressource._id}, {
-                $set:{usable: true}
-            })
-
 
     			// updating machine infos
     			Machines.update({machinename: instance_name}, {

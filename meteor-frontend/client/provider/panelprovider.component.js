@@ -91,6 +91,70 @@ angular.module('iaas-collaboratif')
 				return ressource.usable;
 			}
 
+			this.action_provider = (cmd,param,cb) => {
+				cmd_concat=cmd+'_provider';
+				// Call the exec_cmd function (server/startup/load.js)
+				Meteor.call('exec_cmd',cmd_concat,param, function (err, response) {
+					if(err){
+						var title;
+						switch(cmd){
+							case "coordinator":
+							title = "Error update coordinator name"
+							break;					
+							default:
+							title = "Error unknown command"
+						}
+						$.notify({
+						// options
+						icon: 'glyphicon glyphicon-remove-sign',
+						title: title+"<br>",
+						message: err.details,
+						},{
+						//settings
+						type: 'danger',
+						newest_on_top: true,
+						allow_dismiss: true,
+						template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+						'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+						'<span data-notify="icon"></span> ' +
+						'<span data-notify="title">{1}</span> ' +
+						'<span data-notify="message">{2}</span>' +
+						'</div>' ,
+						});
+					}
+
+					if(response){
+						var title;
+						var msg="successful";
+						switch(cmd){
+							case "coordinator":
+							title = "Update coordinator name<br>"
+							break;
+							default:
+							title = "Unknown command"
+						}
+						$.notify({
+						// options
+						icon: 'glyphicon glyphicon-ok-sign',
+						title: title,
+						message: msg,
+						},{
+						//settings
+						type: 'success',
+						newest_on_top: true,
+						allow_dismiss: true,
+						template: '<div data-notify="container" class="col-xs-6 col-sm-3 alert alert-{0}" role="alert">' +
+						'<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+						'<span data-notify="icon"></span> ' +
+						'<span data-notify="title">{1}</span> ' +
+						'<span data-notify="message">{2}</span>' +
+						'</div>' ,
+						});
+					}
+					return cb();
+				});
+			};
+
 			/**
 			 * Update a resource with the modified fields of the form
 			 * @param {String} rid	id of the resource to update
@@ -220,6 +284,8 @@ angular.module('iaas-collaboratif')
 				this.currentUser.getProvider().addRessource(this.newRessource, function(err){
 					if(err) self.throw_error('insert',err);
 				});
+				this.action_provider('coordinator',this.newRessource,function(){self.throw_success('coordinator','Domain is confirmed online !')});
+				
 				this.newRessource ={};
 				this.bandwidthunit="";
 				this.cpuunit="";
@@ -227,6 +293,8 @@ angular.module('iaas-collaboratif')
 				this.storageunit="";
 
 				$('#add').modal('hide');
+
+
 			};
 
 			/**
@@ -323,6 +391,7 @@ angular.module('iaas-collaboratif')
 			 * @param {Object} ressource	Resource to start
 			 */
 			this.startRessource = (ressource) => {
+				var self = this;
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) this.throw_error('start','Unable to make domain online');
