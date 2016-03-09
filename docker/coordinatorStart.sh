@@ -28,6 +28,12 @@ fi
 #==============================================
 # Run containers
 echo "Running containers"
+dockerAlreadyExisting=$(docker ps|grep "coordinator*"|awk '{print $(NF)}'|wc -l)
+if [[ ($dockerAlreadyExisting == 1) ]];then
+	echo "Removing old coordinator container"
+	coordinatorName=$(docker ps| grep "coordinator*"|awk '{print $(NF)}')
+	docker rm $coordinatorName
+fi
 docker run -ti -p 22:22 --expose 22 --net=iaasnetwork --name coordinator -d coordinator
 #We found out a new monitoring system that seems to be more that enough for what we need
 docker run --net=iaasnetwork \
