@@ -94,4 +94,7 @@ docker build -t debianssh ./images/debian/
 (crontab -l 2>/dev/null; echo "* * * * * /home/iaas/watchdog.sh && sleep 30 && /home/iaas/watchdog.sh") | sudo crontab -
 #====================================
 
+coordinatorName=$(docker ps -a| grep "coordinator*"|awk '{print $(NF)}')
+docker exec -d $coordinatorName /publisher/publish.sh
+
 exit 0
