@@ -167,6 +167,9 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					case "reallocate":
 					title = "Reallocate try<br>"
 					break;
+					case "rate":
+					title = "Rate success<br>"
+					break;
 					default:
 					title = "Unknown command"
 				}
@@ -214,7 +217,10 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					break;
 					case "desallocate":
 					title = "Error reallocate instance"
-					break;							
+					break;	
+					case "rate":
+					title = "Rating error"
+					break;				
 					default:
 					title = "Error Unknown command"
 				}
@@ -508,19 +514,29 @@ angular.module('iaas-collaboratif').directive('user', function () {
 			};
 
 			/**
-			 * Get the rate of the provider if it exists
-			 * @param {String} machineid	Id of the machine associated to the rate
+			 * Save or update the rate if it is possible
+			 * @param {Object} machine	Machine associated to the provider to rate
 			 */
-			this.get_rate = (machineid) => {
-
-			};
-
-			/**
-			 * Save the rate for the provider
-			 * @param {String} machineid	Id of the machine associated to the provider to rate
-			 */
-			this.save_rate = (machineid) => {
-				console.log(machineid);
+			this.save_rate = (machine) => {
+				if(!machine.rate){
+					this.throw_error('rate','Please set a rate');
+					return;
+				}
+				var self = this;
+				var currentRate = Rates.findOne({username:self.currentUser.username,providerdns:machine.dns});
+				var rate = parseInt(machine.rate);
+				if(currentRate){
+					Rates.update({_id: currentRate._id}, {$set:{rate:rate}}, (error) => {
+						if (error) self.throw_error('rate','Unable to update your rate');
+						else self.throw_success('rate','Rate updated');
+					});
+				}
+				else{
+					Rates.insert({username:self.currentUser.username,providerdns:machine.dns,rate:rate}, (error) => {
+						if (error) self.throw_error('rate','Unable to rate');
+						else self.throw_success('rate','Your rate has been saved');
+					});
+				}
 			};
 		}
 	}

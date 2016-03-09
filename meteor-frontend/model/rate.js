@@ -4,25 +4,6 @@ Rates = new Mongo.Collection("Rates", {
 });
 
 /**
- * Rates obtained from the database contains all the Rate functions
- */
-Rate = function (opts) {
-	_.extend(this, opts);
-}
-
-/**
- * Set the restrictions for Rates database modifications
- */
-Rates.attachSchema(Schemas.Rates,  {transform: true, replace:true});
-
-Rates.allow({
-	insert: function(userId,doc) {return userId && doc.username === Users.findOne({_id:userId}).username;},
-    update: function(userId, doc, fieldNames, modifier) {return userId && doc.username === Users.findOne({_id:userId}).username;},
-    remove: function(userId,doc) {return userId && doc.username === Users.findOne({_id:userId}).username;},
-    fetch: ["username"]
-})
-
-/**
  * The rates inserted in the database will have to follow the schema described
  */
 Schemas.Rates = new SimpleSchema({
@@ -38,6 +19,25 @@ Schemas.Rates = new SimpleSchema({
 		allowedValues: [1,2,3,4,5]
 	}
 });
+
+/**
+ * Rates obtained from the database contains all the Rate functions
+ */
+Rate = function (opts) {
+  _.extend(this, opts);
+}
+
+/**
+ * Set the restrictions for Rates database modifications
+ */
+Rates.attachSchema(Schemas.Rates,  {transform: true, replace:true});
+
+Rates.allow({
+    insert: function(userId,doc) {return userId && doc.username === Users.findOne({_id:userId}).username;},
+    update: function(userId, doc, fieldNames, modifier) {return userId && doc.username === Users.findOne({_id:userId}).username;},
+    remove: function(userId,doc) {return userId && doc.username === Users.findOne({_id:userId}).username;},
+    fetch: ["username"]
+})
 
 // Publishing to move to independants files
 if (Meteor.isServer) {
