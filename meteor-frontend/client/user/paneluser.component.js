@@ -34,10 +34,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					return Meteor.users.findOne(Meteor.userId());
 				},
 				/**
-				 * @return {Object} Machines of the user
+				 * @return [{Object}] Machines of the user, with their rates if they exist
 				 */
 				machines: () => {
-					return Machines.find({user_id: Meteor.userId()});
+					var mac = Machines.find({user_id: Meteor.userId()}).fetch();
+					var user = Meteor.users.findOne({_id: Meteor.userId()});
+					if(!user)
+						return mac;
+					var self = this;
+					for(var i = 0;i<mac.length;i++){
+						var currentRate = Rates.findOne({username:user.username,providerdns:mac[i].dns});
+						if(currentRate){
+							mac[i].rate=currentRate.rate.toString();
+						}
+					}
+					return mac;
 				}
 			});
 
