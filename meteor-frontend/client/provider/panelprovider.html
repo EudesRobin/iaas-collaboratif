@@ -298,8 +298,8 @@ $(document).on("click", ".rateprovider", function () {
 						<td style="vertical-align:middle">
 							{{provider.getResourceRate(ressource)}}
 							<div class="btn-group">
-								<button class="btn btn-primary centered rateprovider" ng-disabled="provider.isUsable(ressource)"
-								data-toggle="modal" data-rsc='{{provider.getRates(ressource._id)}}' data-target="#rate"  style="margin: 0 auto;display: block;">Details</button>
+								<button class="btn btn-primary centered rateprovider" data-toggle="modal"
+								data-rsc='{{provider.getRates(ressource._id)}}' data-target="#rate"  style="margin: 0 auto;display: block;">Details</button>
 							</div>
 						</td>
 					</tr>

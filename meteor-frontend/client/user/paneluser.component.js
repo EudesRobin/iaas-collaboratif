@@ -538,6 +538,23 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					});
 				}
 			};
+
+			/**
+			 * Get the rate of the machine if it exists
+			 * @param {Object} machine	We want the rate associated to this machine
+			 * @return {String}			Rate associated to the machine
+			 */
+			this.get_rate = (machine) => {
+				var self = this;
+				var currentRate = Rates.findOne({username:self.currentUser.username,providerdns:machine.dns});
+				var rate = parseInt(machine.rate);
+				if(currentRate){
+					return currentRate.rate;
+				}
+				else{
+					return "None";
+				}
+			};
 		}
 	}
 });
