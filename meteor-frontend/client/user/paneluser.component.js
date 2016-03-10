@@ -34,10 +34,21 @@ angular.module('iaas-collaboratif').directive('user', function () {
 					return Meteor.users.findOne(Meteor.userId());
 				},
 				/**
-				 * @return {Object} Machines of the user
+				 * @return [{Object}] Machines of the user, with their rates if they exist
 				 */
 				machines: () => {
-					return Machines.find({user_id: Meteor.userId()});
+					var mac = Machines.find({user_id: Meteor.userId()}).fetch();
+					var user = Meteor.users.findOne({_id: Meteor.userId()});
+					if(!user)
+						return mac;
+					var self = this;
+					for(var i = 0;i<mac.length;i++){
+						var currentRate = Rates.findOne({username:user.username,providerdns:mac[i].dns});
+						if(currentRate){
+							mac[i].rate=currentRate.rate.toString();
+						}
+					}
+					return mac;
 				}
 			});
 
@@ -536,23 +547,6 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						if (error) self.throw_error('rate','Unable to rate');
 						else self.throw_success('rate','Your rate has been saved');
 					});
-				}
-			};
-
-			/**
-			 * Get the rate of the machine if it exists
-			 * @param {Object} machine	We want the rate associated to this machine
-			 * @return {String}			Rate associated to the machine
-			 */
-			this.get_rate = (machine) => {
-				var self = this;
-				var currentRate = Rates.findOne({username:self.currentUser.username,providerdns:machine.dns});
-				var rate = parseInt(machine.rate);
-				if(currentRate){
-					return currentRate.rate;
-				}
-				else{
-					return "None";
 				}
 			};
 		}
