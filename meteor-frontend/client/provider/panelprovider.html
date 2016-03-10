@@ -69,10 +69,14 @@ $(document).on("click", ".rateprovider", function () {
 			<div class="col-md-4 col-md-offset-3 details text-center" style="margin-bottom:30px;">
 				<h3>Action</h3>
 					<div class="btn-group" role="group">
+						<a href="https://github.com/EudesRobin/iaas-collaboratif/archive/docker.zip" ><button type="button" class="btn btn-primary">Download provider package</button></a>
+					</div>
+				<div style="margin-top:10px;" class="alert alert-info">Setup : <br>unzip the archive<br>Then, follow the instructions given <a href="https://github.com/EudesRobin/iaas-collaboratif/tree/docker/docker">here</a></div>
+				<div style="margin-top:10px;" class="alert alert-warning">Insert a machine only after you have run provider containers on your computer</div>
+					<div class="btn-group" role="group">
 						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Insert new machine</button>
 					</div>
 				<div style="margin-top:10px;" class="alert alert-info">Domain properties can be modified <br> only when domain is not running</div>
-				<div style="margin-top:10px;" class="alert alert-warning">Insert a domain only after you have run provider containers on your computer</div>
 			</div>
 		</div>
 		<!-- Insert machine form  -->
