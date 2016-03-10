@@ -456,7 +456,10 @@ angular.module('iaas-collaboratif')
 				for(var i = 0;i<rates.length;i++){
 					cpt+=rates[i].rate;
 				}
-				return cpt/rates.length;
+				if(rates.length!=0)
+					return cpt/rates.length;
+				else
+					return 0;
 			}
 		}
 	}
