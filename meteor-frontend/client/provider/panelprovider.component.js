@@ -457,7 +457,7 @@ angular.module('iaas-collaboratif')
 					cpt+=rates[i].rate;
 				}
 				if(rates.length!=0)
-					return cpt/rates.length;
+					return Math.round(cpt/rates.length * 100) / 100;
 				else
 					return 0;
 			}
