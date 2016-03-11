@@ -178,6 +178,18 @@ Meteor.startup(function () {
       if (tmp)
         return {err: null, ram: tmp.ram.total, storage: tmp.storage.total,usable:tmp.usable};
       return {err: "No ressource found"};
+    },
+
+    /**
+     * Deletes the rates of the resource
+     * @param {String} providerdns  Dns to delete
+     */
+    deleteRates: function (providerdns) {
+      var res = {};
+      Rates.remove({providerdns: providerdns},(error) => {
+        res = {err: "Unable to delete the rates"};
+      });
+      return res;
     }
   });
 });
