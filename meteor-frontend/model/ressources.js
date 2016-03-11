@@ -78,10 +78,6 @@ Schemas.Ressources = new SimpleSchema({
 		regEx: SimpleSchema.RegEx.Domain,
 		unique: true
 	},
-	elapse_time : {   // in seconds
-		type: Number, 
-		optional: true	
-	},
 	usable : {
 		type: Boolean,
 		optional: true,
