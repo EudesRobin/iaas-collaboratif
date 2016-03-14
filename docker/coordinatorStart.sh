@@ -28,15 +28,22 @@ fi
 #==============================================
 # Run containers
 echo "Running containers"
-dockerAlreadyExisting=$(docker ps|grep "coordinator*"|awk '{print $(NF)}'|wc -l)
+dockerAlreadyExisting=$(docker ps -a|grep "coordinator*"|awk '{print $(NF)}'|wc -l)
 if [[ ($dockerAlreadyExisting == 1) ]];then
-	echo "Removing old coordinator container"
-	coordinatorName=$(docker ps| grep "coordinator*"|awk '{print $(NF)}')
-	docker rm $coordinatorName
+	echo "Launching old coordinator container"
+	coordinatorName=$(docker ps -a| grep "coordinator*"|awk '{print $(NF)}')
+	docker start $coordinatorName
+else
+  docker run -ti -p 22:22 --expose 22 --net=iaasnetwork --name coordinator -d coordinator
 fi
-docker run -ti -p 22:22 --expose 22 --net=iaasnetwork --name coordinator -d coordinator
-#We found out a new monitoring system that seems to be more that enough for what we need
-docker run --net=iaasnetwork \
+
+cadvisorAlreadyExisting=$(docker ps -a|grep "cadvisor"|awk '{print $(NF)}'|wc -l)
+if [[ ($cadvisorAlreadyExisting == 1) ]];then
+  echo "Launching old cAdvisor container"
+  docker start cadvisor
+else
+  #We found out a new monitoring system that seems to be more that enough for what we need
+  docker run --net=iaasnetwork \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:rw \
   --volume=/sys:/sys:ro \
@@ -45,8 +52,10 @@ docker run --net=iaasnetwork \
   --detach=true \
   --name=cadvisor \
   google/cadvisor:latest
-#docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
-#==============================================
+  #docker run -d --net=iaasnetwork -v "$(pwd)/docker_shinken/shinken_thruk_graphite/custom_configs:/etc/shinken/custom_configs" -p 81:80 --name shinken shinken
+  #==============================================
+fi
+
 
 exit 0
 
