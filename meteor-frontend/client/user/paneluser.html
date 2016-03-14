@@ -73,7 +73,7 @@
 						<h3>Actions</h3>
 						<p>
 							<div class="btn-group">
-								<button type="button" class="btn btn-primary" ng-click="user.generate_all()">Generate all-in-one SSH config</button>
+								<button type="button" class="btn btn-primary" ng-click="user.generate_all()" ng-disabled="user.machinesIsEmpty()">Generate all-in-one SSH config</button>
 							</div>
 						</p>
 						<p>
