@@ -136,8 +136,18 @@ Meteor.methods({
 	stopRessource: function (ressource_id) {
 		var ressource = Ressources.findOne({_id: ressource_id, user_id: Meteor.userId()})
 		ressource.machines_ids.forEach(function(machine_id){
-			Machines.update({_id: machine_id}, {$set:{state:'down'}});
+			//Machines.update({_id: machine_id}, {$set:{state:'down'}});
+			var mach = Machines.findOne({_id:machine_id});
+			Meteor.call('exec_cmd','stop_user',mach,function(){
+					Machines.update({_id: machine_id}, {$set:{state:'down'}});
+				});
 		});
+
+			Meteor.call('exec_cmd','watchdog_user',ressource.dns,function(err){
+					if(err){
+						console.log(err);
+					}
+				});
 
 		ressource.usable=false;
 		Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}});
