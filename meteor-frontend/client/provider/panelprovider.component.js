@@ -429,6 +429,10 @@ angular.module('iaas-collaboratif')
 			 */
 			this.deleteRessource = (ressource) => {
 				stopRessource(ressource);
+				var self =this;
+				Meteor.call("deleteRates", ressource.dns, function(err, res){
+					if (err) self.throw_error("stop","Failed to delete the rates");
+				})
 				Ressources.remove({_id: ressource._id},(error) => {
 					if (error) self.throw_error('remove','Unable to remove domain');
 					else self.throw_success('remove','Domain is removed !')

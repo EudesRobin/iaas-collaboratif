@@ -57,10 +57,6 @@ Schemas.Machines = new SimpleSchema({
 		optional: true,
 		regEx: SimpleSchema.RegEx.Domain
 	},
-	elapse_time : {   // in seconds
-		type: Number, 
-		optional: true	
-	},
 	state : {
 		type: String, 
 		allowedValues: ["providerdown", "up", "down"],
