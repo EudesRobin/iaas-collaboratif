@@ -428,7 +428,7 @@ angular.module('iaas-collaboratif')
 			 * @param {Object} ressource	Resource to delete
 			 */
 			this.deleteRessource = (ressource) => {
-				stopRessource(ressource);
+				this.stopRessource(ressource);
 				var self =this;
 				Meteor.call("deleteRates", ressource.dns, function(err, res){
 					if (err) self.throw_error("stop","Failed to delete the rates");
