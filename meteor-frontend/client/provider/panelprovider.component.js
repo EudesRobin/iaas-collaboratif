@@ -404,6 +404,8 @@ angular.module('iaas-collaboratif')
 			 */
 			this.startRessource = (ressource) => {
 				var self = this;
+				this.action_provider('coordinator',ressource,function(){self.throw_success('coordinator','Domain is confirmed online !')});
+
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) this.throw_error('start','Unable to make domain online');
