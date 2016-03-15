@@ -108,10 +108,10 @@ angular.module('iaas-collaboratif')
 						var title;
 						switch(cmd){
 							case "coordinator":
-							title = "Error update coordinator name"
+							title = "Update coordinator name error"
 							break;					
 							default:
-							title = "Error unknown command"
+							title = "Error: unknown command"
 						}
 						$.notify({
 						// options
