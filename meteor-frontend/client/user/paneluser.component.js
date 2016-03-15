@@ -98,7 +98,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						var title;
 						switch(cmd){
 							case "create":
-							title = "Error creation instance"
+							title = "Instance creation error"
 							break;
 							case "stop":
 							title = "Error kill instance"
@@ -133,7 +133,7 @@ angular.module('iaas-collaboratif').directive('user', function () {
 						var msg="successful";
 						switch(cmd){
 							case "create":
-							title = "Creation instance<br>"
+							title = "Instance creation<br>"
 							break;
 							case "stop":
 							title = "Kill instance<br>"
