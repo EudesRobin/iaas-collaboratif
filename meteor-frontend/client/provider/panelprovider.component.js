@@ -404,6 +404,8 @@ angular.module('iaas-collaboratif')
 			 */
 			this.startRessource = (ressource) => {
 				var self = this;
+				this.action_provider('coordinator',ressource,function(){self.throw_success('coordinator','Domain is confirmed online !')});
+
 				ressource.usable=true;
 				Ressources.update({_id: ressource._id}, {$set:{usable:ressource.usable}}, (error) => {
 					if (error) this.throw_error('start','Unable to make domain online');
@@ -428,10 +430,8 @@ angular.module('iaas-collaboratif')
 			 * @param {Object} ressource	Resource to delete
 			 */
 			this.deleteRessource = (ressource) => {
+				this.stopRessource(ressource);
 				var self =this;
-				Meteor.call("stopRessource", ressource._id, function(err, res){
-					if (err) self.throw_error("stop","Failed to stop the ressource");
-				})
 				Meteor.call("deleteRates", ressource.dns, function(err, res){
 					if (err) self.throw_error("stop","Failed to delete the rates");
 				})

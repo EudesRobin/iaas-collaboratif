@@ -73,6 +73,30 @@ Meteor.startup(function () {
         command=call_stop+' ; '+rm_key;
 
         break;
+        case "watchdog_user":
+        var r_split = params.split(" ");
+
+        if(r_split.length!=1){
+          throw new Meteor.Error(500,r_split.length,'Invalid parameter length');
+        }
+
+        var rename ='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params+' '+
+                  "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                      '-p 22000 iaas@172.17.0.1 docker rename coordinator-'+params+"  coordinator' ";
+
+        var call_watch='ssh -o "StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      '-o "GlobalKnownHostsFile=/dev/null" -o "UserKnownHostsFile=/dev/null" '+
+                      'iaas-admin@'+params+' '+
+                  "'ssh -o "+'"StrictHostKeyChecking no" -o "BatchMode=yes" -o "ConnectTimeout=5" '+
+                      ' -o "UserKnownHostsFile=/dev/null" -o "GlobalKnownHostsFile=/dev/null" '+
+                      '-p 22000 iaas@172.17.0.1 /home/iaas/watchdog.sh '+"'";
+
+        command=rename+' ; '+call_watch;
+
+        break;
         case "create_user":
 
         var dns = params.split(" ")[2].split("-");
