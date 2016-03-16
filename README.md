@@ -29,6 +29,20 @@ A folder where you will find few bash scripts to setup/start/stop meteor, start 
 This folder contains the meteor projet, the webui. A more detailed README.md file in this folder will explain a bit this webui.
 
 
+    You must create a file "settings.json" in the following directory : /meteor-frontend
+    with this content :
+    {
+        "rabbitmq": {
+                "user": "username_rabbit",
+                "password": "password_rabbit",
+                "host": "url_rabbit",
+                "port": "5672"
+        }
+    }
+    
+    Here, it's used by meteor to process received messages (publish by coordinators).
+    Be aware that an indentical file must be created in docker/coordinator/publisher  directory (on provider, it's used by coordinator to publish messages )
+
 Links
 -------
 [Documentation](http://air.imag.fr/index.php/Projets-2015-2016-IaaS_Docker)
