@@ -33,7 +33,7 @@ How to use the scripts?
 
 	> ./startProvider.sh
 
-2. To **start** coordinator and monitoring containers (will have no effect if they are already started):
+2. To **start** coordinator and monitoring containers (will have no effect if they are already started, not necessary if startProvider script is used):
 
 	> ./coordinatorStart.sh
 
@@ -59,6 +59,17 @@ How to use the scripts?
 *There is no need to use the other scripts the archive contains.*
 
 ----------
+
+Monitoring with cAdvisor
+-----------------------
+
+cAdvisor is already launch with startProvider script (and of course coordinatorStart script too).
+
+Google first created cAdvisor to monitor their own lmctfy containers and added Docker container support (those that use the default lib container execdriver). cAdvisor is short for Container Advisor. You can use cAdvisor to get a detailed look into the resource usage and the various performance characteristics of your running containers. cAdvisor includes a simple UI to view the live data, a simple API to retrieve the data programmatically, and the ability to store the data in an external InfluxDB.
+
+If you want to monitor all of the containers you have running on a host, you can deploy the cAdvisor image as a container in that same host. It will then have access to the resource usage and performance characteristics of your other containers in that host.
+
+You can check cAdvisor is running by pointing your browser to the host’s IP or hostname and port 8080. If running locally, try http://localhost:8080. This will bring up the built-in Web UI. 
 
 Licence
 -------
