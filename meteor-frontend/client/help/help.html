@@ -104,6 +104,17 @@
 
 		<h4>Easily Remediate Issues:</h4>
 		<p>Docker make it easy to identify issues and isolate the problem container, quickly roll back to make the necessary changes then push the updated container into production. The isolation between containers make these changes less disruptive than traditional software models.</p>
+
+		<h2>Monitoring with cAdvisor</h2>
+		<p>
+			We were looking for a light and efficient tool to monitor the instances running on provider side. We first used Shinken but we found this tool way to heavy for what we wanted to do. Then we found cAdvisor.
+
+	Google first created cAdvisor to monitor their own lmctfy containers and added Docker container support (those that use the default lib container execdriver). cAdvisor is short for Container Advisor. You can use cAdvisor to get a detailed look into the resource usage and the various performance characteristics of your running containers. cAdvisor includes a simple UI to view the live data, a simple API to retrieve the data programmatically, and the ability to store the data in an external InfluxDB.
+
+	If you want to monitor all of the containers you have running on a host, you can deploy the cAdvisor image as a container in that same host. It will then have access to the resource usage and performance characteristics of your other containers in that host.
+
+	You can check cAdvisor is running by pointing your browser to the host’s IP or hostname and port 8080. If running locally, try http://localhost:8080. This will bring up the built-in Web UI. 
+		</p>
 	</div>
 
 	<span class="anchor" id="links"></span>
