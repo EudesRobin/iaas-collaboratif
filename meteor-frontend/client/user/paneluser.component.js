@@ -101,13 +101,13 @@ angular.module('iaas-collaboratif').directive('user', function () {
 							title = "Instance creation error"
 							break;
 							case "stop":
-							title = "Error kill instance"
+							title = "Kill instance error"
 							break;
 							case "remove":
-							title = "Error remove instance"
+							title = "Remove instance error"
 							break;						
 							default:
-							title = "Error unknown command"
+							title = "Error: unknown command"
 						}
 						$.notify({
 						// options
