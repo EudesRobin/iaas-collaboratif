@@ -4,7 +4,7 @@ Collaborative IaaS with Docker
 ==============================
 
 **Authors :** 
-Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO, BONNARD Loïc, CAPERAN Théo
+Alan DAMOTTE, Robin EUDES, Romain BARTHELEMY, Malek MAMMAR, Kai GUO
 
 ---------------------------
 
@@ -28,6 +28,18 @@ Archive content
 
 How to use the scripts?
 ----------------------
+    You must create a file "settings.json" in the following directory : docker/coordinator/publisher
+    with this content :
+    {
+        "rabbitmq": {
+                "user": "username_rabbit",
+                "password": "password_rabbit",
+                "host": "url_rabbit",
+                "port": "5672"
+        }
+    }
+    
+    Be aware that an indentical file must be created in /meteor-frontend directory (on frontend) (it's used by meteor to process received messages )
 
 1. To **initialize and start** coordinator and monitoring containers:
 
